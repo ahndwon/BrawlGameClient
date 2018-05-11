@@ -1,3 +1,5 @@
+package typeAdapter;
+
 import Windows.Update;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

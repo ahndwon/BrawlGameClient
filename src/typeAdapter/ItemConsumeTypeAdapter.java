@@ -1,8 +1,9 @@
-package Windows;
+package typeAdapter;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import state.ItemConsume;
 
 import java.io.IOException;
 

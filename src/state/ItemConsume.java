@@ -1,4 +1,4 @@
-package Windows;
+package state;
 
 public class ItemConsume {
     private String userName;
