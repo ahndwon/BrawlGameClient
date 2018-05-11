@@ -19,20 +19,11 @@ public class UpdateTypeAdapter extends TypeAdapter<Update> {
     @Override
     public Update read(JsonReader reader) throws IOException {
         Gson gson = new GsonBuilder().create();
-        JsonArray jsonArray = gson.fromJson(reader, JsonArray.class);
-        for (int i = 0; i < jsonArray.size(); i++) {
-
-        }
         reader.beginObject();
-
         Update update = new Update();
 
         while (reader.hasNext()) {
             switch (reader.nextName()) {
-                case "users" :
-                    reader.beginArray();
-                    reader.beginObject();
-                    break;
                 case "user" :
                     update.setUser(reader.nextString());
                     break;
@@ -57,6 +48,8 @@ public class UpdateTypeAdapter extends TypeAdapter<Update> {
 
             }
         }
+        reader.endObject();
+
 
         return update;
     }

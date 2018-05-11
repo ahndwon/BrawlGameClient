@@ -87,15 +87,20 @@ public class Communicator {
                             case "HIT":
                                 gson = new GsonBuilder().registerTypeAdapter(Hit.class, new HitTypeAdapter()).create();
                                 Hit hit = gson.fromJson(jsonObject.get("body").toString(), Hit.class);
-
+                                receiver.onHitReceive(hit);
                                 break;
 
                             case "KILL":
                                 break;
 
-                            case "UPDATE":
+                            case "Update":
                                 gson = new GsonBuilder().registerTypeAdapter(Update.class, new UpdateTypeAdapter()).create();
-                                Update update = gson.fromJson(jsonObject.get("users").toString(), Update.class);
+
+                                JsonArray updateArray = gson.fromJson(jsonObject.get("users").toString(), JsonArray.class);
+                                for (int i = 0; i < updateArray.size(); i++) {
+                                    Update update = gson.fromJson(updateArray.get(i).toString(), Update.class);
+                                    receiver.onUpdate(update);
+                                }
                                 break;
 
                         }

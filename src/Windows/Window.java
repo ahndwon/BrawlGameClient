@@ -5,10 +5,11 @@ import Utils.Constants;
 import Utils.KeyEventManager;
 import dwon.SpriteManager;
 import processing.core.PApplet;
+import state.Hit;
 import state.Map;
 import state.Move;
+import state.Update;
 
-import java.awt.event.KeyEvent;
 
 public class Window extends PApplet implements Constants {
     private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, USER_STOP);
@@ -29,6 +30,23 @@ public class Window extends PApplet implements Constants {
             @Override
             public void onMapReceive(Map map) {
                 myMap = map;
+            }
+
+            @Override
+            public void onHitReceive(Hit hit) {
+                user.setHit(true);
+            }
+
+            @Override
+            public void onUpdate(Update update) {
+                System.out.println(update.getX());
+                System.out.println(update.getY());
+                System.out.println(update.getHp());
+                System.out.println(update.getScore());
+                user.setX(update.getX());
+                user.setY(update.getY());
+                user.setHp(update.getHp());
+                user.setScore(update.getScore());
             }
         });
 
@@ -114,5 +132,10 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadSprite(this, USER_LEFT, "./image/image.png", 32, 32, new int[]{12, 13, 14, 13});
         SpriteManager.loadSprite(this, USER_RIGHT, "./image/image.png", 32, 32, new int[]{24, 25, 26, 25});
         SpriteManager.loadSprite(this, USER_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
+        SpriteManager.loadImage(this, HAMMER_UP, "./image/up.png");
+        SpriteManager.loadImage(this, HAMMER_DOWN, "./image/down.png");
+        SpriteManager.loadImage(this, HAMMER_RIGHT, "./image/right.png");
+        SpriteManager.loadImage(this, HAMMER_LEFT, "./image/left.png");
+
     }
 }

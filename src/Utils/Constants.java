@@ -16,6 +16,11 @@ public interface Constants {
 
     int BLOCK_SIZE = 50;
 
+    int HAMMER_UP = 4;
+    int HAMMER_DOWN = 5;
+    int HAMMER_LEFT = 6;
+    int HAMMER_RIGHT = 7;
+
     String USER_STOP = "stop";
     String USER_MOVE = "move";
 }
