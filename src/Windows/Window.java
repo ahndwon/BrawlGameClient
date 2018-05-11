@@ -13,6 +13,7 @@ import state.Update;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
@@ -21,6 +22,7 @@ public class Window extends PApplet implements Constants {
     private Communicator communicator;
     private Map myMap;
     private List<User> users;
+    private boolean isSame;
 
     @Override
     public void settings() {
@@ -31,7 +33,7 @@ public class Window extends PApplet implements Constants {
     public void setup() {
         communicator = new Communicator("192.168.11.71", 5000);
         communicator.connect();
-        users =  Collections.synchronizedList(new ArrayList<>());
+        users = new CopyOnWriteArrayList<>();
         users.add(user);
         communicator.setReceiverListener(new ReceiverListener() {
             @Override
@@ -46,18 +48,24 @@ public class Window extends PApplet implements Constants {
 
             @Override
             public void onUpdate(Update update) {
+
                 for (User user : users) {
                     if (user.getName().equals(update.getUser())) {
-                        user.setX(update.getX());
-                        user.setY(update.getY());
-                        user.setDirection(update.getDirection());
-                        user.setHp(update.getHp());
-                        user.setScore(update.getScore());
-                        user.setState(update.getState());
-                    } else {
-                        users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(), update.getScore(), update.getState()));
+                        isSame = true;
                     }
                 }
+
+                if (isSame) {
+                    user.setX(update.getX());
+                    user.setY(update.getY());
+                    user.setDirection(update.getDirection());
+                    user.setHp(update.getHp());
+                    user.setScore(update.getScore());
+                    user.setState(update.getState());
+                } else {
+                    users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(), update.getScore(), update.getState()));
+                }
+
 //                user.setX(update.getX());
 //                user.setY(update.getY());
 //                user.setHp(update.getHp());
