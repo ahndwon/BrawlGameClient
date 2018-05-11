@@ -57,7 +57,7 @@ public class Communicator {
                         len = socket.getInputStream().read(buf, 0, length);
                         String str = new String(buf, 0, len);
                         Gson gson = new GsonBuilder().create();
-                        JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
+//                        JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
 
 
 //                        String str = new String(buf, 0, len);

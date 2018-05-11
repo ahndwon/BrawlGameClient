@@ -1,9 +1,9 @@
 package typeAdapter;
 
+import state.Join;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import state.Join;
 
 import java.io.IOException;
 
