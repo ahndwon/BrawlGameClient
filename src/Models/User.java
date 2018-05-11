@@ -19,12 +19,13 @@ public class User extends View {
     private float hammerX;
     private float hammerY;
 
-    public User(float x, float y, String name, String direction, int hp, String state) {
+    public User(float x, float y, String name, String direction, int hp, int score, String state) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.direction = direction;
         this.hp = hp;
+        this.score = score;
         this.state = state;
     }
 

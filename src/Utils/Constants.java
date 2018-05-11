@@ -1,10 +1,10 @@
 package Utils;
 
 public interface Constants {
-    String PLAYER_UP = "U";
-    String PLAYER_DOWN = "D";
-    String PLAYER_LEFT = "L";
-    String PLAYER_RIGHT = "R";
+    String PLAYER_UP = "UP";
+    String PLAYER_DOWN = "DOWN";
+    String PLAYER_LEFT = "LEFT";
+    String PLAYER_RIGHT = "RIGHT";
 
     int USER_UP = 0;
     int USER_DOWN = 1;

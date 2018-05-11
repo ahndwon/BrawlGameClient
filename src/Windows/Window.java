@@ -15,7 +15,7 @@ import java.util.List;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, USER_STOP);
+    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, 10,  USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -48,7 +48,7 @@ public class Window extends PApplet implements Constants {
                     if (user.getName() .equals(update.getUser()))
                         return;
                 }
-                users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(), update.getState()));
+                users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(),update.getScore(), update.getState()));
 //                user.setX(update.getX());
 //                user.setY(update.getY());
 //                user.setHp(update.getHp());
