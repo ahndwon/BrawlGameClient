@@ -7,8 +7,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="core" level="project" />
-    <orderEntry type="library" name="gson-2.8.4" level="project" />
-    <orderEntry type="library" name="Sprite_Manager" level="project" />
   </component>
 </module>
