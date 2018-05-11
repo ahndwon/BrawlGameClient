@@ -33,22 +33,28 @@ public class User extends View {
     public void render(PApplet pApplet) {
         tick++;
 
+
+        pApplet.fill(255);
+        pApplet.rect(x , y - 20, 50, 10);
+        pApplet.fill(255, 0, 0);
+        pApplet.rect(x , y - 20, hp / 2f, 10);
+
         pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4), x, y, 50, 50);
         if (hit)
-        pApplet.image(SpriteManager.getImage(hammerImage, 0), hammerX, hammerY, 30, 30);
+            pApplet.image(SpriteManager.getImage(hammerImage, 0), hammerX, hammerY, 30, 30);
 
     }
 
     @Override
     public void onUpdate() {
         switch (direction) {
-            case "UP" :
+            case "UP":
                 characterImage = Constants.USER_UP;
                 hammerImage = Constants.HAMMER_UP;
                 hammerX = x;
                 hammerY = y - 3;
                 break;
-            case "DOWN" :
+            case "DOWN":
                 characterImage = Constants.USER_DOWN;
                 hammerImage = Constants.HAMMER_DOWN;
                 hammerX = x;
@@ -60,7 +66,7 @@ public class User extends View {
                 hammerX = x - 3;
                 hammerY = y;
                 break;
-            case "RIGHT" :
+            case "RIGHT":
                 characterImage = Constants.USER_RIGHT;
                 hammerImage = Constants.HAMMER_RIGHT;
                 hammerX = x + 3;
@@ -86,6 +92,7 @@ public class User extends View {
     public String getName() {
         return name;
     }
+
     public void setX(float x) {
         this.x = x;
     }
