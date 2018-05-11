@@ -1,98 +1,102 @@
 package Utils;
 
-import processing.core.PApplet;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class KeyEventManager {
-    private PApplet pApplet;
-    private HashMap<Integer, KeyStruct> keyStructHashMap;
+    private HashMap<Integer, KeyStruct> keys = new HashMap<>();
 
-    private class KeyStruct {
-        ArrayList<OnPressListener> onPressListeners;
-        ArrayList<OnReleaseListener> onReleaseListeners;
-        boolean isPressed;
-        boolean flag;
-        long duration;
 
-        KeyStruct() {
-            onPressListeners = new ArrayList<>();
-            onReleaseListeners = new ArrayList<>();
+
+    public class KeyStruct {
+        public ArrayList<PressListener> pressListeners;
+        public ArrayList<ReleaseListener> releaseListeners;
+
+        public KeyStruct() {
+            pressListeners = new ArrayList<>();
+            releaseListeners = new ArrayList<>();
         }
+
+        public boolean isPress;
+        public long pressedTime;
+        public boolean isOnPress;
+
     }
 
-    public KeyEventManager(PApplet pApplet) {
-        this.pApplet = pApplet;
-        this.keyStructHashMap = new HashMap<>();
+    public interface PressListener {
+        void onPress(boolean isOnPress, long duration);
+    }
+
+    public interface ReleaseListener {
+        void onRelease(long duration);
     }
 
 
-    public interface OnPressListener {
-        void onPress(boolean isFirst, float duration);
-    }
+    public void update() {// 떼고 있을때 계속해서 릴리즈가 불리는 것을 방지하기 위해서.
+        for (Integer key : keys.keySet()) {
 
-    public interface OnReleaseListener {
-        void onRelease(float duration);
-    }
+            KeyStruct struct = keys.get(key);
 
-
-    public void update() {
-        for (KeyStruct struct : keyStructHashMap.values()) {
-            if (struct.isPressed) {
-                for (OnPressListener listener : struct.onPressListeners) {
-                    listener.onPress(struct.flag, System.currentTimeMillis() - struct.duration);
+            for (PressListener pressListener : struct.pressListeners) {
+                if (struct.isPress) {
+                    pressListener.onPress(!struct.isOnPress, System.currentTimeMillis() - struct.pressedTime);
+                    struct.isOnPress = true;
                 }
-                struct.flag = false;
-            } else if (!struct.flag) {
-                for (OnReleaseListener listener : struct.onReleaseListeners) {
-                    listener.onRelease(System.currentTimeMillis() - struct.duration);
+            }
+
+            for (ReleaseListener releaseListener : struct.releaseListeners) {
+                if (struct.isOnPress && !struct.isPress) {
+                    releaseListener.onRelease(System.currentTimeMillis() - struct.pressedTime);
+                    struct.isOnPress = false;
                 }
-                struct.flag = true;
             }
+
+
+//            for (Listener listener : struct.listeners) {
+//                if (struct.isPress) {
+//                    listener.onPress(!pressedFirst, System.currentTimeMillis() - struct.pressedTime);
+//                    struct.isOnPress = true;
+//                } else if (struct.isOnPress) {
+//                    listener.onRelease(System.currentTimeMillis() - struct.pressedTime);
+//                    struct.isOnPress = false;
+//                }
+//            }
         }
-        if (pApplet.keyPressed) {
-            setKeyPress(pApplet.keyCode);
-        }
-        else {
-            for (Integer keyCode : keyStructHashMap.keySet()) {
-                setKeyRelease(keyCode);
-            }
-        }
+
     }
 
-    public void setKeyPress(int key) {
-        if (!keyStructHashMap.containsKey(key)) return;
-        if (!keyStructHashMap.get(key).flag) return;
-        keyStructHashMap.get(key).isPressed = true;
-        keyStructHashMap.get(key).flag = true;
-        keyStructHashMap.get(key).duration = System.currentTimeMillis();
+    public void setPress(int key) {
+        if (!keys.containsKey(key)) return;
+        if (keys.get(key).isPress) return;
+        keys.get(key).isPress = true;
+        keys.get(key).pressedTime = System.currentTimeMillis();
+
     }
 
-    public void setKeyRelease(int key) {
-        if (!keyStructHashMap.containsKey(key)) return;
-        keyStructHashMap.get(key).isPressed = false;
+    public void setRelease(int key) {
+        if (!keys.containsKey(key)) return;
+        keys.get(key).isPress = false;
     }
 
-    public void removeOnPressListener(int key, OnPressListener listener) {
-        if (keyStructHashMap.containsKey(key)) {
-            keyStructHashMap.get(key).onPressListeners.remove(listener);
-        }
+    public void addPressListener(int key, PressListener listener) {
+        keys.putIfAbsent(key, new KeyStruct());
+        keys.get(key).pressListeners.add(listener);
     }
 
-    public void removeOnReleaseListener(int key, OnReleaseListener listener) {
-        if (keyStructHashMap.containsKey(key)) {
-            keyStructHashMap.get(key).onReleaseListeners.remove(listener);
-        }
+    public void addPressListener(char key, PressListener listener) {
+        keys.putIfAbsent((int) key, new KeyStruct());
+        keys.get(key).pressListeners.add(listener);
     }
 
-    public void addOnPressListener(int key, OnPressListener listener) {
-        keyStructHashMap.putIfAbsent(key, new KeyStruct());
-        keyStructHashMap.get(key).onPressListeners.add(listener);
+    public void addReleaseListener(int key, ReleaseListener listener) {
+        keys.putIfAbsent(key, new KeyStruct());
+        keys.get(key).releaseListeners.add(listener);
     }
 
-    public void addOnReleaseListener(int key, OnReleaseListener listener) {
-        keyStructHashMap.putIfAbsent(key, new KeyStruct());
-        keyStructHashMap.get(key).onReleaseListeners.add(listener);
+    public void addReleaseListener(char key, ReleaseListener listener) {
+        keys.putIfAbsent((int) key, new KeyStruct());
+        keys.get(key).releaseListeners.add(listener);
     }
+
+
 }

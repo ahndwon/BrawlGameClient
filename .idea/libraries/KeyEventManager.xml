@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="KeyEventManager">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/KeyEventManager.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
