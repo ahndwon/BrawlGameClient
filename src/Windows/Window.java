@@ -6,6 +6,9 @@ import Utils.KeyEventManager;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 import state.Map;
+import state.Move;
+
+import java.awt.event.KeyEvent;
 
 public class Window extends PApplet implements Constants {
     private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, USER_STOP);
@@ -34,6 +37,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(37, new KeyEventManager.PressListener() {
             @Override
             public void onPress(boolean isOnPress, long duration) {
+                communicator.moveSend(new Move("LEFT"));
                 user.setDirection(PLAYER_LEFT);
                 user.setX(user.getX() - 3);
             }
@@ -42,6 +46,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(39, new KeyEventManager.PressListener() {
             @Override
             public void onPress(boolean isOnPress, long duration) {
+                communicator.moveSend(new Move("RIGHT"));
                 user.setDirection(PLAYER_RIGHT);
                 user.setX(user.getX() + 3);
             }
@@ -50,6 +55,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(38, new KeyEventManager.PressListener() {
             @Override
             public void onPress(boolean isOnPress, long duration) {
+                communicator.moveSend(new Move("UP"));
                 user.setDirection(PLAYER_UP);
                 user.setY(user.getY() - 3);
             }
@@ -58,6 +64,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(40, new KeyEventManager.PressListener() {
             @Override
             public void onPress(boolean isOnPress, long duration) {
+                communicator.moveSend(new Move("DOWN"));
                 user.setDirection(PLAYER_DOWN);
                 user.setY(user.getY() + 3);
             }
@@ -66,11 +73,19 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(32, new KeyEventManager.PressListener() {
             @Override
             public void onPress(boolean isOnPress, long duration) {
-                user.setDirection(PLAYER_DOWN);
-                user.setY(user.getY() + 3);
+//                communicator.attackSend();
+//                user.setDirection(PLAYER_DOWN);
+//                user.setY(user.getY() + 3);
             }
         });
 
+
+        keyEventManager.addReleaseListener(32, new KeyEventManager.ReleaseListener() {
+            @Override
+            public void onRelease(long duration) {
+                communicator.attackSend();
+            }
+        });
 
     }
 
@@ -79,7 +94,7 @@ public class Window extends PApplet implements Constants {
     public void draw() {
         background(0);
 
-        myMap.render(this);
+//        myMap.render(this);
         keyEventManager.update();
         user.onUpdate();
         user.render(this);

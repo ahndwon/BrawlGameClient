@@ -1,7 +1,10 @@
 package Windows;
 
 import com.google.gson.*;
+import state.Hit;
 import state.Map;
+import state.Move;
+import typeAdapter.HitTypeAdapter;
 import typeAdapter.MapTypeAdapter;
 
 import java.io.IOException;
@@ -62,35 +65,44 @@ public class Communicator {
 
                         len = socket.getInputStream().read(buf, 0, length);
                         String str = new String(buf, 0, len);
-                        Gson gson = new GsonBuilder().create();
+//                        Gson gson = new GsonBuilder().create();
                         JsonParser jsonParser = new JsonParser();
                         JsonObject jsonObject = (JsonObject) jsonParser.parse(str);
                         System.out.println(jsonObject);
 
+                        String type = jsonObject.get("type").toString();
+                        String body = jsonObject.get("body").toString();
+                        
+                        Gson gson;
 
-                        if ((jsonObject.get("type").getAsString().equals("Map"))) {
-                            Gson gson1 = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
-                            Map map = gson1.fromJson(jsonObject.get("body").toString(), Map.class);
-                            receiver.onMapReceive(map);
+                        switch (type){
+
+                            case "Map":
+                                gson = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
+                                Map map = gson.fromJson(jsonObject.get("body").toString(), Map.class);
+                                receiver.onMapReceive(map);
+                                break;
+
+                            case "HIT":
+                                gson = new GsonBuilder().registerTypeAdapter(Hit.class, new HitTypeAdapter()).create();
+                                Hit hit = gson.fromJson(jsonObject.get("body").toString(), Hit.class);
+
+                                break;
+
+                            case "KILL":
+                                break;
+
+
                         }
 
 
-//                        String str = new String(buf, 0, len);
-//                        Gson gson = new GsonBuilder().create();
-//                        JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
-//                        System.out.println(jsonObject);
-//
-//                        if (jsonObject.get("type").getAsString().equals("connect"))
-//                            communicatorListener.addCharacter(jsonObject);
-//                        else if(jsonObject.get("type").getAsString().equals("accept")){
-//                            JsonArray array = (JsonArray) jsonObject.get("state");
-//                            for (int i = 0; i < array.size(); i++) {
-//                                JsonObject state = new JsonObject();
-//                                state.add("state", array.get(i));
-//                                System.out.println(state);
-//                                communicatorListener.addCharacter(state);
-//                            }
+//                        if ((jsonObject.get("type").getAsString().equals("Map"))) {
+//                            Gson gson1 = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
+//                            Map map = gson1.fromJson(jsonObject.get("body").toString(), Map.class);
+//                            receiver.onMapReceive(map);
 //                        }
+//                        else if()
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -129,4 +141,26 @@ public class Communicator {
             e.printStackTrace();
         }
     }
+
+    public void moveSend(Move move) {
+
+        String direction = move.getDirection();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "Move");
+        JsonObject body = new JsonObject();
+        body.addProperty("direction", direction);
+        jsonObject.add("body", body);
+
+        send(jsonObject);
+
+    }
+
+    public void attackSend() {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "Attack");
+        send(jsonObject);
+
+    }
+
 }
