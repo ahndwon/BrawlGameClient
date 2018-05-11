@@ -29,15 +29,10 @@ public class Communicator {
         try {
             socket.connect(endPoint);
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("type", "connect");
-            JsonObject state = new JsonObject();
-            state.addProperty("name", "skdufh");
-            state.addProperty("character", 2);
-            JsonObject position = new JsonObject();
-            position.addProperty("x", 300);
-            position.addProperty("y", 100);
-            state.add("position", position);
-            jsonObject.add("state", state);
+            jsonObject.addProperty("type", "Join");
+            JsonObject body = new JsonObject();
+            body.addProperty("user", "yun");
+            jsonObject.add("body", body);
             send(jsonObject);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +43,7 @@ public class Communicator {
             public void run() {
                 int len;
                 byte[] lengthBuf = new byte[2];
-                byte[] buf = new byte[1024];
+                byte[] buf = new byte[3000];
                 ByteBuffer byteBuffer = ByteBuffer.allocate(2);
 
                 try {

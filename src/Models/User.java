@@ -48,4 +48,11 @@ public class User extends View {
         return y;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
 }
