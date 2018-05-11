@@ -8,6 +8,7 @@ import state.Map;
 import java.io.IOException;
 
 public class MapTypeAdapter extends TypeAdapter<Map> {
+    private Map map;
     @Override
     public void write(JsonWriter jsonWriter, Map map) throws IOException {
 
@@ -17,7 +18,6 @@ public class MapTypeAdapter extends TypeAdapter<Map> {
     public Map read(JsonReader reader) throws IOException {
         reader.beginObject();
 
-        Map map = new Map();
 
         while (reader.hasNext()) {
             switch (reader.nextName()) {
@@ -30,7 +30,7 @@ public class MapTypeAdapter extends TypeAdapter<Map> {
                     for (int i = 0; i < 1024; i++) {
                         mapArray[i] = reader.nextInt();
                     }
-                    map.setMap(mapArray);
+                    map = new Map(mapArray);
                     break;
 
             }

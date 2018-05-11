@@ -20,6 +20,13 @@ public class Window extends PApplet {
         communicator = new Communicator("192.168.11.71", 5000);
         communicator.connect();
 
+        communicator.setReceiverListener(new ReceiverListener() {
+            @Override
+            public void onMapReceive() {
+
+            }
+        });
+
         loadImage();
 
         keyEventManager.addPressListener(37, new KeyEventManager.PressListener() {

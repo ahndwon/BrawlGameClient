@@ -1,9 +1,8 @@
 package Windows;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
+import state.Map;
+import typeAdapter.MapTypeAdapter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,10 +16,15 @@ public class Communicator {
     private Socket socket;
     private JsonObject message;
     private CommunicatorListener communicatorListener;
+    private ReceiverListener receiver;
 
     public Communicator(String host, int port) {
         this.host = host;
         this.port = port;
+    }
+
+    public void setReceiverListener(ReceiverListener listener) {
+        this.receiver = listener;
     }
 
     public void connect() {
@@ -53,11 +57,21 @@ public class Communicator {
                         byteBuffer.flip();
                         Short length = byteBuffer.getShort();
                         byteBuffer.clear();
+                        System.out.println(length);
 
                         len = socket.getInputStream().read(buf, 0, length);
                         String str = new String(buf, 0, len);
                         Gson gson = new GsonBuilder().create();
-//                        JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
+                        JsonParser jsonParser = new JsonParser();
+                        JsonObject jsonObject = (JsonObject) jsonParser.parse(str);
+                        System.out.println(jsonObject);
+
+
+                        if ((jsonObject.get("type").getAsString().equals("Map"))) {
+                            Gson gson1 = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
+                            Map map = gson1.fromJson(jsonObject.get("body").toString(), Map.class);
+                            receiver.onMapReceive();
+                        }
 
 
 //                        String str = new String(buf, 0, len);

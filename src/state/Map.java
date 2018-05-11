@@ -1,18 +1,29 @@
 package state;
 
-public class Map {
+import Models.View;
+import processing.core.PApplet;
+
+public class Map extends View {
     private int[] map;
-    private float x;
-    private float y;
 
     public Map() {
 
     }
-    public Map(int[] map, float x, float y) {
-        this.map = map;
-        this.x = x;
-        this.y = y;
+
+    @Override
+    public void render(PApplet pApplet) {
+
     }
+
+    @Override
+    public void onUpdate() {
+
+    }
+
+    public Map(int[] map) {
+        this.map = map;
+    }
+
 
     public int[] getMap() {
         return map;
@@ -22,19 +33,4 @@ public class Map {
         this.map = map;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
 }
