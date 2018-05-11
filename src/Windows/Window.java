@@ -11,15 +11,17 @@ import state.Move;
 import state.Update;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, 10,  USER_STOP);
+    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, 10, USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
     private List<User> users;
+
     @Override
     public void settings() {
         size(800, 600);
@@ -29,7 +31,7 @@ public class Window extends PApplet implements Constants {
     public void setup() {
         communicator = new Communicator("192.168.11.71", 5000);
         communicator.connect();
-        users = new ArrayList<>();
+        users =  Collections.synchronizedList(new ArrayList<>());
         users.add(user);
         communicator.setReceiverListener(new ReceiverListener() {
             @Override
@@ -45,10 +47,17 @@ public class Window extends PApplet implements Constants {
             @Override
             public void onUpdate(Update update) {
                 for (User user : users) {
-                    if (user.getName() .equals(update.getUser()))
-                        return;
+                    if (user.getName().equals(update.getUser())) {
+                        user.setX(update.getX());
+                        user.setY(update.getY());
+                        user.setDirection(update.getDirection());
+                        user.setHp(update.getHp());
+                        user.setScore(update.getScore());
+                        user.setState(update.getState());
+                    } else {
+                        users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(), update.getScore(), update.getState()));
+                    }
                 }
-                users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(),update.getScore(), update.getState()));
 //                user.setX(update.getX());
 //                user.setY(update.getY());
 //                user.setHp(update.getHp());
@@ -64,6 +73,7 @@ public class Window extends PApplet implements Constants {
                 communicator.moveSend(new Move("LEFT"));
                 user.setDirection(PLAYER_LEFT);
                 user.setX(user.getX() - 3);
+
             }
         });
 
@@ -73,6 +83,7 @@ public class Window extends PApplet implements Constants {
                 communicator.moveSend(new Move("RIGHT"));
                 user.setDirection(PLAYER_RIGHT);
                 user.setX(user.getX() + 3);
+
             }
         });
 
@@ -82,6 +93,7 @@ public class Window extends PApplet implements Constants {
                 communicator.moveSend(new Move("UP"));
                 user.setDirection(PLAYER_UP);
                 user.setY(user.getY() - 3);
+
             }
         });
 
@@ -89,8 +101,9 @@ public class Window extends PApplet implements Constants {
             @Override
             public void onPress(boolean isOnPress, long duration) {
                 communicator.moveSend(new Move("DOWN"));
-                user.setDirection(PLAYER_DOWN);
+                user.setDirection(PLAYER_LEFT);
                 user.setY(user.getY() + 3);
+
             }
         });
 
@@ -113,16 +126,15 @@ public class Window extends PApplet implements Constants {
 
     }
 
-
     @Override
     public void draw() {
         background(0);
-
         myMap.render(this);
+        for (User user : users) {
+            user.onUpdate();
+            user.render(this);
+        }
         keyEventManager.update();
-        user.onUpdate();
-        user.render(this);
-
     }
 
     public void keyPressed() {

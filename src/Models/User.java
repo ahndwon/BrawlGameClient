@@ -77,6 +77,9 @@ public class User extends View {
     }
 
 
+    public void setState (String state) {
+        this.state = state;
+    }
     public void setHit(boolean hit) {
         this.hit = hit;
     }
