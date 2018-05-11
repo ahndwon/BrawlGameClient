@@ -1,5 +1,6 @@
 package Models;
 
+import Utils.Constants;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 
@@ -7,12 +8,13 @@ public class User extends View {
     private float x;
     private float y;
     private String name;
-    private int direction;
+    private String direction;
     private int hp;
-    private int state;
+    private String state;
     private int tick;
+    private int characterImage;
 
-    public User(float x, float y, String name, int direction, int hp, int state) {
+    public User(float x, float y, String name, String direction, int hp, String state) {
         this.x = x;
         this.y = y;
         this.name = name;
@@ -24,11 +26,26 @@ public class User extends View {
     @Override
     public void render(PApplet pApplet) {
         tick++;
-        pApplet.image(SpriteManager.getImage(direction, tick / 10 % 4), x, y, 50, 50);
+
+        pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4), x, y, 50, 50);
     }
 
     @Override
     public void onUpdate() {
+        switch (direction) {
+            case "U" :
+                characterImage = Constants.USER_UP;
+                break;
+            case "D" :
+                characterImage = Constants.USER_DOWN;
+                break;
+            case "L":
+                characterImage = Constants.USER_LEFT;
+                break;
+            case "R" :
+                characterImage = Constants.USER_RIGHT;
+                break;
+        }
 
     }
 
@@ -48,11 +65,11 @@ public class User extends View {
         return y;
     }
 
-    public int getDirection() {
+    public String getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
     }
 }

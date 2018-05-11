@@ -1,5 +1,7 @@
 package Windows;
 
+import state.Map;
+
 public interface ReceiverListener {
-    void onMapReceive();
+    void onMapReceive(Map map);
 }

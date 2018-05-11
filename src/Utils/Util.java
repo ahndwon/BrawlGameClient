@@ -1,10 +1,14 @@
 package Utils;
 
 public class Util {
-    public static int USER_UP = 0;
-    public static int USER_DOWN = 1;
-    public static int USER_LEFT = 2;
-    public static int USER_RIGHT = 3;
 
-    public static int USER_STOP = 4;
+    public static int getPosXByIndex(int index) {
+        return (index % Constants.BLOCK_COUNT_X) * Constants.BLOCK_SIZE;
+    }
+
+    public static int getPosYByIndex(int index) {
+        return (index / Constants.BLOCK_COUNT_X) * Constants.BLOCK_SIZE;
+    }
+
+
 }

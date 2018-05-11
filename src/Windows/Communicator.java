@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class Communicator {
     private String host;
@@ -70,7 +71,7 @@ public class Communicator {
                         if ((jsonObject.get("type").getAsString().equals("Map"))) {
                             Gson gson1 = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
                             Map map = gson1.fromJson(jsonObject.get("body").toString(), Map.class);
-                            receiver.onMapReceive();
+                            receiver.onMapReceive(map);
                         }
 
 
@@ -115,12 +116,15 @@ public class Communicator {
         ByteBuffer byteBuffer = ByteBuffer.allocate(2);
         byteBuffer.putShort((short) message.toString().getBytes().length);
         try {
+            byteBuffer.flip();
+            System.out.println(Arrays.toString(byteBuffer.array()));
             getOutputStream().write(byteBuffer.array());
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
             getOutputStream().write(message.toString().getBytes());
+            System.out.println(message.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
