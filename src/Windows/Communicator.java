@@ -4,8 +4,10 @@ import com.google.gson.*;
 import state.Hit;
 import state.Map;
 import state.Move;
+import state.Update;
 import typeAdapter.HitTypeAdapter;
 import typeAdapter.MapTypeAdapter;
+import typeAdapter.UpdateTypeAdapter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -65,19 +67,18 @@ public class Communicator {
 
                         len = socket.getInputStream().read(buf, 0, length);
                         String str = new String(buf, 0, len);
-//                        Gson gson = new GsonBuilder().create();
                         JsonParser jsonParser = new JsonParser();
                         JsonObject jsonObject = (JsonObject) jsonParser.parse(str);
                         System.out.println(jsonObject);
 
-                        String type = jsonObject.get("type").toString();
-                        String body = jsonObject.get("body").toString();
-                        
+                        String type = jsonObject.get("type").getAsString();
+
                         Gson gson;
 
-                        switch (type){
+                        switch (type) {
 
                             case "Map":
+                                System.out.println("asdf");
                                 gson = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
                                 Map map = gson.fromJson(jsonObject.get("body").toString(), Map.class);
                                 receiver.onMapReceive(map);
@@ -92,6 +93,10 @@ public class Communicator {
                             case "KILL":
                                 break;
 
+                            case "UPDATE":
+                                gson = new GsonBuilder().registerTypeAdapter(Update.class, new UpdateTypeAdapter()).create();
+                                Update update = gson.fromJson(jsonObject.get("users").toString(), Update.class);
+                                break;
 
                         }
 

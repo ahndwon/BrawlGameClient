@@ -94,7 +94,7 @@ public class Window extends PApplet implements Constants {
     public void draw() {
         background(0);
 
-//        myMap.render(this);
+        myMap.render(this);
         keyEventManager.update();
         user.onUpdate();
         user.render(this);
