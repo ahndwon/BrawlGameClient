@@ -10,12 +10,16 @@ import state.Map;
 import state.Move;
 import state.Update;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Window extends PApplet implements Constants {
     private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
+    private List<User> users;
     @Override
     public void settings() {
         size(800, 600);
@@ -25,7 +29,8 @@ public class Window extends PApplet implements Constants {
     public void setup() {
         communicator = new Communicator("192.168.11.71", 5000);
         communicator.connect();
-
+        users = new ArrayList<>();
+        users.add(user);
         communicator.setReceiverListener(new ReceiverListener() {
             @Override
             public void onMapReceive(Map map) {
@@ -39,14 +44,15 @@ public class Window extends PApplet implements Constants {
 
             @Override
             public void onUpdate(Update update) {
-                System.out.println(update.getX());
-                System.out.println(update.getY());
-                System.out.println(update.getHp());
-                System.out.println(update.getScore());
-                user.setX(update.getX());
-                user.setY(update.getY());
-                user.setHp(update.getHp());
-                user.setScore(update.getScore());
+                for (User user : users) {
+                    if (user.getName() .equals(update.getUser()))
+                        return;
+                }
+                users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(), update.getState()));
+//                user.setX(update.getX());
+//                user.setY(update.getY());
+//                user.setHp(update.getHp());
+//                user.setScore(update.getScore());
             }
         });
 

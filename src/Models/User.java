@@ -82,6 +82,9 @@ public class User extends View {
         this.score = score;
     }
 
+    public String getName() {
+        return name;
+    }
     public void setX(float x) {
         this.x = x;
     }
