@@ -17,13 +17,13 @@ public class Window extends PApplet {
     @Override
     public void setup() {
         loadImage();
+
         keyEventManager.addPressListener(37, new KeyEventManager.PressListener() {
             @Override
             public void onPress(boolean isOnPress, long duration) {
                 user.setX(user.getX() - 3);
             }
         });
-
 
         keyEventManager.addPressListener(39, new KeyEventManager.PressListener() {
             @Override

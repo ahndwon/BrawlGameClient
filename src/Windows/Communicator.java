@@ -63,19 +63,24 @@ public class Communicator {
                         String str = new String(buf, 0, len);
                         Gson gson = new GsonBuilder().create();
                         JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
-                        System.out.println(jsonObject);
 
-                        if (jsonObject.get("type").getAsString().equals("connect"))
-                            communicatorListener.addCharacter(jsonObject);
-                        else if(jsonObject.get("type").getAsString().equals("accept")){
-                            JsonArray array = (JsonArray) jsonObject.get("state");
-                            for (int i = 0; i < array.size(); i++) {
-                                JsonObject state = new JsonObject();
-                                state.add("state", array.get(i));
-                                System.out.println(state);
-                                communicatorListener.addCharacter(state);
-                            }
-                        }
+
+//                        String str = new String(buf, 0, len);
+//                        Gson gson = new GsonBuilder().create();
+//                        JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
+//                        System.out.println(jsonObject);
+//
+//                        if (jsonObject.get("type").getAsString().equals("connect"))
+//                            communicatorListener.addCharacter(jsonObject);
+//                        else if(jsonObject.get("type").getAsString().equals("accept")){
+//                            JsonArray array = (JsonArray) jsonObject.get("state");
+//                            for (int i = 0; i < array.size(); i++) {
+//                                JsonObject state = new JsonObject();
+//                                state.add("state", array.get(i));
+//                                System.out.println(state);
+//                                communicatorListener.addCharacter(state);
+//                            }
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -83,6 +88,7 @@ public class Communicator {
             }
         }).start();
     }
+
 
     public void setOnCommunicatorListener(CommunicatorListener listener) {
         this.communicatorListener = listener;

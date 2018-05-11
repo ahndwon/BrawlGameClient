@@ -1,3 +1,5 @@
+package Windows;
+
 import Windows.Window;
 
 public class Program {
