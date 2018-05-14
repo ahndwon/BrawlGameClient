@@ -131,6 +131,7 @@ public class User extends View implements Constants {
     }
 
     public void setHp(int hp) {
+        System.out.println("hp : " + hp);
         this.hp = hp;
     }
 

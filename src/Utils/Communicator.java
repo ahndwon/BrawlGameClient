@@ -86,7 +86,6 @@ public class Communicator {
                         case "Kill":
                             gson = new GsonBuilder().registerTypeAdapter(Kill.class, new KillTypeAdapter()).create();
                             Kill kill = gson.fromJson(jsonObject.get("body").toString(), Kill.class);
-                            listener.onKillReceive(kill);
                             break;
 
                         case "Update":

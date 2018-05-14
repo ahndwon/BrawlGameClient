@@ -28,4 +28,7 @@ public interface Constants {
     String USER_STOP = "STOP";
     String USER_MOVE = "MOVE";
     String USER_ATTACK = "ATTACK";
+
+    int WINDOW_SIZE_X = 1000;
+    int WINDOW_SIZE_Y = 600;
 }

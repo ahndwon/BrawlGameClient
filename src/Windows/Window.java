@@ -1,5 +1,6 @@
 package Windows;
 
+import Models.UI;
 import Models.User;
 import Utils.Communicator;
 import Utils.CommunicatorListener;
@@ -21,11 +22,11 @@ public class Window extends PApplet implements Constants {
     private Map myMap;
     private List<String> userNames;
     private ConcurrentHashMap<String, User> userLibrary;
-    private boolean isSame;
+    private UI ui;
 
     @Override
     public void settings() {
-        size(800, 600);
+        size(WINDOW_SIZE_X, WINDOW_SIZE_Y);
     }
 
     @Override
@@ -35,6 +36,7 @@ public class Window extends PApplet implements Constants {
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
+        ui = new UI(userLibrary,userNames);
 
         communicator.setOnCommunicatorListener(new CommunicatorListener() {
             @Override
@@ -158,6 +160,8 @@ public class Window extends PApplet implements Constants {
             userLibrary.get(user).onUpdate();
             userLibrary.get(user).render(this);
         }
+
+        ui.render(this);
         keyEventManager.update();
     }
 
