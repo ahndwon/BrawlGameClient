@@ -45,7 +45,6 @@ public class HitTypeAdapter extends TypeAdapter<Hit> {
             }
         }
         reader.endObject();
-        reader.endObject();
         return h;
     }
 }

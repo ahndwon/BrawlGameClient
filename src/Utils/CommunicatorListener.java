@@ -1,6 +1,7 @@
 package Utils;
 
 import state.Hit;
+import state.Kill;
 import state.Map;
 import state.Update;
 
@@ -10,4 +11,6 @@ public interface CommunicatorListener {
     void onMapReceive(Map map);
     void onHitReceive(Hit hit);
     void onUpdate(List<Update> updates);
+
+    void onKillReceive(Kill kill);
 }

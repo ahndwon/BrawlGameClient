@@ -7,10 +7,7 @@ import Utils.Constants;
 import Utils.KeyEventManager;
 import dwon.SpriteManager;
 import processing.core.PApplet;
-import state.Hit;
-import state.Map;
-import state.Move;
-import state.Update;
+import state.*;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, 10, USER_STOP);
+    private User user = new User(100, 100, "heidi", PLAYER_DOWN, 100, 10, USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -47,7 +44,7 @@ public class Window extends PApplet implements Constants {
 
             @Override
             public void onHitReceive(Hit hit) {
-                user.setAttack(true);
+
             }
 
             @Override
@@ -73,7 +70,16 @@ public class Window extends PApplet implements Constants {
                 System.out.println("userLibrary: " + userLibrary.keySet());
                 System.out.println("userNames: " + userNames.size());
             }
+
+            @Override
+            public void onKillReceive(Kill kill) {
+                if (userLibrary.containsKey(kill.getTo())) {
+                    userLibrary.remove(kill.getTo());
+                    userNames.remove(kill.getTo());
+                }
+            }
         });
+
 
         loadImage();
 

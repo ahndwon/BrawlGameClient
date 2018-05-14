@@ -2,11 +2,9 @@ package Utils;
 
 import Models.User;
 import com.google.gson.*;
-import state.Hit;
-import state.Map;
-import state.Move;
-import state.Update;
+import state.*;
 import typeAdapter.HitTypeAdapter;
+import typeAdapter.KillTypeAdapter;
 import typeAdapter.MapTypeAdapter;
 import typeAdapter.UpdateTypeAdapter;
 
@@ -79,13 +77,17 @@ public class Communicator {
                             listener.onMapReceive(map);
                             break;
 
-                        case "HIT":
+                        case "Hit":
                             gson = new GsonBuilder().registerTypeAdapter(Hit.class, new HitTypeAdapter()).create();
                             Hit hit = gson.fromJson(jsonObject.get("body").toString(), Hit.class);
+                            System.out.println(hit);
                             listener.onHitReceive(hit);
                             break;
 
-                        case "KILL":
+                        case "Kill":
+                            gson = new GsonBuilder().registerTypeAdapter(Kill.class, new KillTypeAdapter()).create();
+                            Kill kill = gson.fromJson(jsonObject.get("body").toString(), Kill.class);
+                            listener.onKillReceive(kill);
                             break;
 
                         case "Update":

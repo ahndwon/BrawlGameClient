@@ -41,7 +41,6 @@ public class KillTypeAdapter extends TypeAdapter<Kill> {
             }
         }
         reader.endObject();
-        reader.endObject();
         return k;
     }
 }

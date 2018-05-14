@@ -4,7 +4,7 @@ import Utils.Constants;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 
-public class User extends View implements Constants{
+public class User extends View implements Constants {
     private float x;
     private float y;
     private String name;
@@ -16,8 +16,9 @@ public class User extends View implements Constants{
     private int attackTick;
     private int characterImage;
     private boolean isAttack;
-    private int time = 0;
+    private int time;
     private boolean isTime = false;
+    private boolean isHit;
 
     public User(float x, float y, String name, String direction, int hp, int score, String state) {
         this.x = x;
@@ -33,21 +34,31 @@ public class User extends View implements Constants{
     public void render(PApplet pApplet) {
         tick++;
 
+        if (isHit) {
+            pApplet.fill(255,0,0);
+            pApplet.rect(x, y, BLOCK_SIZE, BLOCK_SIZE);
+            isHit = false;
+        }
+
         pApplet.fill(255);
-        pApplet.rect(x - BLOCK_SIZE / 2 , y - BLOCK_SIZE / 2 - 20, 50, 10);
+        pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, 50, 10);
         pApplet.fill(255, 0, 0);
         pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
 
         pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
                 x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
 
-        if (state.equals("ATTACK")&& !isTime) {
+        pApplet.fill(0);
+        pApplet.textSize(10);
+        pApplet.text(name, x - 20, y + 40);
+
+        if (state.equals("ATTACK") && !isTime) {
             time = 0;
             isAttack = true;
         }
 
 
-        if (isAttack){
+        if (isAttack) {
             time++;
             System.out.println("isAttack");
             attackTick++;
@@ -76,6 +87,8 @@ public class User extends View implements Constants{
                 isAttack = false;
             }
         }
+
+
 //            pApplet.image(SpriteManager.getImage(hammerImage, 0), hammerX, hammerY, 30, 30);
     }
 
@@ -104,9 +117,14 @@ public class User extends View implements Constants{
     }
 
 
-    public void setState (String state) {
+    public void setHit(boolean isHit) {
+        this.isHit = isHit;
+    }
+
+    public void setState(String state) {
         this.state = state;
     }
+
     public void setAttack(boolean isAttack) {
         this.isAttack = isAttack;
     }
