@@ -13,5 +13,6 @@
     <orderEntry type="library" name="KeyEventManager" level="project" />
     <orderEntry type="library" name="gson-2.8.4" level="project" />
     <orderEntry type="library" name="Sprite_Manager" level="project" />
+    <orderEntry type="library" name="Sprite_Manager" level="project" />
   </component>
 </module>

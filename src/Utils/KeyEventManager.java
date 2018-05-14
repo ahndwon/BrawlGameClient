@@ -6,8 +6,6 @@ import java.util.HashMap;
 public class KeyEventManager {
     private HashMap<Integer, KeyStruct> keys = new HashMap<>();
 
-
-
     public class KeyStruct {
         public ArrayList<PressListener> pressListeners;
         public ArrayList<ReleaseListener> releaseListeners;

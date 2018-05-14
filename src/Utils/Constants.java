@@ -21,6 +21,11 @@ public interface Constants {
     int HAMMER_LEFT = 6;
     int HAMMER_RIGHT = 7;
 
-    String USER_STOP = "stop";
-    String USER_MOVE = "move";
+    int FIST = 11;
+
+    int PLAYER_SPEED = 3;
+
+    String USER_STOP = "STOP";
+    String USER_MOVE = "MOVE";
+    String USER_ATTACK = "ATTACK";
 }

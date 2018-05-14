@@ -1,11 +1,13 @@
-package Windows;
+package Utils;
 
 import state.Hit;
 import state.Map;
 import state.Update;
 
-public interface ReceiverListener {
+import java.util.List;
+
+public interface CommunicatorListener {
     void onMapReceive(Map map);
     void onHitReceive(Hit hit);
-    void onUpdate(Update update);
+    void onUpdate(List<Update> updates);
 }

@@ -1,6 +1,8 @@
 package Windows;
 
 import Models.User;
+import Utils.Communicator;
+import Utils.CommunicatorListener;
 import Utils.Constants;
 import Utils.KeyEventManager;
 import dwon.SpriteManager;
@@ -10,9 +12,8 @@ import state.Map;
 import state.Move;
 import state.Update;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -21,7 +22,8 @@ public class Window extends PApplet implements Constants {
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
-    private List<User> users;
+    private List<String> userNames;
+    private ConcurrentHashMap<String, User> userLibrary;
     private boolean isSame;
 
     @Override
@@ -32,10 +34,12 @@ public class Window extends PApplet implements Constants {
     @Override
     public void setup() {
         communicator = new Communicator("192.168.11.71", 5000);
-        communicator.connect();
-        users = new CopyOnWriteArrayList<>();
-        users.add(user);
-        communicator.setReceiverListener(new ReceiverListener() {
+        communicator.connect(user);
+        userLibrary = new ConcurrentHashMap<>();
+        userLibrary.putIfAbsent(user.getName(), user);
+        userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
+
+        communicator.setOnCommunicatorListener(new CommunicatorListener() {
             @Override
             public void onMapReceive(Map map) {
                 myMap = map;
@@ -43,104 +47,98 @@ public class Window extends PApplet implements Constants {
 
             @Override
             public void onHitReceive(Hit hit) {
-                user.setHit(true);
+                user.setAttack(true);
             }
 
             @Override
-            public void onUpdate(Update update) {
+            public void onUpdate(List<Update> updates) {
+                for (Update u :
+                        updates) {
+                    if (!userLibrary.containsKey(u.getUser()))
+                        userNames.add(u.getUser());
 
-                for (User user : users) {
-                    if (user.getName().equals(update.getUser())) {
-                        isSame = true;
+                    userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
+                            u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState()));
+
+                    if (userLibrary.containsKey(u.getUser())) {
+                        User user = userLibrary.get(u.getUser());
+                        user.setX(u.getX());
+                        user.setY(u.getY());
+                        user.setHp(u.getHp());
+                        user.setDirection(u.getDirection());
+                        user.setScore(u.getScore());
+                        user.setState(u.getState());
                     }
                 }
-
-                if (isSame) {
-                    user.setX(update.getX());
-                    user.setY(update.getY());
-                    user.setDirection(update.getDirection());
-                    user.setHp(update.getHp());
-                    user.setScore(update.getScore());
-                    user.setState(update.getState());
-                } else {
-                    users.add(new User(update.getX(), update.getY(), update.getUser(), update.getDirection(), update.getHp(), update.getScore(), update.getState()));
-                }
-
-//                user.setX(update.getX());
-//                user.setY(update.getY());
-//                user.setHp(update.getHp());
-//                user.setScore(update.getScore());
+                System.out.println("userLibrary: " + userLibrary.keySet() );
+                System.out.println("userNames: " + userNames.size() );
             }
         });
 
         loadImage();
 
-        keyEventManager.addPressListener(37, new KeyEventManager.PressListener() {
-            @Override
-            public void onPress(boolean isOnPress, long duration) {
-                communicator.moveSend(new Move("LEFT"));
-                user.setDirection(PLAYER_LEFT);
-                user.setX(user.getX() - 3);
-
-            }
+        keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
+            communicator.sendMove(new Move("LEFT"));
+            user.setDirection(PLAYER_LEFT);
+            user.setState(USER_MOVE);
+//            user.setX(user.getX() - 3);
         });
 
-        keyEventManager.addPressListener(39, new KeyEventManager.PressListener() {
-            @Override
-            public void onPress(boolean isOnPress, long duration) {
-                communicator.moveSend(new Move("RIGHT"));
-                user.setDirection(PLAYER_RIGHT);
-                user.setX(user.getX() + 3);
-
-            }
+        keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
+            communicator.sendMove(new Move("RIGHT"));
+            user.setDirection(PLAYER_RIGHT);
+            user.setState(USER_MOVE);
+//            user.setX(user.getX() + 3);
         });
 
-        keyEventManager.addPressListener(38, new KeyEventManager.PressListener() {
-            @Override
-            public void onPress(boolean isOnPress, long duration) {
-                communicator.moveSend(new Move("UP"));
-                user.setDirection(PLAYER_UP);
-                user.setY(user.getY() - 3);
-
-            }
+        keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
+            communicator.sendMove(new Move("UP"));
+            user.setDirection(PLAYER_UP);
+            user.setState(USER_MOVE);
+//            user.setY(user.getY() - 3);
         });
 
-        keyEventManager.addPressListener(40, new KeyEventManager.PressListener() {
-            @Override
-            public void onPress(boolean isOnPress, long duration) {
-                communicator.moveSend(new Move("DOWN"));
-                user.setDirection(PLAYER_LEFT);
-                user.setY(user.getY() + 3);
-
-            }
+        keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
+            communicator.sendMove(new Move("DOWN"));
+            user.setDirection(PLAYER_DOWN);
+            user.setState(USER_MOVE);
+//            user.setY(user.getY() + 3);
         });
 
-        keyEventManager.addPressListener(32, new KeyEventManager.PressListener() {
-            @Override
-            public void onPress(boolean isOnPress, long duration) {
-//                communicator.attackSend();
+        keyEventManager.addReleaseListener(LEFT, duration -> {
+            user.setState("STOP");
+        });
+
+        keyEventManager.addReleaseListener(RIGHT, duration -> {
+            user.setState("STOP");
+        });
+
+        keyEventManager.addReleaseListener(UP, duration -> {
+            user.setState("STOP");
+        });
+
+        keyEventManager.addReleaseListener(DOWN, duration -> {
+            user.setState("STOP");
+        });
+
+        keyEventManager.addPressListener(SHIFT, (isOnPress, duration) -> {
+//                communicator.sendAttack();
 //                user.setDirection(PLAYER_DOWN);
 //                user.setY(user.getY() + 3);
-            }
+            if(isOnPress)
+                user.setAttack(true);
         });
 
-
-        keyEventManager.addReleaseListener(32, new KeyEventManager.ReleaseListener() {
-            @Override
-            public void onRelease(long duration) {
-                communicator.attackSend();
-            }
-        });
-
+        keyEventManager.addReleaseListener(SHIFT, duration -> communicator.sendAttack());
     }
 
     @Override
     public void draw() {
         background(0);
         myMap.render(this);
-        for (User user : users) {
-            user.onUpdate();
-            user.render(this);
+        for (String user : userNames) {
+            userLibrary.get(user).onUpdate();
+            userLibrary.get(user).render(this);
         }
         keyEventManager.update();
     }
@@ -158,10 +156,8 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadSprite(this, USER_LEFT, "./image/image.png", 32, 32, new int[]{12, 13, 14, 13});
         SpriteManager.loadSprite(this, USER_RIGHT, "./image/image.png", 32, 32, new int[]{24, 25, 26, 25});
         SpriteManager.loadSprite(this, USER_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
-        SpriteManager.loadImage(this, HAMMER_UP, "./image/up.png");
-        SpriteManager.loadImage(this, HAMMER_DOWN, "./image/down.png");
-        SpriteManager.loadImage(this, HAMMER_RIGHT, "./image/right.png");
-        SpriteManager.loadImage(this, HAMMER_LEFT, "./image/left.png");
+        SpriteManager.loadSprite(this, FIST, "./image/super_dragon_fist_effect.png", 0, 0,
+                192,192, 6);
 
     }
 }
