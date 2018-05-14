@@ -39,8 +39,7 @@ public class Map extends View {
 
     @Override
     public void render(PApplet pApplet) {
-
-
+        
 
         for (int i = 0; i < map.length; i++) {
             if (map[i] == 0) {
