@@ -16,6 +16,8 @@ public class User extends View implements Constants{
     private int attackTick;
     private int characterImage;
     private boolean isAttack;
+    private int time = 0;
+    private boolean isTime = false;
 
     public User(float x, float y, String name, String direction, int hp, int score, String state) {
         this.x = x;
@@ -38,7 +40,15 @@ public class User extends View implements Constants{
 
         pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
                 x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-        if (isAttack) {
+
+        if (state.equals("ATTACK")&& !isTime) {
+            time = 0;
+            isAttack = true;
+        }
+
+
+        if (isAttack){
+            time++;
             System.out.println("isAttack");
             attackTick++;
 

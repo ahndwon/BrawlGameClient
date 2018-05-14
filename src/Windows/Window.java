@@ -70,8 +70,8 @@ public class Window extends PApplet implements Constants {
                         user.setState(u.getState());
                     }
                 }
-                System.out.println("userLibrary: " + userLibrary.keySet() );
-                System.out.println("userNames: " + userNames.size() );
+                System.out.println("userLibrary: " + userLibrary.keySet());
+                System.out.println("userNames: " + userNames.size());
             }
         });
 
@@ -126,16 +126,20 @@ public class Window extends PApplet implements Constants {
         });
 
 
-
         keyEventManager.addPressListener(SHIFT, (isOnPress, duration) -> {
 //                communicator.sendAttack();
 //                user.setDirection(PLAYER_DOWN);
 //                user.setY(user.getY() + 3);
-            if(isOnPress)
+            if (isOnPress) {
                 user.setAttack(true);
+                communicator.sendAttack();
+            }
+
         });
 
-        keyEventManager.addReleaseListener(SHIFT, duration -> communicator.sendAttack());
+        keyEventManager.addReleaseListener(SHIFT, duration -> {
+            communicator.sendStop();
+        });
     }
 
     @Override
@@ -163,7 +167,7 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadSprite(this, USER_RIGHT, "./image/image.png", 32, 32, new int[]{24, 25, 26, 25});
         SpriteManager.loadSprite(this, USER_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
         SpriteManager.loadSprite(this, FIST, "./image/super_dragon_fist_effect.png", 0, 0,
-                192,192, 6);
+                192, 192, 6);
 
     }
 }
