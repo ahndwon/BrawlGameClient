@@ -21,7 +21,8 @@ public class UI implements Utils.Constants{
         for (int i = 0; i < userNames.size(); i++) {
             pApplet.fill(0);
             pApplet.textSize(15);
-            pApplet.text(users.get(userNames.get(i)).getName(), WINDOW_SIZE_X - 190, WINDOW_SIZE_Y - (i * 30 + 10));
+            pApplet.text(users.get(userNames.get(i)).getName() + ":  ", WINDOW_SIZE_X - 190, WINDOW_SIZE_Y - (i * 30 + 10));
+            pApplet.text(users.get(userNames.get(i)).getScore(), WINDOW_SIZE_X - 110, WINDOW_SIZE_Y - (i * 30 + 10));
         }
     }
 
