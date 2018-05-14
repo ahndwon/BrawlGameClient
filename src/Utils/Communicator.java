@@ -153,7 +153,13 @@ public class Communicator {
 
     public void sendAttack() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", "ATTACK");
+        jsonObject.addProperty("type", "Attack");
+        send(jsonObject);
+    }
+
+    public void sendStop() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "Stop");
         send(jsonObject);
     }
 

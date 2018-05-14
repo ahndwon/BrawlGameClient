@@ -106,20 +106,26 @@ public class Window extends PApplet implements Constants {
         });
 
         keyEventManager.addReleaseListener(LEFT, duration -> {
+            communicator.sendStop();
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(RIGHT, duration -> {
+            communicator.sendStop();
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(UP, duration -> {
+            communicator.sendStop();
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(DOWN, duration -> {
+            communicator.sendStop();
             user.setState("STOP");
         });
+
+
 
         keyEventManager.addPressListener(SHIFT, (isOnPress, duration) -> {
 //                communicator.sendAttack();
