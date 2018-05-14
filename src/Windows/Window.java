@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, 10, USER_STOP);
+    private User user = new User(100, 100, "kk", PLAYER_DOWN, 100, 10, USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -31,17 +31,18 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-        communicator = new Communicator("192.168.11.71", 5000);
+        communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
-        ui = new UI(userLibrary,userNames);
+        ui = new UI(userLibrary, userNames);
 
         communicator.setOnCommunicatorListener(new CommunicatorListener() {
             @Override
             public void onMapReceive(Map map) {
                 myMap = map;
+                myMap.setUser(user);
             }
 
             @Override
@@ -90,6 +91,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("LEFT"));
             user.setDirection(PLAYER_LEFT);
             user.setState(USER_MOVE);
+            myMap.setLenX(myMap.getLenX() + PLAYER_SPEED + 2);
 //            user.setX(user.getX() - 3);
         });
 
@@ -97,6 +99,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("RIGHT"));
             user.setDirection(PLAYER_RIGHT);
             user.setState(USER_MOVE);
+            myMap.setLenX(myMap.getLenX() - PLAYER_SPEED - 2);
 //            user.setX(user.getX() + 3);
         });
 
@@ -104,6 +107,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("UP"));
             user.setDirection(PLAYER_UP);
             user.setState(USER_MOVE);
+            myMap.setLenY(myMap.getLenY() + PLAYER_SPEED + 2);
 //            user.setY(user.getY() - 3);
         });
 
@@ -111,6 +115,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("DOWN"));
             user.setDirection(PLAYER_DOWN);
             user.setState(USER_MOVE);
+            myMap.setLenY(myMap.getLenY() - PLAYER_SPEED - 2);
 //            user.setY(user.getY() + 3);
         });
 
