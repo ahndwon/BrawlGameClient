@@ -44,7 +44,9 @@ public class Window extends PApplet implements Constants {
 
             @Override
             public void onHitReceive(Hit hit) {
-
+                if (userLibrary.containsKey(hit.getTo())) {
+                    userLibrary.get(hit.getTo()).setHit(true);
+                }
             }
 
             @Override

@@ -80,7 +80,6 @@ public class Communicator {
                         case "Hit":
                             gson = new GsonBuilder().registerTypeAdapter(Hit.class, new HitTypeAdapter()).create();
                             Hit hit = gson.fromJson(jsonObject.get("body").toString(), Hit.class);
-                            System.out.println(hit);
                             listener.onHitReceive(hit);
                             break;
 

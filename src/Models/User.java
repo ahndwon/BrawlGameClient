@@ -34,11 +34,6 @@ public class User extends View implements Constants {
     public void render(PApplet pApplet) {
         tick++;
 
-        if (isHit) {
-            pApplet.fill(255,0,0);
-            pApplet.rect(x, y, BLOCK_SIZE, BLOCK_SIZE);
-            isHit = false;
-        }
 
         pApplet.fill(255);
         pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, 50, 10);
@@ -47,6 +42,12 @@ public class User extends View implements Constants {
 
         pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
                 x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+
+        if (isHit) {
+            pApplet.fill(255,0,0);
+            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+            isHit = false;
+        }
 
         pApplet.fill(0);
         pApplet.textSize(10);
