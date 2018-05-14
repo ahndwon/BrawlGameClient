@@ -44,7 +44,7 @@ public class User extends View implements Constants {
                 x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
 
         if (isHit) {
-            pApplet.fill(255,0,0);
+            pApplet.fill(255, 0, 0);
             pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
             isHit = false;
         }
@@ -165,5 +165,9 @@ public class User extends View implements Constants {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
