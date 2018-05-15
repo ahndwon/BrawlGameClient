@@ -1,6 +1,8 @@
 package Models;
 
 import processing.core.PApplet;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,12 +10,13 @@ public class UI implements Utils.Constants {
     private ConcurrentHashMap<String, User> users;
     private List<String> userNames;
     private ConcurrentHashMap<String, String> killers = new ConcurrentHashMap<>();
-    private List<String> killerNames = (List<String>) killers.keySet();
+    private List<String> killerNames = new ArrayList<>();
 
     public UI(ConcurrentHashMap<String, User> userLibrary, List<String> userNames) {
         users = userLibrary;
         this.userNames = userNames;
     }
+
 
     public void render(PApplet pApplet) {
         pApplet.fill(255);
@@ -27,11 +30,12 @@ public class UI implements Utils.Constants {
         }
 
         for (int i = 0; i < killerNames.size(); i++) {
-            pApplet.text("from : " + killerNames.get(i) + "to" + killers.get(killerNames.get(i)), WINDOW_SIZE_X - 190, WINDOW_SIZE_Y + (i * 30 + 10));
+            pApplet.text("Kill   from : " + killerNames.get(i) + "  to  " + killers.get(killerNames.get(i)), WINDOW_SIZE_X - 190, (i * 30 + 20));
         }
     }
 
     public void addKiller(String from, String to) {
         killers.put(from, to);
+        killerNames.add(from);
     }
 }
