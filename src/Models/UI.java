@@ -17,6 +17,7 @@ public class UI implements Utils.Constants {
         this.userNames = userNames;
     }
 
+
     public void render(PApplet pApplet) {
         pApplet.fill(255);
         pApplet.rect(800, 0, 200, 600);

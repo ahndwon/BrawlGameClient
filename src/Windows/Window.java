@@ -91,7 +91,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("LEFT"));
             user.setDirection(PLAYER_LEFT);
             user.setState(USER_MOVE);
-            myMap.setLenX(myMap.getLenX() + PLAYER_SPEED + 2);
+            myMap.setLenX(myMap.getLenX() + PLAYER_SPEED+2);
 //            user.setX(user.getX() - 3);
         });
 
@@ -99,7 +99,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("RIGHT"));
             user.setDirection(PLAYER_RIGHT);
             user.setState(USER_MOVE);
-            myMap.setLenX(myMap.getLenX() - PLAYER_SPEED - 2);
+            myMap.setLenX(myMap.getLenX() - PLAYER_SPEED-2);
 //            user.setX(user.getX() + 3);
         });
 
@@ -107,7 +107,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("UP"));
             user.setDirection(PLAYER_UP);
             user.setState(USER_MOVE);
-            myMap.setLenY(myMap.getLenY() + PLAYER_SPEED + 2);
+            myMap.setLenY(myMap.getLenY() + PLAYER_SPEED+2);
 //            user.setY(user.getY() - 3);
         });
 

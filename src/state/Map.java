@@ -39,17 +39,18 @@ public class Map extends View {
 
     @Override
     public void render(PApplet pApplet) {
-        
 
-        for (int i = 0; i < map.length; i++) {
-            if (map[i] == 0) {
-                pApplet.fill(124, 124, 124);
-            } else if (map[i] == 1) {
-                pApplet.fill(0, 255, 0);
-            } else {
-                pApplet.fill(0, 0, 255);
-            }
-            pApplet.rect(Util.getPosXByIndex(i) - userX + lenX, Util.getPosYByIndex(i) - userY + lenY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+//        if(user.getX() >=0 && user.getX()<= 800) {
+            for (int i = 0; i < map.length; i++) {
+                if (map[i] == 0) {
+                    pApplet.fill(124, 124, 124);
+                } else if (map[i] == 1) {
+                    pApplet.fill(0, 255, 0);
+                } else {
+                    pApplet.fill(0, 0, 255);
+                }
+                pApplet.rect(Util.getPosXByIndex(i) - userX + lenX, Util.getPosYByIndex(i) - userY + lenY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+//            }
         }
     }
 
@@ -87,4 +88,11 @@ public class Map extends View {
         checkCenter();
     }
 
+    public float getUserX(){
+        return  userX;
+    }
+
+    public float getUserY(){
+        return userY;
+    }
 }
