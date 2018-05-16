@@ -49,7 +49,7 @@ public class Map extends View {
                 } else {
                     pApplet.fill(0, 0, 255);
                 }
-                pApplet.rect(Util.getPosXByIndex(i) - userX + lenX, Util.getPosYByIndex(i) - userY + lenY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                pApplet.rect(Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 //            }
         }
     }
