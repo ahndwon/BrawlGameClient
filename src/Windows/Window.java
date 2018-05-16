@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "aaa", PLAYER_DOWN, 100, 10, USER_STOP);
+    private User user = new User(100, 100, "ahn", PLAYER_DOWN, 100, 10, USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -31,7 +31,7 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-        communicator = new Communicator("192.168.11.202", 5000);
+        communicator = new Communicator("192.168.11.71", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
@@ -91,7 +91,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("LEFT"));
             user.setDirection(PLAYER_LEFT);
             user.setState(USER_MOVE);
-            myMap.setLenX(myMap.getLenX() + PLAYER_SPEED+2);
+            myMap.setLenX(myMap.getLenX() + PLAYER_SPEED * 2);
 //            user.setX(user.getX() - 3);
         });
 
@@ -99,7 +99,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("RIGHT"));
             user.setDirection(PLAYER_RIGHT);
             user.setState(USER_MOVE);
-            myMap.setLenX(myMap.getLenX() - PLAYER_SPEED-2);
+            myMap.setLenX(myMap.getLenX() - PLAYER_SPEED * 2);
 //            user.setX(user.getX() + 3);
         });
 
@@ -107,7 +107,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("UP"));
             user.setDirection(PLAYER_UP);
             user.setState(USER_MOVE);
-            myMap.setLenY(myMap.getLenY() + PLAYER_SPEED+2);
+            myMap.setLenY(myMap.getLenY() + PLAYER_SPEED * 2);
 //            user.setY(user.getY() - 3);
         });
 
@@ -115,7 +115,7 @@ public class Window extends PApplet implements Constants {
             communicator.sendMove(new Move("DOWN"));
             user.setDirection(PLAYER_DOWN);
             user.setState(USER_MOVE);
-            myMap.setLenY(myMap.getLenY() - PLAYER_SPEED - 2);
+            myMap.setLenY(myMap.getLenY() - PLAYER_SPEED * 2);
 //            user.setY(user.getY() + 3);
         });
 
@@ -184,6 +184,8 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadSprite(this, USER_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
         SpriteManager.loadSprite(this, FIST, "./image/super_dragon_fist_effect.png", 0, 0,
                 192, 192, 6);
-
+        SpriteManager.loadImage(this, GRASS, "./image/grass.png");
+        SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1 , 32 , 32);
+        SpriteManager.loadSprite(this, POTION, "./image/potion.png",  0,0 ,50, 63, 7);
     }
 }

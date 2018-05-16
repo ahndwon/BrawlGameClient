@@ -31,4 +31,8 @@ public interface Constants {
 
     int WINDOW_SIZE_X = 1000;
     int WINDOW_SIZE_Y = 600;
+
+    int GRASS = 111;
+    int SLOW_TILE = 222;
+    int POTION = 333;
 }

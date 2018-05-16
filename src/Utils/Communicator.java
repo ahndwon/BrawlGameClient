@@ -61,8 +61,12 @@ public class Communicator {
 
                     len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
+//                    System.out.println(str);
                     JsonParser jsonParser = new JsonParser();
-                    JsonObject jsonObject = (JsonObject) jsonParser.parse(str);
+                    JsonObject jsonObject = null;
+                    jsonObject = (JsonObject) jsonParser.parse(str);
+
+
                     System.out.println(jsonObject);
 
                     String type = jsonObject.get("type").getAsString();

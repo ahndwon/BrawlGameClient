@@ -4,6 +4,7 @@ import Models.User;
 import Models.View;
 import Utils.Constants;
 import Utils.Util;
+import dwon.SpriteManager;
 import processing.core.PApplet;
 
 public class Map extends View {
@@ -13,6 +14,7 @@ public class Map extends View {
     private User user;
     float userX;
     float userY;
+    private int tick;
 
 
     public Map() {
@@ -30,31 +32,37 @@ public class Map extends View {
                 userX = (Constants.WINDOW_SIZE_X - 200) / 2 - user.getX();
             if(Util.getPosYByIndex(i) == (int) user.getY())
                 userY = Constants.WINDOW_SIZE_Y / 2 - user.getY();
-
         }
-
 
     }
 
 
     @Override
     public void render(PApplet pApplet) {
-
+        tick++;
 //        if(user.getX() >=0 && user.getX()<= 800) {
             for (int i = 0; i < map.length; i++) {
                 if (map[i] == 0) {
-                    pApplet.fill(124, 124, 124);
+//                    pApplet.fill(124, 124, 124);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                 } else if (map[i] == 1) {
                     pApplet.fill(0, 255, 0);
+//                    pApplet.rect(Util.getPosXByIndex(i) , Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+
                 } else {
                     pApplet.fill(0, 0, 255);
+//                    pApplet.rect(Util.getPosXByIndex(i) , Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+
+
                 }
-                pApplet.rect(Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+//                pApplet.rect(Util.getPosXByIndex(i) - userX + lenX, Util.getPosYByIndex(i) - userY + lenY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 //            }
         }
     }
 
-    
     @Override
     public void onUpdate() {
 
