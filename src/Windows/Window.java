@@ -29,10 +29,9 @@ public class Window extends PApplet implements Constants {
     public void settings() {
         size(WINDOW_SIZE_X, WINDOW_SIZE_Y);
     }
-
     @Override
     public void setup() {
-        communicator = new Communicator("localhost", 5000);
+        communicator = new Communicator("192.168.11.203", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
