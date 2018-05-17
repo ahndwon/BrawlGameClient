@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yunjeong", PLAYER_DOWN, 100, 10, USER_STOP, true);
+    private User user = new User(100, 100, "aaaaaa", PLAYER_DOWN, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;

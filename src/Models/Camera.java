@@ -4,6 +4,8 @@ import Utils.Constants;
 
 public class Camera {
     public Vector2D position;
+    private float x;
+    private float y;
 
     public Camera() {
         this.position = new Vector2D();
@@ -15,8 +17,8 @@ public class Camera {
     }
 
     public Vector2D getWorldToScreen(float worldX, float worldY) {
-        float x = worldX - position.x;
-        float y = worldY - position.y;
+        x = worldX - position.x;
+        y = worldY - position.y;
 
         x %= Constants.MAPSIZE;
         y %= Constants.MAPSIZE;
@@ -32,5 +34,21 @@ public class Camera {
     public Vector2D getScreenToWorld(Vector2D screenPosition) {
         return new Vector2D(screenPosition.x + position.x,
                 screenPosition.y + position.y);
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }
