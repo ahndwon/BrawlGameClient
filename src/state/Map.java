@@ -1,6 +1,8 @@
 package state;
 
+import Models.Camera;
 import Models.User;
+import Models.Vector2D;
 import Models.View;
 import Utils.Constants;
 import Utils.Util;
@@ -15,6 +17,7 @@ public class Map extends View {
     int userX;
     int userY;
     private int tick;
+    private Vector2D[] pos;
     private float x, y;
 
 
@@ -27,6 +30,7 @@ public class Map extends View {
 
     public Map(int[] map) {
         this.map = map;
+        pos = new Vector2D[map.length];
     }
 
     private void checkCenter() {
@@ -45,23 +49,22 @@ public class Map extends View {
     public void render(PApplet pApplet) {
         tick++;
             for (int i = 0; i < map.length; i++) {
-
                 if (map[i] == 0) {
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS ),
-                            Util.getPosXByIndex(i) , Util.getPosYByIndex(i),
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS),
+                            pos[i].x, pos[i].y,
                             Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                 } else if (map[i] == 2) {
                     pApplet.fill(0, 255, 0);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i),
-                            Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
+                            pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
-                            Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE,
+                            pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
                             Constants.BLOCK_SIZE);
 
                 } else {
                     pApplet.fill(0, 0, 255);
-                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i),
-                            Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), pos[i].x,
+                            pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
 
                 }
@@ -72,9 +75,14 @@ public class Map extends View {
     }
 
     @Override
-    public void onUpdate() {
-
+    public void onUpdate(Camera camera) {
+        System.out.println("ddddd");
+        for (int i = 0; i < map.length; i++) {
+            System.out.println("i : " +   i);
+            pos[i] = camera.getWorldToScreen(Util.getPosXByIndex(i), Util.getPosYByIndex(i));
+        }
     }
+
 
     public int getLenX() {
         return lenX;

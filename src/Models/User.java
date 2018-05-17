@@ -22,6 +22,7 @@ public class User extends View implements Constants {
     private float posX, posY;
     private float userX, userY;
     private boolean me = false;
+    private Vector2D pos;
 
     public User(float x, float y, String name, String direction, int hp, int score, String state) {
         this.x = x;
@@ -44,23 +45,9 @@ public class User extends View implements Constants {
         this.me = true;
         userX = x;
         userY = y;
+        pos = new Vector2D(x, y);
     }
 
-    public void setMe(boolean me) {
-        this.me = me;
-    }
-
-    public boolean getMe() {
-        return me;
-    }
-
-    public void setPosX(float x) {
-        posX = x;
-    }
-
-    public void setPosY(float y) {
-        posY = y;
-    }
 
     @Override
     public void render(PApplet pApplet) {
@@ -68,43 +55,42 @@ public class User extends View implements Constants {
 
         if (me) {
             pApplet.fill(255);
-            pApplet.rect(400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2 - 20, 50, 10);
+            pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
             pApplet.fill(255, 0, 0);
-            pApplet.rect(400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
+            pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
 
             pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                    400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                    pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
 
             pApplet.fill(0);
             pApplet.textSize(10);
-            pApplet.text(name, 400 - 20, 300 + 40);
+            pApplet.text(name, pos.x - 20, pos.y + 40);
 
             if (isHit) {
                 pApplet.fill(255, 0, 0);
-                pApplet.rect(400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                 isHit = false;
             }
-
-
         } else {
             pApplet.fill(255);
-            pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 - 20 + posY, 50, 10);
+            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, 50, 10);
             pApplet.fill(255, 0, 0);
-            pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 - 20 + posY, hp / 2f, 10);
+            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
 
             pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                    x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 + posY, BLOCK_SIZE, BLOCK_SIZE);
+                    x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
 
             pApplet.fill(0);
             pApplet.textSize(10);
-            pApplet.text(name, x - 20 + posX, y + 40 + posY);
+            pApplet.text(name, x - 20, y + 40);
 
             if (isHit) {
                 pApplet.fill(255, 0, 0);
-                pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 + posY, BLOCK_SIZE, BLOCK_SIZE);
+                pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                 isHit = false;
             }
         }
+
 
 //        if (isHit) {
 //            pApplet.fill(255, 0, 0);
@@ -131,7 +117,7 @@ public class User extends View implements Constants {
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
-                            400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2- BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE , BLOCK_SIZE);
+                            400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
@@ -154,31 +140,61 @@ public class User extends View implements Constants {
     }
 
     @Override
-    public void onUpdate() {
-
+    public void onUpdate(Camera camera) {
 
         if (state.equals("MOVE")) {
             switch (direction) {
-                case "UP":
+                case "UP": {
                     characterImage = Constants.USER_UP;
                     y -= PLAYER_SPEED;
+                    if (me) {
+                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
+                    }
                     break;
-                case "DOWN":
+                }
+                case "DOWN": {
                     characterImage = Constants.USER_DOWN;
                     y += PLAYER_SPEED;
+                    if (me) {
+                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
+                    }
                     break;
-                case "LEFT":
+                }
+                case "LEFT": {
                     characterImage = Constants.USER_LEFT;
                     x -= PLAYER_SPEED;
+                    if (me) {
+                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
+                    }
                     break;
-                case "RIGHT":
+                }
+                case "RIGHT": {
                     characterImage = Constants.USER_RIGHT;
                     x += PLAYER_SPEED;
+                    if (me) {
+                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
+                    }
                     break;
+                }
             }
         }
     }
 
+    public void setMe(boolean me) {
+        this.me = me;
+    }
+
+    public boolean getMe() {
+        return me;
+    }
+
+    public void setPosX(float x) {
+        posX = x;
+    }
+
+    public void setPosY(float y) {
+        posY = y;
+    }
 
     public void setHit(boolean isHit) {
         this.isHit = isHit;

@@ -1,5 +1,6 @@
 package Windows;
 
+import Models.Camera;
 import Models.UI;
 import Models.User;
 import Utils.Communicator;
@@ -16,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "akak", PLAYER_DOWN, 100, 10, USER_STOP);
+    private User user = new User(100, 100, "akak", PLAYER_DOWN, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -24,6 +25,7 @@ public class Window extends PApplet implements Constants {
     private ConcurrentHashMap<String, User> userLibrary;
     private UI ui;
     private int i = 0;
+    private Camera camera;
 
     @Override
     public void settings() {
@@ -40,6 +42,7 @@ public class Window extends PApplet implements Constants {
         ui = new UI(userLibrary, userNames);
 
         user.setMe(true);
+        camera = new Camera();
 
         communicator.setOnCommunicatorListener(new CommunicatorListener() {
             @Override
@@ -63,8 +66,7 @@ public class Window extends PApplet implements Constants {
                         userNames.add(u.getUser());
 
                     userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
-                            u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState(), true));
-                    user.setMe(true);
+                            u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState()));
                     if (i == 0) {
                         myMap.setUserX((int) (400 - user.getX()));
                         myMap.setUserY((int) (300 - user.getY()));
@@ -171,9 +173,15 @@ public class Window extends PApplet implements Constants {
     @Override
     public void draw() {
         background(0);
+
+        camera.position.x = user.getX() - WINDOW_SIZE_X / 2;
+        camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
+
+        myMap.onUpdate(camera);
         myMap.render(this);
+
         for (String user : userNames) {
-            userLibrary.get(user).onUpdate();
+            userLibrary.get(user).onUpdate(camera);
             userLibrary.get(user).render(this);
         }
 

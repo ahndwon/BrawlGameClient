@@ -16,12 +16,11 @@ public abstract class View implements Cloneable{
     }
 
     public abstract void render(PApplet pApplet);
-    public abstract void onUpdate();
+    public abstract void onUpdate(Camera camera);
 
     public void update() {
         if (onClickListener != null)
             onClickListener.onClick(this);
-        onUpdate();
     }
 
     public Vector2D getPos() {

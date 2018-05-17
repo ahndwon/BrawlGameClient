@@ -18,5 +18,4 @@ public class Util {
         return ((index / Constants.BLOCK_COUNT_X) * Constants.BLOCK_SIZE) + leny;
     }
 
-
 }
