@@ -19,6 +19,8 @@ public class User extends View implements Constants {
     private int time;
     private boolean isTime = false;
     private boolean isHit;
+    private float posX, posY;
+    private boolean me = false;
 
     public User(float x, float y, String name, String direction, int hp, int score, String state) {
         this.x = x;
@@ -30,28 +32,73 @@ public class User extends View implements Constants {
         this.state = state;
     }
 
+    public void setMe(boolean me) {
+        this.me = me;
+    }
+
+    public boolean getMe() {
+        return me;
+    }
+
+    public void setPosX(float x) {
+        posX = x;
+    }
+
+    public void setPosY(float y) {
+        posY = y;
+    }
+
     @Override
     public void render(PApplet pApplet) {
         tick++;
 
-
-        pApplet.fill(255);
-        pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, 50, 10);
-        pApplet.fill(255, 0, 0);
-        pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
-
-        pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-
-        if (isHit) {
+        if (me) {
+            pApplet.fill(255);
+            pApplet.rect(400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2 - 20, 50, 10);
             pApplet.fill(255, 0, 0);
-            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-            isHit = false;
+            pApplet.rect(400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
+
+            pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
+                    400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+
+            pApplet.fill(0);
+            pApplet.textSize(10);
+            pApplet.text(name, 400 - 20, 300 + 40);
+
+            if (isHit) {
+                pApplet.fill(255, 0, 0);
+                pApplet.rect(400- BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                isHit = false;
+            }
+
+
+
+        }else {
+            pApplet.fill(255);
+            pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 - 20 + posY, 50, 10);
+            pApplet.fill(255, 0, 0);
+            pApplet.rect(x - BLOCK_SIZE / 2 +posX, y - BLOCK_SIZE / 2 - 20 + posY, hp / 2f, 10);
+
+            pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
+                    x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 + posY, BLOCK_SIZE, BLOCK_SIZE);
+
+            pApplet.fill(0);
+            pApplet.textSize(10);
+            pApplet.text(name, x - 20 + posX, y + 40 + posY);
+
+            if (isHit) {
+                pApplet.fill(255, 0, 0);
+                pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 + posY, BLOCK_SIZE, BLOCK_SIZE);
+                isHit = false;
+            }
         }
 
-        pApplet.fill(0);
-        pApplet.textSize(10);
-        pApplet.text(name, x - 20, y + 40);
+//        if (isHit) {
+//            pApplet.fill(255, 0, 0);
+//            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+//            isHit = false;
+//        }
+
 
         if (state.equals("ATTACK") && !isTime) {
             time = 0;
@@ -95,6 +142,8 @@ public class User extends View implements Constants {
 
     @Override
     public void onUpdate() {
+
+
         if (state.equals("MOVE")) {
             switch (direction) {
                 case "UP":

@@ -21,6 +21,9 @@ public class Map extends View {
 
     }
 
+
+
+
     public Map(int[] map) {
         this.map = map;
     }
@@ -40,26 +43,21 @@ public class Map extends View {
     @Override
     public void render(PApplet pApplet) {
         tick++;
-//        if(user.getX() >=0 && user.getX()<= 800) {
             for (int i = 0; i < map.length; i++) {
                 if (map[i] == 0) {
-//                    pApplet.fill(124, 124, 124);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                } else if (map[i] == 1) {
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS ), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                } else if (map[i] == 2) {
                     pApplet.fill(0, 255, 0);
-//                    pApplet.rect(Util.getPosXByIndex(i) , Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
                 } else {
                     pApplet.fill(0, 0, 255);
-//                    pApplet.rect(Util.getPosXByIndex(i) , Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
 
                 }
-//                pApplet.rect(Util.getPosXByIndex(i) - userX + lenX, Util.getPosYByIndex(i) - userY + lenY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-//            }
+
         }
     }
 
