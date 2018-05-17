@@ -67,17 +67,16 @@ public class User extends View implements Constants {
 
             if (isHit) {
                 pApplet.fill(255, 0, 0);
-                pApplet.rect(400- BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                pApplet.rect(400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                 isHit = false;
             }
 
 
-
-        }else {
+        } else {
             pApplet.fill(255);
             pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 - 20 + posY, 50, 10);
             pApplet.fill(255, 0, 0);
-            pApplet.rect(x - BLOCK_SIZE / 2 +posX, y - BLOCK_SIZE / 2 - 20 + posY, hp / 2f, 10);
+            pApplet.rect(x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 - 20 + posY, hp / 2f, 10);
 
             pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
                     x - BLOCK_SIZE / 2 + posX, y - BLOCK_SIZE / 2 + posY, BLOCK_SIZE, BLOCK_SIZE);
@@ -114,19 +113,19 @@ public class User extends View implements Constants {
             switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
-                            x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
-                            x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            400 - BLOCK_SIZE / 2, 300 - BLOCK_SIZE / 2- BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE , BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
-                            x - BLOCK_SIZE / 2 - BLOCK_SIZE, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            400 - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
-                            x - BLOCK_SIZE / 2 + BLOCK_SIZE, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            400 - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, 300 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 

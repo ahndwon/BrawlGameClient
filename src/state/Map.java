@@ -45,15 +45,19 @@ public class Map extends View {
         tick++;
             for (int i = 0; i < map.length; i++) {
                 if (map[i] == 0) {
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS ), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS ), Util.getPosXByIndex(i, lenX),
+                            Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                 } else if (map[i] == 2) {
                     pApplet.fill(0, 255, 0);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i, lenX),
+                            Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7), Util.getPosXByIndex(i, lenX),
+                            Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
                 } else {
                     pApplet.fill(0, 0, 255);
-                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i, lenX),
+                            Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
 
                 }
