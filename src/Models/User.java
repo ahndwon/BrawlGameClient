@@ -20,6 +20,7 @@ public class User extends View implements Constants {
     private boolean isTime = false;
     private boolean isHit;
     private float posX, posY;
+    private float userX, userY;
     private boolean me = false;
 
     public User(float x, float y, String name, String direction, int hp, int score, String state) {
@@ -30,6 +31,19 @@ public class User extends View implements Constants {
         this.hp = hp;
         this.score = score;
         this.state = state;
+    }
+
+    public User(float x, float y, String name, String direction, int hp, int score, String state, boolean me) {
+        this.x = x;
+        this.y = y;
+        this.name = name;
+        this.direction = direction;
+        this.hp = hp;
+        this.score = score;
+        this.state = state;
+        this.me = true;
+        userX = x;
+        userY = y;
     }
 
     public void setMe(boolean me) {

@@ -16,13 +16,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "ahn", PLAYER_DOWN, 100, 10, USER_STOP);
+    private User user = new User(100, 100, "akak", PLAYER_DOWN, 100, 10, USER_STOP);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
     private List<String> userNames;
     private ConcurrentHashMap<String, User> userLibrary;
     private UI ui;
+    private int i = 0;
 
     @Override
     public void settings() {
@@ -62,7 +63,12 @@ public class Window extends PApplet implements Constants {
                         userNames.add(u.getUser());
 
                     userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
-                            u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState()));
+                            u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState(), true));
+                    if(i == 0) {
+                        myMap.setUserX((int) (400 - user.getX()));
+                        myMap.setUserY((int) (300 - user.getY()));
+                        i++;
+                    }
 
                     if (userLibrary.containsKey(u.getUser())) {
                         User user = userLibrary.get(u.getUser());

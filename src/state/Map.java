@@ -9,11 +9,11 @@ import processing.core.PApplet;
 
 public class Map extends View {
     private int[] map;
-    private int lenX = 0;
-    private int lenY = 0;
+    private int lenX;
+    private int lenY;
     private User user;
-    float userX;
-    float userY;
+    int userX;
+    int userY;
     private int tick;
 
 
@@ -32,9 +32,9 @@ public class Map extends View {
 
         for(int i = 0; i < map.length; i++){
             if(Util.getPosXByIndex(i) == (int) user.getX())
-                userX = (Constants.WINDOW_SIZE_X - 200) / 2 - user.getX();
+                userX = (int) ((Constants.WINDOW_SIZE_X - 200) / 2 - user.getX());
             if(Util.getPosYByIndex(i) == (int) user.getY())
-                userY = Constants.WINDOW_SIZE_Y / 2 - user.getY();
+                userY = (int) (Constants.WINDOW_SIZE_Y / 2 - user.getY());
         }
 
     }
@@ -45,15 +45,21 @@ public class Map extends View {
         tick++;
             for (int i = 0; i < map.length; i++) {
                 if (map[i] == 0) {
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS ), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS ),
+                            Util.getPosXByIndex(i) + lenX + userX, Util.getPosYByIndex(i, lenY) + userY,
+                            Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                 } else if (map[i] == 2) {
                     pApplet.fill(0, 255, 0);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i, lenX)+ userX,
+                            Util.getPosYByIndex(i, lenY)+ userY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
+                            Util.getPosXByIndex(i, lenX)+ userX, Util.getPosYByIndex(i, lenY)+ userY, Constants.BLOCK_SIZE,
+                            Constants.BLOCK_SIZE);
 
                 } else {
                     pApplet.fill(0, 0, 255);
-                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i, lenX), Util.getPosYByIndex(i, lenY), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i, lenX)+ userX,
+                            Util.getPosYByIndex(i, lenY)+ userY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
 
                 }
@@ -101,5 +107,13 @@ public class Map extends View {
 
     public float getUserY(){
         return userY;
+    }
+
+    public void setUserX(int userX) {
+        this.userX = userX;
+    }
+
+    public void setUserY(int userY) {
+        this.userY = userY;
     }
 }
