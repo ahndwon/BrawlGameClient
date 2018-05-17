@@ -6,6 +6,10 @@ public class Vector2D implements Cloneable {
      * Hello. JavaDoc...
      */
 
+
+    public Vector2D (){
+    }
+
     public float x, y;
 
     /**

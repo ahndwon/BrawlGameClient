@@ -29,6 +29,7 @@ public class Window extends PApplet implements Constants {
     public void settings() {
         size(WINDOW_SIZE_X, WINDOW_SIZE_Y);
     }
+
     @Override
     public void setup() {
         communicator = new Communicator("192.168.11.203", 5000);
@@ -44,7 +45,7 @@ public class Window extends PApplet implements Constants {
             @Override
             public void onMapReceive(Map map) {
                 myMap = map;
-                myMap.setUser(user);
+//                myMap.setUser(user);
             }
 
             @Override
@@ -63,7 +64,8 @@ public class Window extends PApplet implements Constants {
 
                     userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
                             u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState(), true));
-                    if(i == 0) {
+                    user.setMe(true);
+                    if (i == 0) {
                         myMap.setUserX((int) (400 - user.getX()));
                         myMap.setUserY((int) (300 - user.getY()));
                         i++;

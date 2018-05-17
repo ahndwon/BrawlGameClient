@@ -15,6 +15,7 @@ public class Map extends View {
     int userX;
     int userY;
     private int tick;
+    private float x, y;
 
 
     public Map() {
@@ -44,26 +45,29 @@ public class Map extends View {
     public void render(PApplet pApplet) {
         tick++;
             for (int i = 0; i < map.length; i++) {
+
                 if (map[i] == 0) {
                     pApplet.image(SpriteManager.getImage(Constants.GRASS ),
-                            Util.getPosXByIndex(i) + lenX + userX, Util.getPosYByIndex(i, lenY) + userY,
+                            Util.getPosXByIndex(i) , Util.getPosYByIndex(i),
                             Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                 } else if (map[i] == 2) {
                     pApplet.fill(0, 255, 0);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i, lenX)+ userX,
-                            Util.getPosYByIndex(i, lenY)+ userY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.GRASS), Util.getPosXByIndex(i),
+                            Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
-                            Util.getPosXByIndex(i, lenX)+ userX, Util.getPosYByIndex(i, lenY)+ userY, Constants.BLOCK_SIZE,
+                            Util.getPosXByIndex(i), Util.getPosYByIndex(i), Constants.BLOCK_SIZE,
                             Constants.BLOCK_SIZE);
 
                 } else {
                     pApplet.fill(0, 0, 255);
-                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i, lenX)+ userX,
-                            Util.getPosYByIndex(i, lenY)+ userY, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), Util.getPosXByIndex(i),
+                            Util.getPosYByIndex(i), Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
 
                 }
 
+                pApplet.textSize(10);
+                pApplet.fill(0);
         }
     }
 
@@ -96,10 +100,10 @@ public class Map extends View {
         this.map = map;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-        checkCenter();
-    }
+//    public void setUser(User user) {
+//        this.user = user;
+////        checkCenter();
+//    }
 
     public float getUserX(){
         return  userX;

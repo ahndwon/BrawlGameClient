@@ -42,7 +42,6 @@ public class Window2 extends PApplet implements Constants {
             @Override
             public void onMapReceive(Map map) {
                 myMap = map;
-                myMap.setUser(user);
             }
 
             @Override
