@@ -32,6 +32,7 @@ public class User extends View implements Constants {
         this.hp = hp;
         this.score = score;
         this.state = state;
+
     }
 
     public User(float x, float y, String name, String direction, int hp, int score, String state, boolean me) {
@@ -53,7 +54,6 @@ public class User extends View implements Constants {
     public void render(PApplet pApplet) {
         tick++;
 
-        if (me) {
             pApplet.fill(255);
             pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
             pApplet.fill(255, 0, 0);
@@ -71,25 +71,6 @@ public class User extends View implements Constants {
                 pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                 isHit = false;
             }
-        } else {
-            pApplet.fill(255);
-            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, 50, 10);
-            pApplet.fill(255, 0, 0);
-            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
-
-            pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                    x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-
-            pApplet.fill(0);
-            pApplet.textSize(10);
-            pApplet.text(name, x - 20, y + 40);
-
-            if (isHit) {
-                pApplet.fill(255, 0, 0);
-                pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-                isHit = false;
-            }
-        }
 
 
 //        if (isHit) {
@@ -147,37 +128,29 @@ public class User extends View implements Constants {
                 case "UP": {
                     characterImage = Constants.USER_UP;
                     y -= PLAYER_SPEED;
-                    if (me) {
-                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
-                    }
                     break;
                 }
                 case "DOWN": {
                     characterImage = Constants.USER_DOWN;
                     y += PLAYER_SPEED;
-                    if (me) {
-                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
-                    }
                     break;
                 }
                 case "LEFT": {
                     characterImage = Constants.USER_LEFT;
                     x -= PLAYER_SPEED;
-                    if (me) {
-                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
-                    }
+
                     break;
                 }
                 case "RIGHT": {
                     characterImage = Constants.USER_RIGHT;
                     x += PLAYER_SPEED;
-                    if (me) {
-                        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
-                    }
                     break;
                 }
             }
+
         }
+
+        pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
     }
 
     public void setMe(boolean me) {

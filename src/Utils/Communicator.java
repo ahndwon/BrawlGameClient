@@ -57,14 +57,16 @@ public class Communicator {
                     byteBuffer.flip();
                     Short length = byteBuffer.getShort();
                     byteBuffer.clear();
-                    System.out.println(length);
+                    System.out.println("length :" +  length);
 
                     len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
-//                    System.out.println(str);
-                    JsonParser jsonParser = new JsonParser();
-                    JsonObject jsonObject = null;
-                    jsonObject = (JsonObject) jsonParser.parse(str);
+                    System.out.println("come on :" + str);
+//                    JsonParser jsonParser = new JsonParser();
+                    Gson gson2 = new Gson();
+                    JsonObject jsonObject = gson2.fromJson(str, JsonObject.class);
+
+//                    jsonObject = (JsonObject) jsonParser.parse(str);
 
 
                     System.out.println(jsonObject);
