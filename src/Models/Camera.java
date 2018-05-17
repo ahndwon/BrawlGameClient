@@ -20,10 +20,10 @@ public class Camera {
 
         x %= Constants.MAPSIZE;
         y %= Constants.MAPSIZE;
-        if (x > Constants.WINDOW_SIZE_X) x -= Constants.MAPSIZE;
+        if (x > Constants.WINDOW_SIZE_X - 200) x -= Constants.MAPSIZE;
         if (y > Constants.WINDOW_SIZE_Y) y -= Constants.MAPSIZE;
 
-        if (x < -Constants.WINDOW_SIZE_X + Constants.WINDOW_SIZE_X / 2) x += Constants.MAPSIZE;
+        if (x < -Constants.WINDOW_SIZE_X - 200 + Constants.WINDOW_SIZE_X / 2) x += Constants.MAPSIZE;
         if (y < -Constants.WINDOW_SIZE_Y) y += Constants.MAPSIZE;
 
         return new Vector2D(x, y);

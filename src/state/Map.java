@@ -19,6 +19,7 @@ public class Map extends View {
     private int tick;
     private Vector2D[] pos;
     private float x, y;
+    private Camera camera;
 
 
     public Map() {
@@ -49,6 +50,7 @@ public class Map extends View {
     public void render(PApplet pApplet) {
         tick++;
             for (int i = 0; i < map.length; i++) {
+                pos[i] = camera.getWorldToScreen(Util.getPosXByIndex(i), Util.getPosYByIndex(i));
                 if (map[i] == 0) {
                     pApplet.image(SpriteManager.getImage(Constants.GRASS),
                             pos[i].x, pos[i].y,
@@ -76,11 +78,7 @@ public class Map extends View {
 
     @Override
     public void onUpdate(Camera camera) {
-        System.out.println("ddddd");
-        for (int i = 0; i < map.length; i++) {
-            System.out.println("i : " +   i);
-            pos[i] = camera.getWorldToScreen(Util.getPosXByIndex(i), Util.getPosYByIndex(i));
-        }
+       this.camera = camera;
     }
 
 

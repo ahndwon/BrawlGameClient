@@ -174,7 +174,7 @@ public class Window extends PApplet implements Constants {
     public void draw() {
         background(0);
 
-        camera.position.x = user.getX() - WINDOW_SIZE_X / 2;
+        camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
         camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
 
         myMap.onUpdate(camera);
