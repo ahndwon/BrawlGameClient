@@ -51,6 +51,7 @@ public class Window extends PApplet implements Constants {
 //                myMap.setUser(user);
             }
 
+
             @Override
             public void onHitReceive(Hit hit) {
                 if (userLibrary.containsKey(hit.getTo())) {

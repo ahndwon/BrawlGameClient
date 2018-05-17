@@ -85,6 +85,9 @@ public class Map extends View {
        this.camera = camera;
     }
 
+    public void replaceIndex(int index, int message) {
+        map[index] = message;
+    }
 
     public int getLenX() {
         return lenX;
