@@ -57,11 +57,11 @@ public class Communicator {
                     byteBuffer.flip();
                     Short length = byteBuffer.getShort();
                     byteBuffer.clear();
-                    System.out.println("length :" +  length);
+//                    System.out.println("length :" +  length);
 
                     len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
-                    System.out.println("come on :" + str);
+//                    System.out.println("come on :" + str);
 //                    JsonParser jsonParser = new JsonParser();
                     Gson gson2 = new Gson();
                     JsonObject jsonObject = gson2.fromJson(str, JsonObject.class);
@@ -69,7 +69,7 @@ public class Communicator {
 //                    jsonObject = (JsonObject) jsonParser.parse(str);
 
 
-                    System.out.println(jsonObject);
+//                    System.out.println(jsonObject);
 
                     String type = jsonObject.get("type").getAsString();
 
@@ -105,6 +105,10 @@ public class Communicator {
                             }
                             listener.onUpdate(updates);
                             break;
+                        case "Correct":
+                            int index = jsonObject.get("index").getAsInt();
+                            int message = jsonObject.get("message").getAsInt();
+                            listener.onMapCorrectReceive(index, message);
                     }
 
                 }
@@ -132,14 +136,14 @@ public class Communicator {
         byteBuffer.putShort((short) message.toString().getBytes().length);
         try {
             byteBuffer.flip();
-            System.out.println(Arrays.toString(byteBuffer.array()));
+//            System.out.println(Arrays.toString(byteBuffer.array()));
             getOutputStream().write(byteBuffer.array());
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
             getOutputStream().write(message.toString().getBytes());
-            System.out.println(message.toString());
+//            System.out.println(message.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

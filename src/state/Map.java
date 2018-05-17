@@ -76,6 +76,10 @@ public class Map extends View {
         }
     }
 
+
+    public void replaceIndex(int index, int message) {
+        map[index] = message;
+    }
     @Override
     public void onUpdate(Camera camera) {
        this.camera = camera;

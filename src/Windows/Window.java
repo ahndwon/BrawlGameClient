@@ -96,6 +96,11 @@ public class Window extends PApplet implements Constants {
                     ui.addKiller(kill.getFrom(), kill.getTo());
                 }
             }
+
+            @Override
+            public void onMapCorrectReceive(int index, int message) {
+                myMap.replaceIndex(index, message);
+            }
         });
 
 

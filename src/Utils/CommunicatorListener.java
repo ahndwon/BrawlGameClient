@@ -13,4 +13,6 @@ public interface CommunicatorListener {
     void onUpdate(List<Update> updates);
 
     void onKillReceive(Kill kill);
+
+    void onMapCorrectReceive(int index, int message);
 }
