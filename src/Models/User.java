@@ -279,4 +279,6 @@ public class User extends View implements Constants {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
+
 }

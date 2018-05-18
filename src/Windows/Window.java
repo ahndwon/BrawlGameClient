@@ -35,7 +35,7 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-        communicator = new Communicator("localhost", 5000);
+        communicator = new Communicator("192.168.11.203", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
@@ -84,6 +84,7 @@ public class Window extends PApplet implements Constants {
                         user.setScore(u.getScore());
                         user.setState(u.getState());
                         user.setSpeed(u.getSpeed());
+                        user.setCharacterImage(u.getCharacterImage());
                         user.setPosX((myMap.getLenX()));
                         user.setPosY((myMap.getLenY()));
                         System.out.println("speed : " + u.getSpeed());
@@ -201,6 +202,9 @@ public class Window extends PApplet implements Constants {
             ui.render(this);
             myMap.minimapRender(this);
 
+
+
+
             keyEventManager.update();
 
 
@@ -227,12 +231,15 @@ public class Window extends PApplet implements Constants {
     public void keyPressed() {
         if (keyCode == '1') {
             user.setCharacterImage(Constants.CHARACTER_ONE_UP);
+            communicator.sendCharacterImageNum(new Image(1));
             myMap.setLoad(true);
         } else if (keyCode == '2') {
             user.setCharacterImage(Constants.CHARACTER_TWO_UP);
+            communicator.sendCharacterImageNum(new Image(2));
             myMap.setLoad(true);
         } else if (keyCode == '3') {
             user.setCharacterImage(Constants.CHARACTER_THREE_UP);
+            communicator.sendCharacterImageNum(new Image(3));
             myMap.setLoad(true);
         } else {
             keyEventManager.setPress(keyCode);
