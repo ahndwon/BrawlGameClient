@@ -194,7 +194,6 @@ public class Window extends PApplet implements Constants {
         for (String user : userNames) {
             userLibrary.get(user).onUpdate(camera);
             userLibrary.get(user).render(this);
-            userLibrary.get(user).miniRender(this);
         }
 
         ui.render(this);
@@ -204,6 +203,9 @@ public class Window extends PApplet implements Constants {
 
         myMap.minirender(this);
 
+        for (String user : userNames) {
+            userLibrary.get(user).miniRender(this);
+        }
 
     }
 
