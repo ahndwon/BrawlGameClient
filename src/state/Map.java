@@ -20,6 +20,7 @@ public class Map extends View {
     private Vector2D[] pos;
     private float x, y;
     private Camera camera;
+    private boolean isLoad;
 
     public Map() {
 
@@ -113,8 +114,17 @@ public class Map extends View {
         return lenX;
     }
 
+    public boolean isLoad() {
+        return isLoad;
+    }
+
+    public void setLoad(boolean load) {
+        isLoad = load;
+    }
+
     public void setLenX(int lenX) {
         this.lenX = lenX;
+
     }
 
     public int getLenY() {

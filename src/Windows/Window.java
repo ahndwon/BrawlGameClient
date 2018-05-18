@@ -26,7 +26,7 @@ public class Window extends PApplet implements Constants {
     private UI ui;
     private int i = 0;
     private Camera camera;
-
+    private char imageNum;
 
     @Override
     public void settings() {
@@ -181,35 +181,63 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void draw() {
-        background(0);
+        background(255);
 
-        camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
-        camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
+        if (myMap.isLoad()) {
+
+            camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
+            camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
 
 
-        myMap.onUpdate(camera);
+            myMap.onUpdate(camera);
 
-        myMap.render(this);
+            myMap.render(this);
 
-        for (String user : userNames) {
-            userLibrary.get(user).onUpdate(camera);
-            userLibrary.get(user).render(this);
+            for (String user : userNames) {
+                userLibrary.get(user).onUpdate(camera);
+                userLibrary.get(user).render(this);
+            }
+
+            ui.render(this);
+            myMap.minimapRender(this);
+
+            keyEventManager.update();
+
+
+            for (String user : userNames) {
+                userLibrary.get(user).miniRender(this);
+            }
+        } else {
+            fill(255);
+            fill(0, 255, 0);
+            textSize(40);
+            text("please choose your character >> ", 150, 100);
+            textSize(20);
+            fill(0);
+            image(SpriteManager.getImage(CHARACTER_ONE_DOWN, 0), 200, 250, 100, 100);
+            text("NUM 1", 220, 380);
+            image(SpriteManager.getImage(CHARACTER_TWO_DOWN, 0), 400, 250, 100, 100);
+            text("NUM 2", 420, 380);
+            image(SpriteManager.getImage(CHARACTER_THREE_DOWN, 0), 600, 250, 100, 100);
+            text("NUM 3", 620, 380);
+
         }
-
-        ui.render(this);
-        myMap.minimapRender(this);
-
-        keyEventManager.update();
-
-
-        for (String user : userNames) {
-            userLibrary.get(user).miniRender(this);
-        }
-
     }
 
     public void keyPressed() {
-        keyEventManager.setPress(keyCode);
+        if (keyCode == '1') {
+            user.setCharacterImage(Constants.CHARACTER_ONE_UP);
+            myMap.setLoad(true);
+        } else if (keyCode == '2') {
+            user.setCharacterImage(Constants.CHARACTER_TWO_UP);
+            myMap.setLoad(true);
+        } else if (keyCode == '3') {
+            user.setCharacterImage(Constants.CHARACTER_THREE_UP);
+            myMap.setLoad(true);
+        } else {
+            keyEventManager.setPress(keyCode);
+        }
+
     }
 
     public void keyReleased() {
@@ -217,14 +245,26 @@ public class Window extends PApplet implements Constants {
     }
 
     public void loadImage() {
-        SpriteManager.loadSprite(this, USER_DOWN, "./image/image.png", 32, 32, new int[]{0, 1, 2, 1});
-        SpriteManager.loadSprite(this, USER_LEFT, "./image/image.png", 32, 32, new int[]{12, 13, 14, 13});
-        SpriteManager.loadSprite(this, USER_RIGHT, "./image/image.png", 32, 32, new int[]{24, 25, 26, 25});
-        SpriteManager.loadSprite(this, USER_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
+        SpriteManager.loadSprite(this, CHARACTER_ONE_DOWN, "./image/image.png", 32, 32, new int[]{0, 1, 2, 1});
+        SpriteManager.loadSprite(this, CHARACTER_ONE_LEFT, "./image/image.png", 32, 32, new int[]{12, 13, 14, 13});
+        SpriteManager.loadSprite(this, CHARACTER_ONE_RIGHT, "./image/image.png", 32, 32, new int[]{24, 25, 26, 25});
+        SpriteManager.loadSprite(this, CHARACTER_ONE_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
+
+        SpriteManager.loadSprite(this, CHARACTER_TWO_DOWN, "./image/image.png", 32, 32, new int[]{3, 4, 5, 3});
+        SpriteManager.loadSprite(this, CHARACTER_TWO_LEFT, "./image/image.png", 32, 32, new int[]{15, 16, 17, 16});
+        SpriteManager.loadSprite(this, CHARACTER_TWO_RIGHT, "./image/image.png", 32, 32, new int[]{27, 28, 29, 28});
+        SpriteManager.loadSprite(this, CHARACTER_TWO_UP, "./image/image.png", 32, 32, new int[]{39, 40, 41, 40});
+
+        SpriteManager.loadSprite(this, CHARACTER_THREE_DOWN, "./image/image.png", 32, 32, new int[]{6, 7, 8, 7});
+        SpriteManager.loadSprite(this, CHARACTER_THREE_LEFT, "./image/image.png", 32, 32, new int[]{18, 19, 20, 19});
+        SpriteManager.loadSprite(this, CHARACTER_THREE_RIGHT, "./image/image.png", 32, 32, new int[]{30, 31, 32, 31});
+        SpriteManager.loadSprite(this, CHARACTER_THREE_UP, "./image/image.png", 32, 32, new int[]{42, 43, 44, 43});
+
         SpriteManager.loadSprite(this, FIST, "./image/super_dragon_fist_effect.png", 0, 0,
                 192, 192, 6);
         SpriteManager.loadImage(this, GRASS, "./image/grass.png");
         SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1, 32, 32);
         SpriteManager.loadSprite(this, POTION, "./image/potion.png", 0, 0, 50, 63, 7);
+
     }
 }

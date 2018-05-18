@@ -21,7 +21,7 @@ public interface Constants {
     int HAMMER_LEFT = 6;
     int HAMMER_RIGHT = 7;
 
-    int FIST = 11;
+    int FIST = 15;
 
     int PLAYER_SPEED = 5;
 
@@ -32,6 +32,25 @@ public interface Constants {
     int WINDOW_SIZE_X = 1000;
     int WINDOW_SIZE_Y = 600;
     int UI_SIZE = 200;
+
+    int CHARACTER_ONE_UP = 10;
+    int CHARACTER_ONE_DOWN = 11;
+    int CHARACTER_ONE_LEFT = 12;
+    int CHARACTER_ONE_RIGHT = 13;
+
+
+    int CHARACTER_TWO_UP = 20;
+    int CHARACTER_TWO_DOWN = 21;
+    int CHARACTER_TWO_LEFT = 22;
+    int CHARACTER_TWO_RIGHT = 23;
+
+
+    int CHARACTER_THREE_UP = 30;
+    int CHARACTER_THREE_DOWN = 31;
+    int CHARACTER_THREE_LEFT = 32;
+    int CHARACTER_THREE_RIGHT = 33;
+
+
 
     int GRASS = 111;
     int SLOW_TILE = 222;
