@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "aaaaaa", PLAYER_DOWN, 100, 10, USER_STOP, true);
+    private User user = new User(100, 100, "skdufh", PLAYER_DOWN, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -192,10 +192,13 @@ public class Window extends PApplet implements Constants {
         for (String user : userNames) {
             userLibrary.get(user).onUpdate(camera);
             userLibrary.get(user).render(this);
+            userLibrary.get(user).miniRender(this);
         }
 
         ui.render(this);
         keyEventManager.update();
+
+
     }
 
     public void keyPressed() {

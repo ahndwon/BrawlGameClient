@@ -38,4 +38,6 @@ public interface Constants {
     int POTION = 333;
 
     int MAPSIZE = 1600;
+
+    int CHARACTER = 5;
 }

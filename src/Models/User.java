@@ -57,23 +57,23 @@ public class User extends View implements Constants {
     public void render(PApplet pApplet) {
         tick++;
 
-            pApplet.fill(255);
-            pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
+        pApplet.fill(255);
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
+        pApplet.fill(255, 0, 0);
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
+
+        pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
+                pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+
+        pApplet.fill(0);
+        pApplet.textSize(10);
+        pApplet.text(name, pos.x - 20, pos.y + 40);
+
+        if (isHit) {
             pApplet.fill(255, 0, 0);
-            pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
-
-            pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                    pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-
-            pApplet.fill(0);
-            pApplet.textSize(10);
-            pApplet.text(name, pos.x - 20, pos.y + 40);
-
-            if (isHit) {
-                pApplet.fill(255, 0, 0);
-                pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-                isHit = false;
-            }
+            pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+            isHit = false;
+        }
 
 
 //        if (isHit) {
@@ -154,6 +154,23 @@ public class User extends View implements Constants {
         }
 
         pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
+    }
+
+
+    public void miniRender(PApplet pApplet) {
+        if (me) {
+            pApplet.fill(0, 0, 255);
+            x %= MAPSIZE;
+            y %= MAPSIZE;
+            pApplet.ellipse(x / 10f, y / 10f , CHARACTER, CHARACTER);
+        }
+        else {
+            pApplet.fill(0, 0, 0);
+            x %= MAPSIZE;
+            y %= MAPSIZE;
+            pApplet.ellipse(x / 10f, y / 10f , CHARACTER, CHARACTER);
+        }
+
     }
 
     public void setMe(boolean me) {

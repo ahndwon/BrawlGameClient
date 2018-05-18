@@ -75,6 +75,10 @@ public class Map extends View {
         pApplet.strokeWeight(3);
         pApplet.rect(0, 0, 160, 160);
         for (int i = 0; i < map.length; i++) {
+
+            x %= Constants.MAPSIZE;
+            y %= Constants.MAPSIZE;
+
             if (map[i] == 0) {
                 pApplet.image(SpriteManager.getImage(Constants.GRASS),
                         Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
