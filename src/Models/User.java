@@ -113,7 +113,7 @@ public class User extends View implements Constants {
                     break;
             }
 
-            if (attackTick > 60) {
+            if (attackTick > 15) {
                 attackTick = 0;
                 isAttack = false;
             }
@@ -171,6 +171,7 @@ public class User extends View implements Constants {
 
         float charX = x;
         float charY = y;
+
         charX %= MAPSIZE;
         charY %= MAPSIZE;
 

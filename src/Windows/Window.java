@@ -201,7 +201,6 @@ public class Window extends PApplet implements Constants {
 
         keyEventManager.update();
 
-        myMap.minirender(this);
 
         for (String user : userNames) {
             userLibrary.get(user).miniRender(this);
