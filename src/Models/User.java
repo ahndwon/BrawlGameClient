@@ -158,17 +158,27 @@ public class User extends View implements Constants {
 
 
     public void miniRender(PApplet pApplet) {
+
+        float charX = x;
+        float charY = y;
+        charX %= MAPSIZE;
+        charY %= MAPSIZE;
+
+        if(charX < 0){
+            charX += MAPSIZE;
+        }
+
+        if(charY < 0){
+            charY += MAPSIZE;
+        }
+
         if (me) {
-            pApplet.fill(0, 0, 255);
-            x %= MAPSIZE;
-            y %= MAPSIZE;
-            pApplet.ellipse(x / 10f, y / 10f , CHARACTER, CHARACTER);
+            pApplet.fill(0, 0, 200);
+            pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
         }
         else {
             pApplet.fill(0, 0, 0);
-            x %= MAPSIZE;
-            y %= MAPSIZE;
-            pApplet.ellipse(x / 10f, y / 10f , CHARACTER, CHARACTER);
+            pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
         }
 
     }
