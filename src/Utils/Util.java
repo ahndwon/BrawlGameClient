@@ -11,11 +11,17 @@ public class Util {
     }
 
     public static int getPosXByIndexForMiniMap(int index) {
-        return (index % 32) * 5;
+        return (((index % 32) * 5));
     }
 
     public static int getPosYByIndexForMiniMap(int index) {
-        return (index / 32) * 5;
+        return (index / 32) * 5 ;
+    }
+
+    public static int getIndexByPosForMiniMap(float x, float y) {
+
+        return (int) ((x / 5) + (((y) / 5) * 32));
+
     }
 
 }

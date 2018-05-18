@@ -71,22 +71,21 @@ public class Map extends View {
             pApplet.fill(0);
         }
 
+    }
+
+    public void minimapRender(PApplet pApplet) {
+
         pApplet.fill(0);
         pApplet.strokeWeight(3);
         pApplet.rect(0, 0, 160, 160);
-
-        pApplet.strokeWeight(0);
-
-    }
-
-
-    public void minirender(PApplet pApplet){
         for (int i = 0; i < map.length; i++) {
 
             x %= Constants.MAPSIZE;
             y %= Constants.MAPSIZE;
 
             if (map[i] == 0) {
+                System.out.println("x : " + Util.getPosXByIndexForMiniMap(i));
+                System.out.println("y : " + Util.getPosYByIndexForMiniMap(i));
                 pApplet.image(SpriteManager.getImage(Constants.GRASS),
                         Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
                         5, 5);
@@ -104,8 +103,9 @@ public class Map extends View {
 
             }
         }
-    }
 
+        pApplet.strokeWeight(0);
+    }
     @Override
     public void onUpdate(Camera camera) {
         this.camera = camera;

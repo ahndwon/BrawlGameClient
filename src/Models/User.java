@@ -1,6 +1,7 @@
 package Models;
 
 import Utils.Constants;
+import Utils.Util;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 
@@ -34,7 +35,6 @@ public class User extends View implements Constants {
         this.score = score;
         this.state = state;
         this.speed = Constants.PLAYER_SPEED;
-
     }
 
     public User(float x, float y, String name, String direction, int hp, int score, String state, boolean me) {
@@ -118,6 +118,16 @@ public class User extends View implements Constants {
                 isAttack = false;
             }
         }
+
+//        if (me) {
+//            pApplet.fill(0, 0, 255);
+//            int index = Util.getIndexByPosForMiniMap();
+//            pApplet.ellipse(Util.getPosXByIndexForMiniMap(index), Util.getPosYByIndexForMiniMap(index), 5, 5);
+//        } else {
+//            pApplet.fill(0);
+//            int index = Util.getIndexByPosForMiniMap();
+//            pApplet.ellipse(Util.getPosXByIndexForMiniMap(index), Util.getPosYByIndexForMiniMap(index), 5, 5);
+//        }
 
 
 //            pApplet.image(SpriteManager.getImage(hammerImage, 0), hammerX, hammerY, 30, 30);

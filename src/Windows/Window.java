@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "skdufh", PLAYER_DOWN, 100, 10, USER_STOP, true);
+    private User user = new User(100, 100, "yun", PLAYER_DOWN, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -35,7 +35,7 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-        communicator = new Communicator("localhost", 5000);
+        communicator = new Communicator("192.168.11.203", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
@@ -186,7 +186,9 @@ public class Window extends PApplet implements Constants {
         camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
         camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
 
+
         myMap.onUpdate(camera);
+
         myMap.render(this);
 
         for (String user : userNames) {
@@ -196,6 +198,8 @@ public class Window extends PApplet implements Constants {
         }
 
         ui.render(this);
+        myMap.minimapRender(this);
+
         keyEventManager.update();
 
         myMap.minirender(this);

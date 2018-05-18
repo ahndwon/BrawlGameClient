@@ -30,7 +30,7 @@ public class UI implements Utils.Constants {
         }
 
         for (int i = 0; i < killerNames.size(); i++) {
-            pApplet.text("Kill   from : " + killerNames.get(i) + "  to  " + killers.get(killerNames.get(i)), WINDOW_SIZE_X - 190, (i * 30 + 20));
+            pApplet.text("Kill   from : " + killerNames.get(i) + "  to  " + killers.get(killerNames.get(i)), WINDOW_SIZE_X - 190, (i * 30 + 160));
         }
     }
 
