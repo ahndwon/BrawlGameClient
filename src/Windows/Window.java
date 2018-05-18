@@ -198,6 +198,8 @@ public class Window extends PApplet implements Constants {
         ui.render(this);
         keyEventManager.update();
 
+        myMap.minirender(this);
+
 
     }
 

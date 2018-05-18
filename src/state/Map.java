@@ -74,6 +74,13 @@ public class Map extends View {
         pApplet.fill(0);
         pApplet.strokeWeight(3);
         pApplet.rect(0, 0, 160, 160);
+
+        pApplet.strokeWeight(0);
+
+    }
+
+
+    public void minirender(PApplet pApplet){
         for (int i = 0; i < map.length; i++) {
 
             x %= Constants.MAPSIZE;
@@ -97,11 +104,7 @@ public class Map extends View {
 
             }
         }
-
-        pApplet.strokeWeight(0);
-
     }
-
 
     @Override
     public void onUpdate(Camera camera) {
