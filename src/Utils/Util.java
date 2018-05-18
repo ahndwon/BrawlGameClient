@@ -10,4 +10,12 @@ public class Util {
         return (index / Constants.BLOCK_COUNT_X) * Constants.BLOCK_SIZE;
     }
 
+    public static int getPosXByIndexForMiniMap(int index) {
+        return (index % 32) * 5;
+    }
+
+    public static int getPosYByIndexForMiniMap(int index) {
+        return (index / 32) * 5;
+    }
+
 }

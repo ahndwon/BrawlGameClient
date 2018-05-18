@@ -163,7 +163,7 @@ public class Window extends PApplet implements Constants {
         });
 
 
-        keyEventManager.addPressListener(SHIFT, (isOnPress, duration) -> {
+        keyEventManager.addPressListener(32, (isOnPress, duration) -> {
 //                communicator.sendAttack();
 //                user.setDirection(PLAYER_DOWN);
 //                user.setY(user.getY() + 3);
@@ -174,7 +174,7 @@ public class Window extends PApplet implements Constants {
 
         });
 
-        keyEventManager.addReleaseListener(SHIFT, duration -> {
+        keyEventManager.addReleaseListener(32, duration -> {
             communicator.sendStop();
         });
     }

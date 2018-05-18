@@ -32,10 +32,10 @@ public class Map extends View {
 
     private void checkCenter() {
 
-        for(int i = 0; i < map.length; i++){
-            if(Util.getPosXByIndex(i) == (int) user.getX())
+        for (int i = 0; i < map.length; i++) {
+            if (Util.getPosXByIndex(i) == (int) user.getX())
                 userX = (int) ((Constants.WINDOW_SIZE_X - 200) / 2 - user.getX());
-            if(Util.getPosYByIndex(i) == (int) user.getY())
+            if (Util.getPosYByIndex(i) == (int) user.getY())
                 userY = (int) (Constants.WINDOW_SIZE_Y / 2 - user.getY());
         }
 
@@ -44,37 +44,64 @@ public class Map extends View {
     @Override
     public void render(PApplet pApplet) {
         tick++;
-            for (int i = 0; i < map.length; i++) {
-                pos[i] = camera.getWorldToScreen(Util.getPosXByIndex(i), Util.getPosYByIndex(i));
-                if (map[i] == 0) {
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS),
-                            pos[i].x, pos[i].y,
-                            Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                } else if (map[i] == 2) {
-                    pApplet.fill(0, 255, 0);
-                    pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
-                            pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                    pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
-                            pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
-                            Constants.BLOCK_SIZE);
-
-                } else {
-                    pApplet.fill(0, 0, 255);
-                    pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), pos[i].x,
-                            pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
 
 
-                }
+        for (int i = 0; i < map.length; i++) {
+            pos[i] = camera.getWorldToScreen(Util.getPosXByIndex(i), Util.getPosYByIndex(i));
+            if (map[i] == 0) {
+                pApplet.image(SpriteManager.getImage(Constants.GRASS),
+                        pos[i].x, pos[i].y,
+                        Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+            } else if (map[i] == 2) {
+                pApplet.fill(0, 255, 0);
+                pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
+                        pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
+                        pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
+                        Constants.BLOCK_SIZE);
 
-                pApplet.textSize(10);
-                pApplet.fill(0);
+            } else {
+                pApplet.fill(0, 0, 255);
+                pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), pos[i].x,
+                        pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+
+
+            }
+            pApplet.textSize(10);
+            pApplet.fill(0);
         }
+
+        pApplet.fill(0);
+        pApplet.strokeWeight(3);
+        pApplet.rect(0, 0, 160, 160);
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] == 0) {
+                pApplet.image(SpriteManager.getImage(Constants.GRASS),
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
+                        5, 5);
+            } else if (map[i] == 2) {
+                pApplet.fill(0, 255, 0);
+                pApplet.image(SpriteManager.getImage(Constants.GRASS),
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
+                pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
+
+            } else {
+                pApplet.fill(0, 0, 255);
+                pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE),
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
+
+            }
+        }
+
+        pApplet.strokeWeight(0);
+
     }
 
 
     @Override
     public void onUpdate(Camera camera) {
-       this.camera = camera;
+        this.camera = camera;
     }
 
     public void replaceIndex(int index, int message) {
@@ -110,11 +137,11 @@ public class Map extends View {
 ////        checkCenter();
 //    }
 
-    public float getUserX(){
-        return  userX;
+    public float getUserX() {
+        return userX;
     }
 
-    public float getUserY(){
+    public float getUserY() {
         return userY;
     }
 
