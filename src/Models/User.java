@@ -96,19 +96,19 @@ public class User extends View implements Constants {
 
             switch (direction) {
                 case PLAYER_DOWN:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
+                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
                             pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
+                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
                             pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
+                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
                             pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_RIGHT:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 10 % 6),
+                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
                             pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
