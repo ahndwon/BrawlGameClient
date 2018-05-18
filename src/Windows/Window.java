@@ -27,6 +27,7 @@ public class Window extends PApplet implements Constants {
     private int i = 0;
     private Camera camera;
 
+
     @Override
     public void settings() {
         size(WINDOW_SIZE_X, WINDOW_SIZE_Y);
@@ -34,7 +35,7 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-        communicator = new Communicator("192.168.11.203", 5000);
+        communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userLibrary.putIfAbsent(user.getName(), user);
@@ -82,8 +83,10 @@ public class Window extends PApplet implements Constants {
                         user.setDirection(u.getDirection());
                         user.setScore(u.getScore());
                         user.setState(u.getState());
+                        user.setSpeed(u.getSpeed());
                         user.setPosX((myMap.getLenX()));
                         user.setPosY((myMap.getLenY()));
+                        System.out.println("speed : " + u.getSpeed());
 
                     }
                 }

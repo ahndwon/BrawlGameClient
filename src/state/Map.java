@@ -21,13 +21,9 @@ public class Map extends View {
     private float x, y;
     private Camera camera;
 
-
     public Map() {
 
     }
-
-
-
 
     public Map(int[] map) {
         this.map = map;
@@ -44,7 +40,6 @@ public class Map extends View {
         }
 
     }
-
 
     @Override
     public void render(PApplet pApplet) {
@@ -77,9 +72,6 @@ public class Map extends View {
     }
 
 
-    public void replaceIndex(int index, int message) {
-        map[index] = message;
-    }
     @Override
     public void onUpdate(Camera camera) {
        this.camera = camera;

@@ -45,7 +45,9 @@ public class UpdateTypeAdapter extends TypeAdapter<Update> {
                 case "state":
                     update.setState(reader.nextString());
                     break;
-
+                case "speed" :
+                    update.setSpeed(reader.nextInt());
+                    break;
             }
         }
         reader.endObject();

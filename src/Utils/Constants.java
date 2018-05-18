@@ -23,7 +23,7 @@ public interface Constants {
 
     int FIST = 11;
 
-    int PLAYER_SPEED = 3;
+    int PLAYER_SPEED = 5;
 
     String USER_STOP = "STOP";
     String USER_MOVE = "MOVE";

@@ -23,6 +23,7 @@ public class User extends View implements Constants {
     private float userX, userY;
     private boolean me = false;
     private Vector2D pos;
+    private int speed;
 
     public User(float x, float y, String name, String direction, int hp, int score, String state) {
         this.x = x;
@@ -32,6 +33,7 @@ public class User extends View implements Constants {
         this.hp = hp;
         this.score = score;
         this.state = state;
+        this.speed = Constants.PLAYER_SPEED;
 
     }
 
@@ -47,6 +49,7 @@ public class User extends View implements Constants {
         userX = x;
         userY = y;
         pos = new Vector2D(x, y);
+        this.speed = Constants.PLAYER_SPEED;
     }
 
 
@@ -127,23 +130,23 @@ public class User extends View implements Constants {
             switch (direction) {
                 case "UP": {
                     characterImage = Constants.USER_UP;
-                    y -= PLAYER_SPEED;
+                    y -= speed;
                     break;
                 }
                 case "DOWN": {
                     characterImage = Constants.USER_DOWN;
-                    y += PLAYER_SPEED;
+                    y += speed;
                     break;
                 }
                 case "LEFT": {
                     characterImage = Constants.USER_LEFT;
-                    x -= PLAYER_SPEED;
+                    x -= speed;
 
                     break;
                 }
                 case "RIGHT": {
                     characterImage = Constants.USER_RIGHT;
-                    x += PLAYER_SPEED;
+                    x += speed;
                     break;
                 }
             }
@@ -220,5 +223,13 @@ public class User extends View implements Constants {
 
     public int getScore() {
         return score;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

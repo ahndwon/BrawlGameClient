@@ -1,5 +1,7 @@
 package state;
 
+import Utils.Constants;
+
 public class Update {
     private String user;
     private float x;
@@ -8,6 +10,7 @@ public class Update {
     private String direction;
     private int score;
     private String state;
+    private int speed;
 
     public Update() {
 
@@ -22,6 +25,7 @@ public class Update {
         this.direction = direction;
         this.score = score;
         this.state = state;
+        this.speed = Constants.PLAYER_SPEED;
     }
 
     public String getUser() {
@@ -78,5 +82,13 @@ public class Update {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }
