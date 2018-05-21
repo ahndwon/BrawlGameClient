@@ -48,6 +48,9 @@ public class UpdateTypeAdapter extends TypeAdapter<Update> {
                 case "speed" :
                     update.setSpeed(reader.nextInt());
                     break;
+                case "character" :
+                    update.setCharacterImage(reader.nextInt());
+                    break;
             }
         }
         reader.endObject();

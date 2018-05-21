@@ -157,7 +157,6 @@ public class Communicator {
         JsonObject body = new JsonObject();
         body.addProperty("direction", direction);
         jsonObject.add("body", body);
-
         send(jsonObject);
 
     }
@@ -171,6 +170,15 @@ public class Communicator {
     public void sendStop() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("type", "Stop");
+        send(jsonObject);
+    }
+
+    public void sendCharacterImageNum(Image image) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "Character");
+        JsonObject body = new JsonObject();
+        body.addProperty("num", image.getCharacterImage());
+        jsonObject.add("body", body);
         send(jsonObject);
     }
 

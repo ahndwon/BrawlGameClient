@@ -11,6 +11,7 @@ public class Update {
     private int score;
     private String state;
     private int speed;
+    private int characterImage;
 
     public Update() {
 
@@ -90,5 +91,14 @@ public class Update {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+
+    public int getCharacterImage() {
+        return characterImage;
+    }
+
+    public void setCharacterImage(int characterImage) {
+        this.characterImage = characterImage;
     }
 }
