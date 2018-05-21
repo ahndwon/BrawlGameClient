@@ -16,12 +16,10 @@ public interface Constants {
 
     int BLOCK_SIZE = 50;
 
-    int HAMMER_UP = 4;
-    int HAMMER_DOWN = 5;
-    int HAMMER_LEFT = 6;
-    int HAMMER_RIGHT = 7;
-
     int FIST = 15;
+    int FIRE_ATTACK = 16;
+    int FIRE_ATTACK_1 = 16;
+    int FIRE_ATTACK_2 = 17;
 
     int PLAYER_SPEED = 5;
 
@@ -49,7 +47,6 @@ public interface Constants {
     int CHARACTER_THREE_DOWN = 31;
     int CHARACTER_THREE_LEFT = 32;
     int CHARACTER_THREE_RIGHT = 33;
-
 
 
     int GRASS = 111;

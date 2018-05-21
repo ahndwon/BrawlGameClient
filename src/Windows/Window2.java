@@ -16,8 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "dong", PLAYER_DOWN, 100, 10, USER_STOP, true);
+public class Window2 extends PApplet implements Constants {
+    private User user = new User(100, 100, "ahn", PLAYER_DOWN, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;

@@ -15,8 +15,9 @@ public class User extends View implements Constants {
     private String state;
     private int tick;
     private int attackTick;
-    private int characterImage;
+    private int characterImage = 10;
     private boolean isAttack;
+    private boolean isSpecial;
     private int time;
     private boolean isTime = false;
     private boolean isHit;
@@ -97,19 +98,19 @@ public class User extends View implements Constants {
             switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE  , BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE , BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE , pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 
@@ -119,6 +120,36 @@ public class User extends View implements Constants {
             }
         }
 
+
+        if (isSpecial) {
+            time++;
+            System.out.println("isSpecial");
+            attackTick++;
+
+            switch (direction) {
+                case PLAYER_DOWN:
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE  , BLOCK_SIZE, BLOCK_SIZE);
+                    break;
+                case PLAYER_UP:
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE , BLOCK_SIZE, BLOCK_SIZE);
+                    break;
+                case PLAYER_LEFT:
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                    break;
+                case PLAYER_RIGHT:
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE , pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                    break;
+            }
+
+            if (attackTick > 15) {
+                attackTick = 0;
+                isSpecial = false;
+            }
+        }
 //        if (me) {
 //            pApplet.fill(0, 0, 255);
 //            int index = Util.getIndexByPosForMiniMap();
@@ -271,5 +302,11 @@ public class User extends View implements Constants {
         this.speed = speed;
     }
 
+    public boolean isSpecial() {
+        return isSpecial;
+    }
 
+    public void setSpecial(boolean special) {
+        isSpecial = special;
+    }
 }

@@ -69,7 +69,7 @@ public class Communicator {
 //                    jsonObject = (JsonObject) jsonParser.parse(str);
 
 
-//                    System.out.println(jsonObject);
+                    System.out.println(jsonObject);
 
                     String type = jsonObject.get("type").getAsString();
 
@@ -179,6 +179,12 @@ public class Communicator {
         JsonObject body = new JsonObject();
         body.addProperty("num", image.getCharacterImage());
         jsonObject.add("body", body);
+        send(jsonObject);
+    }
+
+    public void sendSpecial() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "Special");
         send(jsonObject);
     }
 
