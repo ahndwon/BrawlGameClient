@@ -15,7 +15,7 @@ public class User extends View implements Constants {
     private String state;
     private int tick;
     private int attackTick;
-    private int characterImage = 10;
+    private int characterImage;
     private boolean isAttack;
     private boolean isSpecial;
     private int time;
@@ -63,9 +63,14 @@ public class User extends View implements Constants {
         pApplet.fill(255, 0, 0);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
 
-        pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+        if (state.equals("STOP")) {
+            pApplet.image(SpriteManager.getImage(characterImage, 1),
+                    pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+        } else {
+            pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
+                    pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
 
+        }
         pApplet.fill(0);
         pApplet.textSize(10);
         pApplet.text(name, pos.x - 20, pos.y + 40);
@@ -98,19 +103,19 @@ public class User extends View implements Constants {
             switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE  , BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE , BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE , pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 
@@ -167,26 +172,27 @@ public class User extends View implements Constants {
     @Override
     public void onUpdate(Camera camera) {
 
+        int imageNum = (characterImage / 10) * 10;
         if (state.equals("MOVE")) {
             switch (direction) {
                 case "UP": {
-                    characterImage = Constants.USER_UP;
+                    characterImage = imageNum;
                     y -= speed;
                     break;
                 }
                 case "DOWN": {
-                    characterImage = Constants.USER_DOWN;
+                    characterImage = imageNum + 1;
                     y += speed;
                     break;
                 }
                 case "LEFT": {
-                    characterImage = Constants.USER_LEFT;
+                    characterImage = imageNum + 2;
                     x -= speed;
 
                     break;
                 }
                 case "RIGHT": {
-                    characterImage = Constants.USER_RIGHT;
+                    characterImage = imageNum + 3;
                     x += speed;
                     break;
                 }
@@ -223,6 +229,14 @@ public class User extends View implements Constants {
             pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
         }
 
+    }
+
+    public int getCharacterImage() {
+        return characterImage;
+    }
+
+    public void setCharacterImage(int characterImage) {
+        this.characterImage = characterImage;
     }
 
     public void setMe(boolean me) {

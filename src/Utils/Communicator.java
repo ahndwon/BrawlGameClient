@@ -34,12 +34,7 @@ public class Communicator {
         InetSocketAddress endPoint = new InetSocketAddress(host, port);
         try {
             socket.connect(endPoint);
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("type", "Join");
-            JsonObject body = new JsonObject();
-            body.addProperty("user", user.getName());
-            jsonObject.add("body", body);
-            send(jsonObject);
+            sendJoin(user);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,15 +104,29 @@ public class Communicator {
                             int index = jsonObject.get("index").getAsInt();
                             int message = jsonObject.get("message").getAsInt();
                             listener.onMapCorrectReceive(index, message);
+                            break;
+                        case "Reject":
+                            listener.onRejectReceive(jsonObject);
+                            break;
                     }
 
                 }
+                disconnect();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
 
+    public void disconnect() {
+        try {
+            socket.getInputStream().close();
+            socket.getOutputStream().close();
+            socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setOnCommunicatorListener(CommunicatorListener listener) {
         this.listener = listener;
@@ -147,6 +156,15 @@ public class Communicator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendJoin(User user) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "Join");
+        JsonObject body = new JsonObject();
+        body.addProperty("user", user.getName());
+        jsonObject.add("body", body);
+        send(jsonObject);
     }
 
     public void sendMove(Move move) {
