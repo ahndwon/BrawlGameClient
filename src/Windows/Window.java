@@ -29,6 +29,7 @@ public class Window extends PApplet implements Constants {
     private UI ui;
     private int i = 0;
     private Camera camera;
+    private int tick;
     private boolean isJoin = true;
 
     @Override
@@ -106,7 +107,7 @@ public class Window extends PApplet implements Constants {
             @Override
             public void onKillReceive(Kill kill) {
                 if (userLibrary.containsKey(kill.getTo())) {
-                    ui.addKiller(kill.getFrom(), kill.getTo());
+                    ui.addKiller(kill.getFrom(), kill.getTo(), tick);
                 }
             }
 
@@ -209,6 +210,7 @@ public class Window extends PApplet implements Constants {
     }
     @Override
     public void draw() {
+        tick++;
         background(255);
 
         if (myMap.isLoad()) {
@@ -226,7 +228,7 @@ public class Window extends PApplet implements Constants {
                 userLibrary.get(user).render(this);
             }
 
-            ui.render(this);
+            ui.render(this, tick);
             myMap.minimapRender(this);
 
 
@@ -235,6 +237,10 @@ public class Window extends PApplet implements Constants {
 
             for (String user : userNames) {
                 userLibrary.get(user).miniRender(this);
+            }
+
+            if (mousePressed) {
+                ui.checkUserName(mouseX, mouseY);
             }
         }
         if (isJoin && !myMap.isLoad()) {
@@ -359,5 +365,10 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1, 32, 32);
         SpriteManager.loadSprite(this, POTION, "./image/potion.png", 0, 0, 50, 63, 7);
 
+        SpriteManager.loadImage(this, UI, "./image/ui.png");
+        SpriteManager.loadImage(this, ARROWUP, "./image/arrowup.png");
+        SpriteManager.loadImage(this, ARROWDOWN, "./image/arrowdown.png");
+
+     
     }
 }
