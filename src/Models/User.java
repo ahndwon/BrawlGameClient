@@ -56,15 +56,19 @@ public class User extends View implements Constants {
     @Override
     public void render(PApplet pApplet) {
         tick++;
-
         pApplet.fill(255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
         pApplet.fill(255, 0, 0);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
 
-        pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
-                pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+        if (state.equals("STOP")) {
+            pApplet.image(SpriteManager.getImage(characterImage, 1),
+                    pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+        } else {
+            pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
+                    pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
 
+        }
         pApplet.fill(0);
         pApplet.textSize(10);
         pApplet.text(name, pos.x - 20, pos.y + 40);
@@ -97,19 +101,19 @@ public class User extends View implements Constants {
             switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 
@@ -136,8 +140,7 @@ public class User extends View implements Constants {
     @Override
     public void onUpdate(Camera camera) {
 
-        int imageNum = (characterImage / 10 )* 10;
-        System.out.println("imageNum : " + imageNum);
+        int imageNum = (characterImage / 10) * 10;
         if (state.equals("MOVE")) {
             switch (direction) {
                 case "UP": {

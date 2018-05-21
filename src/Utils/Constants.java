@@ -50,6 +50,27 @@ public interface Constants {
     int CHARACTER_THREE_LEFT = 32;
     int CHARACTER_THREE_RIGHT = 33;
 
+    int CHARACTER_FOUR_UP = 40;
+    int CHARACTER_FOUR_DOWN = 41;
+    int CHARACTER_FOUR_LEFT = 42;
+    int CHARACTER_FOUR_RIGHT = 43;
+
+    int CHARACTER_FIVE_UP = 50;
+    int CHARACTER_FIVE_DOWN = 51;
+    int CHARACTER_FIVE_LEFT = 52;
+    int CHARACTER_FIVE_RIGHT = 53;
+
+    int CHARACTER_SIX_UP = 60;
+    int CHARACTER_SIX_DOWN = 61;
+    int CHARACTER_SIX_LEFT = 62;
+    int CHARACTER_SIX_RIGHT = 63;
+
+    int CHARACTER_SEVEN_UP = 70;
+    int CHARACTER_SEVEN_DOWN = 71;
+    int CHARACTER_SEVEN_LEFT = 72;
+    int CHARACTER_SEVEN_RIGHT = 73;
+
+
 
 
     int GRASS = 111;
