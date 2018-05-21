@@ -76,8 +76,12 @@ public interface Constants {
     int GRASS = 111;
     int SLOW_TILE = 222;
     int POTION = 333;
+    int UI = 444;
+    int ARROWUP = 555;
+    int ARROWDOWN = 666;
 
     int MAPSIZE = 1600;
 
     int CHARACTER = 5;
+
 }
