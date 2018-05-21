@@ -11,6 +11,7 @@ public class User extends View implements Constants {
     private String name;
     private String direction;
     private int hp;
+    private int mana;
     private int score;
     private String state;
     private int tick;
@@ -27,23 +28,25 @@ public class User extends View implements Constants {
     private Vector2D pos;
     private int speed;
 
-    public User(float x, float y, String name, String direction, int hp, int score, String state) {
+    public User(float x, float y, String name, String direction, int hp, int mana, int score, String state) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.direction = direction;
         this.hp = hp;
+        this.mana = mana;
         this.score = score;
         this.state = state;
         this.speed = Constants.PLAYER_SPEED;
     }
 
-    public User(float x, float y, String name, String direction, int hp, int score, String state, boolean me) {
+    public User(float x, float y, String name, String direction, int hp, int mana, int score, String state, boolean me) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.direction = direction;
         this.hp = hp;
+        this.mana = mana;
         this.score = score;
         this.state = state;
         this.me = true;
@@ -61,7 +64,9 @@ public class User extends View implements Constants {
         pApplet.fill(255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
         pApplet.fill(255, 0, 0);
-        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 10);
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 5);
+        pApplet.fill(0, 0, 255);
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 15, mana / 2f, 5);
 
         if (state.equals("STOP")) {
             pApplet.image(SpriteManager.getImage(characterImage, 1),
@@ -81,20 +86,24 @@ public class User extends View implements Constants {
             isHit = false;
         }
 
-
-//        if (isHit) {
-//            pApplet.fill(255, 0, 0);
-//            pApplet.rect(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-//            isHit = false;
-//        }
-
-
         if (state.equals("ATTACK") && !isTime) {
             time = 0;
             isAttack = true;
         }
 
+        if (state.equals("SPECIAL") && !isTime) {
+            time = 0;
+            isSpecial = true;
+        }
 
+
+        renderAttack(pApplet);
+        renderSpecial(pApplet);
+
+
+    }
+
+    private void renderAttack(PApplet pApplet) {
         if (isAttack) {
             time++;
             System.out.println("isAttack");
@@ -124,9 +133,10 @@ public class User extends View implements Constants {
                 isAttack = false;
             }
         }
+    }
 
-
-        if (isSpecial) {
+    private void renderSpecial(PApplet pApplet) {
+        if (isSpecial && mana >= 30) {
             time++;
             System.out.println("isSpecial");
             attackTick++;
@@ -322,5 +332,13 @@ public class User extends View implements Constants {
 
     public void setSpecial(boolean special) {
         isSpecial = special;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
     }
 }

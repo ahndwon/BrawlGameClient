@@ -28,7 +28,6 @@ public class KillTypeAdapter extends TypeAdapter<Kill> {
 
         while (reader.hasNext()) {
             switch (reader.nextName()) {
-
                 case "body":
                     reader.beginObject();
                     break;

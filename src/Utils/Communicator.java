@@ -14,7 +14,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Communicator {
@@ -71,7 +70,6 @@ public class Communicator {
                     Gson gson;
 
                     switch (type) {
-
                         case "Map":
                             gson = new GsonBuilder().registerTypeAdapter(Map.class, new MapTypeAdapter()).create();
                             Map map = gson.fromJson(jsonObject.get("body").toString(), Map.class);
@@ -100,6 +98,7 @@ public class Communicator {
                             }
                             listener.onUpdate(updates);
                             break;
+
                         case "Correct":
                             int index = jsonObject.get("index").getAsInt();
                             int message = jsonObject.get("message").getAsInt();
@@ -109,7 +108,6 @@ public class Communicator {
                             listener.onRejectReceive(jsonObject);
                             break;
                     }
-
                 }
                 disconnect();
             } catch (Exception e) {
@@ -168,7 +166,6 @@ public class Communicator {
     }
 
     public void sendMove(Move move) {
-
         String direction = move.getDirection();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("type", "Move");
@@ -176,7 +173,6 @@ public class Communicator {
         body.addProperty("direction", direction);
         jsonObject.add("body", body);
         send(jsonObject);
-
     }
 
     public void sendAttack() {

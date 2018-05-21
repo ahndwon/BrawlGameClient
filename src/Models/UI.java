@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UI implements Utils.Constants {
     private ConcurrentHashMap<String, User> users;
     private List<String> userNames;
-    //    private ConcurrentHashMap<String, String> killers = new ConcurrentHashMap<>();
     private List<String> killerNames = new ArrayList<>();
     private List<Integer> delete = new ArrayList<>();
     private List<String> victim = new ArrayList<>();

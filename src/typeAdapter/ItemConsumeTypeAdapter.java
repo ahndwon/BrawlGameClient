@@ -31,7 +31,6 @@ public class ItemConsumeTypeAdapter extends TypeAdapter<ItemConsume> {
                     itemConsume.setIndex(reader.nextInt());
                     break;
             }
-
         }
 
         reader.endObject();

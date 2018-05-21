@@ -32,7 +32,6 @@ public class Map extends View {
     }
 
     private void checkCenter() {
-
         for (int i = 0; i < map.length; i++) {
             if (Util.getPosXByIndex(i) == (int) user.getX())
                 userX = (int) ((Constants.WINDOW_SIZE_X - 200) / 2 - user.getX());
@@ -57,16 +56,19 @@ public class Map extends View {
                 pApplet.fill(0, 255, 0);
                 pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
                         pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
+                pApplet.image(SpriteManager.getImage(Constants.HEAL_POTION, tick / 10 % 7),
                         pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
                         Constants.BLOCK_SIZE);
-
+            } else if (map[i] == 3) {
+                pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
+                        pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                pApplet.image(SpriteManager.getImage(Constants.MANA_POTION, tick / 10 % 7),
+                        pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
+                        Constants.BLOCK_SIZE);
             } else {
                 pApplet.fill(0, 0, 255);
                 pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), pos[i].x,
                         pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-
-
             }
             pApplet.textSize(10);
             pApplet.fill(0);
@@ -88,7 +90,7 @@ public class Map extends View {
                 pApplet.fill(0, 255, 0);
                 pApplet.image(SpriteManager.getImage(Constants.GRASS),
                         Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
-                pApplet.image(SpriteManager.getImage(Constants.POTION, tick / 10 % 7),
+                pApplet.image(SpriteManager.getImage(Constants.HEAL_POTION, tick / 10 % 7),
                         Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
 
             } else {

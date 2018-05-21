@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 
 public class HitTypeAdapter extends TypeAdapter<Hit> {
+
     @Override
     public void write(JsonWriter writer, Hit hit) throws IOException {
         writer.beginObject();
@@ -28,7 +29,6 @@ public class HitTypeAdapter extends TypeAdapter<Hit> {
 
         while (reader.hasNext()) {
             switch (reader.nextName()) {
-
                 case "body":
                     reader.beginObject();
                     break;
@@ -41,7 +41,6 @@ public class HitTypeAdapter extends TypeAdapter<Hit> {
                 case "damage":
                     h.setDamage(reader.nextInt());
                     break;
-
             }
         }
         reader.endObject();

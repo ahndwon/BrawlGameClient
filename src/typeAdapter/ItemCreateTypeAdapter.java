@@ -27,7 +27,6 @@ public class ItemCreateTypeAdapter extends TypeAdapter<ItemCreate> {
                 case "index" :
                     itemCreate.setIndex(reader.nextInt());
                     break;
-
             }
         }
 

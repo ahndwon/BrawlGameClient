@@ -18,7 +18,6 @@ public class MapTypeAdapter extends TypeAdapter<Map> {
     public Map read(JsonReader reader) throws IOException {
         reader.beginObject();
 
-
         while (reader.hasNext()) {
             switch (reader.nextName()) {
                 case "body" :
@@ -32,7 +31,6 @@ public class MapTypeAdapter extends TypeAdapter<Map> {
                     }
                     map = new Map(mapArray);
                     break;
-
             }
         }
         reader.endArray();

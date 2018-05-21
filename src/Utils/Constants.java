@@ -6,10 +6,10 @@ public interface Constants {
     String PLAYER_LEFT = "LEFT";
     String PLAYER_RIGHT = "RIGHT";
 
-    int USER_UP = 0;
-    int USER_DOWN = 1;
-    int USER_LEFT = 2;
-    int USER_RIGHT = 3;
+    int USER_UP = 10;
+    int USER_DOWN = 11;
+    int USER_LEFT = 12;
+    int USER_RIGHT = 13;
 
     int BLOCK_COUNT_X = 32;
     int BLOCK_COUNT_Y = 32;
@@ -72,10 +72,11 @@ public interface Constants {
 
     int GRASS = 111;
     int SLOW_TILE = 222;
-    int POTION = 333;
-    int UI = 444;
-    int ARROWUP = 555;
-    int ARROWDOWN = 666;
+    int HEAL_POTION = 333;
+    int MANA_POTION = 444;
+    int UI = 555;
+    int ARROWUP = 666;
+    int ARROWDOWN = 777;
 
     int MAPSIZE = 1600;
 

@@ -12,15 +12,13 @@ import dwon.SpriteManager;
 import processing.core.PApplet;
 import state.*;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yunJ", PLAYER_DOWN, 100, 10, USER_STOP, true);
+    private User user = new User(100, 100, "yunJ", PLAYER_DOWN, 100, 100,10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -39,7 +37,7 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-        communicator = new Communicator("192.168.11.77", 5000);
+        communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
 //        userLibrary.putIfAbsent(user.getName(), user);
@@ -72,7 +70,7 @@ public class Window extends PApplet implements Constants {
                         userNames.add(u.getUser());
 
                     userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
-                            u.getUser(), u.getDirection(), u.getHp(), u.getScore(), u.getState()));
+                            u.getUser(), u.getDirection(), u.getHp(), u.getMana(), u.getScore(), u.getState()));
 
                     if (u.getUser().equals(user.getName())) {
                         String userName = user.getName();
@@ -92,11 +90,11 @@ public class Window extends PApplet implements Constants {
                         user.setX(u.getX());
                         user.setY(u.getY());
                         user.setHp(u.getHp());
+                        user.setMana(u.getMana());
                         user.setDirection(u.getDirection());
                         user.setScore(u.getScore());
                         user.setState(u.getState());
                         user.setSpeed(u.getSpeed());
-                        user.setCharacterImage(u.getCharacterImage());
                         user.setPosX((myMap.getLenX()));
                         user.setPosY((myMap.getLenY()));
                     }
@@ -162,6 +160,13 @@ public class Window extends PApplet implements Constants {
 
         });
 
+        keyEventManager.addPressListener(67, (isOnPress, duration) -> {
+            if (isOnPress) {
+                user.setSpecial(true);
+                communicator.sendSpecial();
+            }
+        });
+
         keyEventManager.addReleaseListener(LEFT, duration -> {
             communicator.sendStop();
             communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
@@ -186,6 +191,12 @@ public class Window extends PApplet implements Constants {
             user.setState("STOP");
         });
 
+        keyEventManager.addPressListener(67, (isOnPress, duration) -> {
+            if (isOnPress) {
+                user.setSpecial(true);
+                communicator.sendSpecial();
+            }
+        });
 
         keyEventManager.addPressListener(32, (isOnPress, duration) -> {
 //                communicator.sendAttack();
@@ -194,14 +205,6 @@ public class Window extends PApplet implements Constants {
             if (isOnPress) {
                 user.setAttack(true);
                 communicator.sendAttack();
-            }
-
-        });
-
-        keyEventManager.addPressListener(67, (isOnPress, duration) -> {
-            if (isOnPress) {
-                user.setSpecial(true);
-                communicator.sendSpecial();
             }
         });
 
@@ -230,9 +233,7 @@ public class Window extends PApplet implements Constants {
             camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
             camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
 
-
             myMap.onUpdate(camera);
-
             myMap.render(this);
 
             for (String user : userNames) {
@@ -245,7 +246,6 @@ public class Window extends PApplet implements Constants {
 
             keyEventManager.update();
 
-
             for (String user : userNames) {
                 userLibrary.get(user).miniRender(this);
             }
@@ -253,7 +253,33 @@ public class Window extends PApplet implements Constants {
             if (mousePressed) {
                 ui.checkUserName(mouseX, mouseY);
             }
+        }
 
+        if (isJoin && !myMap.isLoad()) {
+            fill(255);
+            fill(0, 255, 0);
+            textSize(40);
+            text("please choose your character >> ", 150, 100);
+            textSize(20);
+            fill(0);
+            image(SpriteManager.getImage(CHARACTER_ONE_DOWN, 0), 200, 150, 100, 100);
+            text("NUM 1", 220, 280);
+            image(SpriteManager.getImage(CHARACTER_TWO_DOWN, 0), 400, 150, 100, 100);
+            text("NUM 2", 420, 280);
+            image(SpriteManager.getImage(CHARACTER_THREE_DOWN, 0), 600, 150, 100, 100);
+            text("NUM 3", 620, 280);
+            image(SpriteManager.getImage(CHARACTER_FOUR_DOWN, 0), 200, 300, 100, 100);
+            text("NUM 4", 220, 430);
+            image(SpriteManager.getImage(CHARACTER_FIVE_DOWN, 0), 400, 300, 100, 100);
+            text("NUM 5", 420, 430);
+            image(SpriteManager.getImage(CHARACTER_SIX_DOWN, 0), 600, 300, 100, 100);
+            text("NUM 6", 620, 430);
+            image(SpriteManager.getImage(CHARACTER_SEVEN_DOWN, 0), 200, 450, 100, 100);
+            text("NUM 7", 220, 580);
+        }
+
+        if (!isJoin) {
+            showRejectMessage();
         }
     }
 
@@ -323,21 +349,6 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadSprite(this, CHARACTER_THREE_RIGHT, "./image/image.png", 32, 32, new int[]{30, 31, 32, 31});
         SpriteManager.loadSprite(this, CHARACTER_THREE_UP, "./image/image.png", 32, 32, new int[]{42, 43, 44, 43});
 
-        SpriteManager.loadSprite(this, CHARACTER_ONE_DOWN, "./image/image.png", 32, 32, new int[]{0, 1, 2, 1});
-        SpriteManager.loadSprite(this, CHARACTER_ONE_LEFT, "./image/image.png", 32, 32, new int[]{12, 13, 14, 13});
-        SpriteManager.loadSprite(this, CHARACTER_ONE_RIGHT, "./image/image.png", 32, 32, new int[]{24, 25, 26, 25});
-        SpriteManager.loadSprite(this, CHARACTER_ONE_UP, "./image/image.png", 32, 32, new int[]{36, 37, 38, 37});
-
-        SpriteManager.loadSprite(this, CHARACTER_TWO_DOWN, "./image/image.png", 32, 32, new int[]{3, 4, 5, 3});
-        SpriteManager.loadSprite(this, CHARACTER_TWO_LEFT, "./image/image.png", 32, 32, new int[]{15, 16, 17, 16});
-        SpriteManager.loadSprite(this, CHARACTER_TWO_RIGHT, "./image/image.png", 32, 32, new int[]{27, 28, 29, 28});
-        SpriteManager.loadSprite(this, CHARACTER_TWO_UP, "./image/image.png", 32, 32, new int[]{39, 40, 41, 40});
-
-        SpriteManager.loadSprite(this, CHARACTER_THREE_DOWN, "./image/image.png", 32, 32, new int[]{6, 7, 8, 7});
-        SpriteManager.loadSprite(this, CHARACTER_THREE_LEFT, "./image/image.png", 32, 32, new int[]{18, 19, 20, 19});
-        SpriteManager.loadSprite(this, CHARACTER_THREE_RIGHT, "./image/image.png", 32, 32, new int[]{30, 31, 32, 31});
-        SpriteManager.loadSprite(this, CHARACTER_THREE_UP, "./image/image.png", 32, 32, new int[]{42, 43, 44, 43});
-
         SpriteManager.loadSprite(this, CHARACTER_FOUR_DOWN, "./image/image.png", 32, 32, new int[]{9, 10, 11, 10});
         SpriteManager.loadSprite(this, CHARACTER_FOUR_LEFT, "./image/image.png", 32, 32, new int[]{21, 22, 23, 22});
         SpriteManager.loadSprite(this, CHARACTER_FOUR_RIGHT, "./image/image.png", 32, 32, new int[]{33, 34, 35, 34});
@@ -361,17 +372,17 @@ public class Window extends PApplet implements Constants {
 
         SpriteManager.loadSprite(this, FIST, "./image/super_dragon_fist_effect.png", 0, 0,
                 192, 192, 6);
-        SpriteManager.loadImage(this, GRASS, "./image/grass.png");
-        SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1, 32, 32);
-        SpriteManager.loadSprite(this, POTION, "./image/potion.png", 0, 0, 50, 63, 7);
-
         SpriteManager.loadImage(this, UI, "./image/ui.png");
         SpriteManager.loadImage(this, ARROWUP, "./image/arrowup.png");
         SpriteManager.loadImage(this, ARROWDOWN, "./image/arrowdown.png");
 
-
+        SpriteManager.loadImage(this, GRASS, "./image/grass.png");
+        SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1, 32, 32);
+        SpriteManager.loadSprite(this, HEAL_POTION, "./image/potion.png", 0, 0, 50, 63, 7);
 
         SpriteManager.loadImage(this, FIRE_ATTACK_1, "./image/fireblast1.png");
         SpriteManager.loadImage(this, FIRE_ATTACK_2, "./image/fireblast2.png");
+
+        SpriteManager.loadSprite(this, MANA_POTION, "./image/mana_potion.png", 0, 0, 128, 128, 4);
     }
 }
