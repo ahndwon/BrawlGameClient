@@ -136,28 +136,26 @@ public class User extends View implements Constants {
     @Override
     public void onUpdate(Camera camera) {
 
-        int imageNum = (characterImage / 10 )* 10;
-        System.out.println("imageNum : " + imageNum);
         if (state.equals("MOVE")) {
             switch (direction) {
                 case "UP": {
-                    characterImage = imageNum;
+                    characterImage = Constants.USER_UP;
                     y -= speed;
                     break;
                 }
                 case "DOWN": {
-                    characterImage = imageNum + 1;
+                    characterImage = Constants.USER_DOWN;
                     y += speed;
                     break;
                 }
                 case "LEFT": {
-                    characterImage = imageNum + 2;
+                    characterImage = Constants.USER_LEFT;
                     x -= speed;
 
                     break;
                 }
                 case "RIGHT": {
-                    characterImage = imageNum + 3;
+                    characterImage = Constants.USER_RIGHT;
                     x += speed;
                     break;
                 }
@@ -177,30 +175,23 @@ public class User extends View implements Constants {
         charX %= MAPSIZE;
         charY %= MAPSIZE;
 
-        if (charX < 0) {
+        if(charX < 0){
             charX += MAPSIZE;
         }
 
-        if (charY < 0) {
+        if(charY < 0){
             charY += MAPSIZE;
         }
 
         if (me) {
             pApplet.fill(0, 0, 200);
-            pApplet.ellipse(charX / 10f, charY / 10f, CHARACTER, CHARACTER);
-        } else {
+            pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
+        }
+        else {
             pApplet.fill(0, 0, 0);
-            pApplet.ellipse(charX / 10f, charY / 10f, CHARACTER, CHARACTER);
+            pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
         }
 
-    }
-
-    public int getCharacterImage() {
-        return characterImage;
-    }
-
-    public void setCharacterImage(int characterImage) {
-        this.characterImage = characterImage;
     }
 
     public void setMe(boolean me) {
