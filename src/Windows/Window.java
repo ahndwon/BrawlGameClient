@@ -19,7 +19,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yunJ", PLAYER_DOWN, 100, 100,10, USER_STOP, true);
+    private User user = new User(100, 100, "yunJ", PLAYER_DOWN,
+            100, 100, 100,10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -30,11 +31,14 @@ public class Window extends PApplet implements Constants {
     private Camera camera;
     private int tick;
     private boolean isJoin = true;
+    private boolean isOnPressC = false;
+    private boolean isOnPressSPACE = false;
 
     @Override
     public void settings() {
         size(WINDOW_SIZE_X, WINDOW_SIZE_Y);
     }
+
 
     @Override
     public void setup() {
@@ -55,7 +59,6 @@ public class Window extends PApplet implements Constants {
 //                myMap.setUser(user);
             }
 
-
             @Override
             public void onHitReceive(Hit hit) {
                 if (userLibrary.containsKey(hit.getTo())) {
@@ -71,19 +74,24 @@ public class Window extends PApplet implements Constants {
                         userNames.add(u.getUser());
 
                     userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
-                            u.getUser(), u.getDirection(), u.getHp(), u.getMana(), u.getScore(), u.getState()));
+                            u.getUser(), u.getDirection(), u.getHp(), u.getMana(),
+                            u.getStamina(), u.getScore(), u.getState()));
 
                     if (u.getUser().equals(user.getName())) {
                         String userName = user.getName();
                         user = null;
                         user = userLibrary.get(userName);
                         user.setMe(true);
-                    }
-
-                    if (i == 0) {
-                        myMap.setUserX((int) (400 - user.getX()));
-                        myMap.setUserY((int) (300 - user.getY()));
-                        i++;
+                        user.setX(u.getX());
+                        user.setY(u.getY());
+                        user.setHp(u.getHp());
+                        user.setMana(u.getMana());
+                        user.setStamina(u.getStamina());
+                        user.setDirection(u.getDirection());
+                        user.setScore(u.getScore());
+                        user.setState(u.getState());
+                        user.setSpeed(u.getSpeed());
+                        user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
 
                     if (userLibrary.containsKey(u.getUser())) {
@@ -92,6 +100,7 @@ public class Window extends PApplet implements Constants {
                         user.setY(u.getY());
                         user.setHp(u.getHp());
                         user.setMana(u.getMana());
+                        user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
                         user.setScore(u.getScore());
                         user.setState(u.getState());
@@ -128,45 +137,72 @@ public class Window extends PApplet implements Constants {
 
         loadImage();
 
-        keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
-            communicator.sendMove(new Move("LEFT"));
-            user.setDirection(PLAYER_LEFT);
-            user.setState(USER_MOVE);
-            myMap.setLenX(myMap.getLenX() + PLAYER_SPEED * 2);
+        addPressListeners();
 
+        addReleaseListeners();
+    }
+
+    private void addPressListeners() {
+        keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
+            if (isOnPress) {
+                communicator.sendMove(new Move("LEFT"));
+                user.setDirection(PLAYER_LEFT);
+                user.setState(USER_MOVE);
+                myMap.setLenX(myMap.getLenX() + PLAYER_SPEED * 2);
+            }
         });
 
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
-            communicator.sendMove(new Move("RIGHT"));
-            user.setDirection(PLAYER_RIGHT);
-            user.setState(USER_MOVE);
-            myMap.setLenX(myMap.getLenX() - PLAYER_SPEED * 2);
-
+            if (isOnPress) {
+                communicator.sendMove(new Move("RIGHT"));
+                user.setDirection(PLAYER_RIGHT);
+                user.setState(USER_MOVE);
+                myMap.setLenX(myMap.getLenX() - PLAYER_SPEED * 2);
+            }
         });
 
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
-            communicator.sendMove(new Move("UP"));
-            user.setDirection(PLAYER_UP);
-            user.setState(USER_MOVE);
-            myMap.setLenY(myMap.getLenY() + PLAYER_SPEED * 2);
-
+            if (isOnPress) {
+                communicator.sendMove(new Move("UP"));
+                user.setDirection(PLAYER_UP);
+                user.setState(USER_MOVE);
+                myMap.setLenY(myMap.getLenY() + PLAYER_SPEED * 2);
+            }
         });
 
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
-            communicator.sendMove(new Move("DOWN"));
-            user.setDirection(PLAYER_DOWN);
-            user.setState(USER_MOVE);
-            myMap.setLenY(myMap.getLenY() - PLAYER_SPEED * 2);
-
+            if (isOnPress) {
+                communicator.sendMove(new Move("DOWN"));
+                user.setDirection(PLAYER_DOWN);
+                user.setState(USER_MOVE);
+                myMap.setLenY(myMap.getLenY() - PLAYER_SPEED * 2);
+            }
         });
 
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
-            if (isOnPress) {
+            if (isOnPress && user.getMana() >= 30) {
+                System.out.println("user mana: " + user.getMana());
                 user.setSpecial(true);
                 communicator.sendSpecial();
             }
         });
 
+        keyEventManager.addPressListener(32, (isOnPress, duration) -> {
+            if (isOnPress) {
+                user.setAttack(true);
+                communicator.sendAttack();
+            }
+        });
+
+        keyEventManager.addPressListener(88, (isOnPress, duration) -> {
+            if (isOnPress) {
+                user.setState(USER_SWIFT);
+                communicator.sendSwift();
+            }
+        });
+    }
+
+    private void addReleaseListeners() {
         keyEventManager.addReleaseListener(LEFT, duration -> {
             communicator.sendStop();
             communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
@@ -191,28 +227,15 @@ public class Window extends PApplet implements Constants {
             user.setState("STOP");
         });
 
-        keyEventManager.addPressListener(67, (isOnPress, duration) -> {
-            if (isOnPress) {
-                user.setSpecial(true);
-                communicator.sendSpecial();
-            }
-        });
-
-        keyEventManager.addPressListener(32, (isOnPress, duration) -> {
-//                communicator.sendAttack();
-//                user.setDirection(PLAYER_DOWN);
-//                user.setY(user.getY() + 3);
-            if (isOnPress) {
-                user.setAttack(true);
-                communicator.sendAttack();
-            }
-        });
-
         keyEventManager.addReleaseListener(32, duration -> {
             communicator.sendStop();
         });
 
         keyEventManager.addReleaseListener(67, duration -> {
+            communicator.sendStop();
+        });
+
+        keyEventManager.addReleaseListener(88, duration -> {
             communicator.sendStop();
         });
     }
@@ -223,6 +246,7 @@ public class Window extends PApplet implements Constants {
         text("your name is already used. \nplease change it to another name.", 100, 300);
 
     }
+
     @Override
     public void draw() {
         tick++;
@@ -323,6 +347,43 @@ public class Window extends PApplet implements Constants {
                     communicator.sendCharacterImageNum(new Image(70));
                     myMap.setLoad(true);
                     break;
+
+//                case LEFT:
+//                    communicator.sendMove(new Move("LEFT"));
+//                    user.setDirection(PLAYER_LEFT);
+//                    user.setState(USER_MOVE);
+//                    break;
+//                case RIGHT:
+//                    communicator.sendMove(new Move("RIGHT"));
+//                    user.setDirection(PLAYER_RIGHT);
+//                    user.setState(USER_MOVE);
+//                    break;
+//                case DOWN:
+//                    communicator.sendMove(new Move("DOWN"));
+//                    user.setDirection(PLAYER_DOWN);
+//                    user.setState(USER_MOVE);
+//                    break;
+//                case UP:
+//                    communicator.sendMove(new Move("UP"));
+//                    user.setDirection(PLAYER_UP);
+//                    user.setState(USER_MOVE);
+//                    break;
+//
+//                case 67:
+//                    if (!isOnPressC && user.getMana() >= 30) {
+//                        System.out.println("user mana: " + user.getMana());
+//                        user.setSpecial(true);
+//                        communicator.sendSpecial();
+//                        isOnPressC = true;
+//                    }
+//                    break;
+//
+//                case 32:
+//                    if (!isOnPressSPACE) {
+//                        user.setAttack(true);
+//                        communicator.sendAttack();
+//                        isOnPressSPACE = true;
+//                    }
             }
         }
     }
@@ -332,6 +393,40 @@ public class Window extends PApplet implements Constants {
         if (myMap.isLoad()) {
             keyEventManager.setRelease(keyCode);
         }
+
+//        switch (keyCode) {
+//            case LEFT:
+//                communicator.sendStop();
+//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
+//                user.setState("STOP");
+//                break;
+//            case RIGHT:
+//                communicator.sendStop();
+//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
+//                user.setState("STOP");
+//                break;
+//            case UP:
+//                communicator.sendStop();
+//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
+//                user.setState("STOP");
+//                break;
+//            case DOWN:
+//                communicator.sendStop();
+//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
+//                user.setState("STOP");
+//                break;
+//
+//            case 67:
+//                communicator.sendStop();
+//                isOnPressC = false;
+//                break;
+//
+//            case 32:
+//                communicator.sendStop();
+//                isOnPressSPACE = false;
+//                break;
+//        }
+
     }
 
     public void loadImage() {
@@ -381,9 +476,16 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1, 32, 32);
         SpriteManager.loadSprite(this, HEAL_POTION, "./image/potion.png", 0, 0, 50, 63, 7);
 
-        SpriteManager.loadImage(this, FIRE_ATTACK_1, "./image/fireblast1.png");
-        SpriteManager.loadImage(this, FIRE_ATTACK_2, "./image/fireblast2.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_UP_1, "./image/fireblast/up1.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_UP_2, "./image/fireblast/up2.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_DOWN_1, "./image/fireblast/down1.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_DOWN_2, "./image/fireblast/down2.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_LEFT_1, "./image/fireblast/left1.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_LEFT_2, "./image/fireblast/left2.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_RIGHT_1, "./image/fireblast/right1.png");
+        SpriteManager.loadImage(this, FIRE_ATTACK_RIGHT_2, "./image/fireblast/right2.png");
 
-        SpriteManager.loadSprite(this, MANA_POTION, "./image/mana_potion.png", 0, 0, 128, 128, 4);
+        SpriteManager.loadSprite(this, MANA_POTION, "./image/potions.png", 0, 2, 430, 500, 1);
+//        SpriteManager.loadSprite(this, MANA_POTION, "./image/mana_potion.png", 0, 0, 128, 128, 4);
     }
 }

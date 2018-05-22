@@ -12,6 +12,7 @@ public class User extends View implements Constants {
     private String direction;
     private int hp;
     private int mana;
+    private int stamina;
     private int score;
     private String state;
     private int tick;
@@ -26,26 +27,30 @@ public class User extends View implements Constants {
     private Vector2D pos;
     private int speed;
 
-    public User(float x, float y, String name, String direction, int hp, int mana, int score, String state) {
+    public User(float x, float y, String name, String direction,
+                int hp, int mana, int stamina, int score, String state) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.direction = direction;
         this.hp = hp;
         this.mana = mana;
+        this.stamina = stamina;
         this.score = score;
         this.state = state;
         this.speed = Constants.PLAYER_SPEED;
         this.characterImage = 10;
     }
 
-    public User(float x, float y, String name, String direction, int hp, int mana, int score, String state, boolean me) {
+    public User(float x, float y, String name, String direction, int hp, int mana,
+                int stamina, int score, String state, boolean me) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.direction = direction;
         this.hp = hp;
         this.mana = mana;
+        this.stamina = stamina;
         this.score = score;
         this.state = state;
         this.me = true;
@@ -60,20 +65,21 @@ public class User extends View implements Constants {
         tick++;
 
         pApplet.fill(255);
-        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 10);
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 15);
         pApplet.fill(255, 0, 0);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, hp / 2f, 5);
         pApplet.fill(0, 0, 255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 15, mana / 2f, 5);
+        pApplet.fill(0, 255, 0);
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 10, stamina / 2f, 5);
 
-        System.out.println("characterImage : " + characterImage);
+//        System.out.println("characterImage : " + characterImage);
         if (state.equals("STOP")) {
             pApplet.image(SpriteManager.getImage(characterImage, 1),
                     pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
         } else {
             pApplet.image(SpriteManager.getImage(characterImage, tick / 10 % 4),
                     pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-
         }
         pApplet.fill(0);
         pApplet.textSize(10);
@@ -94,12 +100,8 @@ public class User extends View implements Constants {
             time = 0;
             isSpecial = true;
         }
-
-
         renderAttack(pApplet);
         renderSpecial(pApplet);
-
-
     }
 
     private void renderAttack(PApplet pApplet) {
@@ -142,19 +144,22 @@ public class User extends View implements Constants {
 
             switch (direction) {
                 case PLAYER_DOWN:
-                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
                             pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
+
                 case PLAYER_UP:
-                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
                             pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
+
                 case PLAYER_LEFT:
-                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
                             pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
+
                 case PLAYER_RIGHT:
-                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
+                    pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
                             pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
@@ -168,64 +173,59 @@ public class User extends View implements Constants {
 
     @Override
     public void onUpdate(Camera camera) {
-
         int imageNum = (characterImage / 10) * 10;
+
         if (state.equals("MOVE")) {
             switch (direction) {
                 case "UP": {
                     characterImage = imageNum;
-                    y -= speed;
+                    y -= speed / 3f;
                     break;
                 }
                 case "DOWN": {
                     characterImage = imageNum + 1;
-                    y += speed;
+                    y += speed / 3f;
                     break;
                 }
                 case "LEFT": {
                     characterImage = imageNum + 2;
-                    x -= speed;
+                    x -= speed / 3f;
 
                     break;
                 }
                 case "RIGHT": {
                     characterImage = imageNum + 3;
-                    x += speed;
+                    x += speed / 3f;
                     break;
                 }
             }
-
         }
-
         pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
     }
 
 
     public void miniRender(PApplet pApplet) {
-
         float charX = x;
         float charY = y;
 
         charX %= MAPSIZE;
         charY %= MAPSIZE;
 
-        if(charX < 0){
+        if (charX < 0) {
             charX += MAPSIZE;
         }
 
-        if(charY < 0){
+        if (charY < 0) {
             charY += MAPSIZE;
         }
 
         if (me) {
             pApplet.fill(0, 0, 200);
-            pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
-        }
-        else {
+            pApplet.ellipse(charX / 10f, charY / 10f, CHARACTER, CHARACTER);
+        } else {
             pApplet.fill(0, 0, 0);
-            pApplet.ellipse(charX / 10f, charY / 10f , CHARACTER, CHARACTER);
+            pApplet.ellipse(charX / 10f, charY / 10f, CHARACTER, CHARACTER);
         }
-
     }
 
     public int getCharacterImage() {
@@ -257,7 +257,7 @@ public class User extends View implements Constants {
     }
 
     public void setHp(int hp) {
-        System.out.println("hp : " + hp);
+//        System.out.println("hp : " + hp);
         this.hp = hp;
     }
 
@@ -319,5 +319,13 @@ public class User extends View implements Constants {
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
     }
 }

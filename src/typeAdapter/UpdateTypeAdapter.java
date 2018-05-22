@@ -39,6 +39,9 @@ public class UpdateTypeAdapter extends TypeAdapter<Update> {
                 case "mana":
                     update.setMana(reader.nextInt());
                     break;
+                case "stamina":
+                    update.setStamina(reader.nextInt());
+                    break;
                 case "direction":
                     update.setDirection(reader.nextString());
                     break;

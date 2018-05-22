@@ -177,7 +177,7 @@ public class Communicator {
 
     public void sendAttack() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", "Attack");
+        jsonObject.addProperty("type", "USER");
         send(jsonObject);
     }
 
@@ -202,4 +202,9 @@ public class Communicator {
         send(jsonObject);
     }
 
+    public void sendSwift() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("type", "SWIFT");
+        send(jsonObject);
+    }
 }

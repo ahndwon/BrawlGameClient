@@ -4,6 +4,7 @@ import Utils.Constants;
 import Utils.Util;
 import dwon.SpriteManager;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UI implements Utils.Constants {
     private ConcurrentHashMap<String, User> users;
     private List<String> userNames;
-    private List<String> killerNames = new ArrayList<>();
     private List<Integer> delete = new ArrayList<>();
     private List<String> victim = new ArrayList<>();
     private List<String> killer = new ArrayList<>();
@@ -25,7 +25,6 @@ public class UI implements Utils.Constants {
     }
 
     public void checkUserName(float mx, float my) {
-
         if (userNames.size() > 5) {
             if (checkUp(mx, my) && arrow > -(30 * (userNames.size() - 5))) {
                 arrow -= 3;
@@ -43,13 +42,12 @@ public class UI implements Utils.Constants {
         return mx > 810 && mx < 990 && my > 560 && my < 590;
     }
 
-
     public void render(PApplet pApplet, int tick) {
-
+        pApplet.imageMode(PConstants.CORNER);
+        pApplet.translate(0, 0);
         pApplet.image(SpriteManager.getImage(Constants.UI),
                 800, 360,
                 200, 240);
-
 
         for (int i = 0; i < userNames.size(); i++) {
             pApplet.fill(0);
@@ -60,11 +58,9 @@ public class UI implements Utils.Constants {
                     WINDOW_SIZE_X - 100, -arrow + WINDOW_SIZE_Y - (i * 30 + 55));
         }
 
-
         pApplet.fill(255);
         pApplet.rect(820, 560, 160, 30);
         pApplet.rect(820, 370, 160, 30);
-
 
         pApplet.image(SpriteManager.getImage(Constants.ARROWUP),
                 820, 370,
@@ -91,7 +87,6 @@ public class UI implements Utils.Constants {
                             WINDOW_SIZE_X - 170, (i * 30 + 55));
                 }
             }
-
         }
         if (delete.size() > 0) {
             if (tick - delete.get(0) == 100) {
@@ -106,7 +101,6 @@ public class UI implements Utils.Constants {
 //        killers.put(from, to);
         killer.add(from);
         victim.add(to);
-        killerNames.add(from);
         delete.add(time);
     }
 

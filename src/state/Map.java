@@ -9,16 +9,12 @@ import Utils.Util;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 
-public class Map extends View {
+public class Map extends View implements Constants {
     private int[] map;
     private int lenX;
     private int lenY;
-    private User user;
-    int userX;
-    int userY;
     private int tick;
     private Vector2D[] pos;
-    private float x, y;
     private Camera camera;
     private boolean isLoad;
 
@@ -31,23 +27,13 @@ public class Map extends View {
         pos = new Vector2D[map.length];
     }
 
-    private void checkCenter() {
-        for (int i = 0; i < map.length; i++) {
-            if (Util.getPosXByIndex(i) == (int) user.getX())
-                userX = (int) ((Constants.WINDOW_SIZE_X - 200) / 2 - user.getX());
-            if (Util.getPosYByIndex(i) == (int) user.getY())
-                userY = (int) (Constants.WINDOW_SIZE_Y / 2 - user.getY());
-        }
-
-    }
-
     @Override
     public void render(PApplet pApplet) {
         tick++;
 
-
         for (int i = 0; i < map.length; i++) {
             pos[i] = camera.getWorldToScreen(Util.getPosXByIndex(i), Util.getPosYByIndex(i));
+
             if (map[i] == 0) {
                 pApplet.image(SpriteManager.getImage(Constants.GRASS),
                         pos[i].x, pos[i].y,
@@ -56,19 +42,22 @@ public class Map extends View {
                 pApplet.fill(0, 255, 0);
                 pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
                         pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                pApplet.image(SpriteManager.getImage(Constants.HEAL_POTION, tick / 10 % 7),
+                pApplet.image(SpriteManager.getImage(Constants.HEAL_POTION, tick / 3 % 7),
                         pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
                         Constants.BLOCK_SIZE);
             } else if (map[i] == 3) {
                 pApplet.image(SpriteManager.getImage(Constants.GRASS), pos[i].x,
                         pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
-                pApplet.image(SpriteManager.getImage(Constants.MANA_POTION, tick / 10 % 7),
+//                pApplet.image(SpriteManager.getImage(Constants.MANA_POTION, tick / 10 % 7),
+//                        pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
+//                        Constants.BLOCK_SIZE);
+                pApplet.image(SpriteManager.getImage(Constants.MANA_POTION, 0),
                         pos[i].x, pos[i].y, Constants.BLOCK_SIZE,
                         Constants.BLOCK_SIZE);
             } else {
                 pApplet.fill(0, 0, 255);
-                pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE), pos[i].x,
-                        pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
+                pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE),
+                        pos[i].x, pos[i].y, Constants.BLOCK_SIZE, Constants.BLOCK_SIZE);
             }
             pApplet.textSize(10);
             pApplet.fill(0);
@@ -89,20 +78,29 @@ public class Map extends View {
             } else if (map[i] == 2) {
                 pApplet.fill(0, 255, 0);
                 pApplet.image(SpriteManager.getImage(Constants.GRASS),
-                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
+                        MINI_MAP_BLOCK_SIZE, MINI_MAP_BLOCK_SIZE);
                 pApplet.image(SpriteManager.getImage(Constants.HEAL_POTION, tick / 10 % 7),
-                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
+                        MINI_MAP_BLOCK_SIZE, MINI_MAP_BLOCK_SIZE);
 
+            } else if (map[i] == 3) {
+                pApplet.image(SpriteManager.getImage(Constants.GRASS),
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
+                        MINI_MAP_BLOCK_SIZE, MINI_MAP_BLOCK_SIZE);
+                pApplet.image(SpriteManager.getImage(Constants.MANA_POTION, 0),
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
+                        MINI_MAP_BLOCK_SIZE, MINI_MAP_BLOCK_SIZE);
             } else {
                 pApplet.fill(0, 0, 255);
                 pApplet.image(SpriteManager.getImage(Constants.SLOW_TILE),
-                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i), 5,5);
-
+                        Util.getPosXByIndexForMiniMap(i), Util.getPosYByIndexForMiniMap(i),
+                        MINI_MAP_BLOCK_SIZE, MINI_MAP_BLOCK_SIZE);
             }
         }
-
         pApplet.strokeWeight(0);
     }
+
     @Override
     public void onUpdate(Camera camera) {
         this.camera = camera;
@@ -143,26 +141,5 @@ public class Map extends View {
 
     public void setMap(int[] map) {
         this.map = map;
-    }
-
-//    public void setUser(User user) {
-//        this.user = user;
-////        checkCenter();
-//    }
-
-    public float getUserX() {
-        return userX;
-    }
-
-    public float getUserY() {
-        return userY;
-    }
-
-    public void setUserX(int userX) {
-        this.userX = userX;
-    }
-
-    public void setUserY(int userY) {
-        this.userY = userY;
     }
 }

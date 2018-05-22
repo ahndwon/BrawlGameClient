@@ -8,6 +8,7 @@ public class Update {
     private float y;
     private int hp;
     private int mana;
+    private int stamina;
     private String direction;
     private int score;
     private String state;
@@ -19,12 +20,13 @@ public class Update {
     }
 
     public Update(String user, float x, float y, int hp, int mana,
-                  String direction, int score, String state) {
+                  int stamina, String direction, int score, String state) {
         this.user = user;
         this.x = x;
         this.y = y;
         this.hp = hp;
         this.mana = mana;
+        this.stamina = stamina;
         this.direction = direction;
         this.score = score;
         this.state = state;
@@ -110,5 +112,13 @@ public class Update {
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
     }
 }

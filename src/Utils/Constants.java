@@ -15,16 +15,30 @@ public interface Constants {
     int BLOCK_COUNT_Y = 32;
 
     int BLOCK_SIZE = 50;
+    int MINI_MAP_BLOCK_SIZE = BLOCK_SIZE / 10;
 
     int FIST = 15;
-    int FIRE_ATTACK = 16;
-    int FIRE_ATTACK_1 = 16;
-    int FIRE_ATTACK_2 = 17;
+    int FIRE_ATTACK_UP = 1000;
+    int FIRE_ATTACK_UP_1 = 1000;
+    int FIRE_ATTACK_UP_2 = 1001;
 
-    int PLAYER_SPEED = 5;
+    int FIRE_ATTACK_DOWN = 1010;
+    int FIRE_ATTACK_DOWN_1 = 1010;
+    int FIRE_ATTACK_DOWN_2 = 1011;
+
+    int FIRE_ATTACK_LEFT = 1020;
+    int FIRE_ATTACK_LEFT_1 = 1020;
+    int FIRE_ATTACK_LEFT_2 = 1021;
+
+    int FIRE_ATTACK_RIGHT = 1030;
+    int FIRE_ATTACK_RIGHT_1 = 1030;
+    int FIRE_ATTACK_RIGHT_2 = 1031;
+
+    int PLAYER_SPEED = 15;
 
     String USER_STOP = "STOP";
     String USER_MOVE = "MOVE";
+    String USER_SWIFT = "SWIFT";
     String USER_ATTACK = "ATTACK";
 
     int WINDOW_SIZE_X = 1000;

@@ -18,7 +18,6 @@ public class KeyEventManager {
         public boolean isPress;
         public long pressedTime;
         public boolean isOnPress;
-
     }
 
     public interface PressListener {
@@ -39,6 +38,7 @@ public class KeyEventManager {
                 if (struct.isPress) {
                     pressListener.onPress(!struct.isOnPress, System.currentTimeMillis() - struct.pressedTime);
                     struct.isOnPress = true;
+                    break;
                 }
             }
 
