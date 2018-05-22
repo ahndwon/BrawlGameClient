@@ -22,8 +22,6 @@ public class User extends View implements Constants {
     private int time;
     private boolean isTime = false;
     private boolean isHit;
-    private float posX, posY;
-    private float userX, userY;
     private boolean me = false;
     private Vector2D pos;
     private int speed;
@@ -38,6 +36,7 @@ public class User extends View implements Constants {
         this.score = score;
         this.state = state;
         this.speed = Constants.PLAYER_SPEED;
+        this.characterImage = 10;
     }
 
     public User(float x, float y, String name, String direction, int hp, int mana, int score, String state, boolean me) {
@@ -50,10 +49,9 @@ public class User extends View implements Constants {
         this.score = score;
         this.state = state;
         this.me = true;
-        userX = x;
-        userY = y;
-        pos = new Vector2D(x, y);
+        this.pos = new Vector2D(x, y);
         this.speed = Constants.PLAYER_SPEED;
+        this.characterImage = 10;
     }
 
 
@@ -68,6 +66,7 @@ public class User extends View implements Constants {
         pApplet.fill(0, 0, 255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 15, mana / 2f, 5);
 
+        System.out.println("characterImage : " + characterImage);
         if (state.equals("STOP")) {
             pApplet.image(SpriteManager.getImage(characterImage, 1),
                     pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
@@ -144,11 +143,11 @@ public class User extends View implements Constants {
             switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE  , BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE , BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
@@ -156,7 +155,7 @@ public class User extends View implements Constants {
                     break;
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE , pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 
@@ -165,18 +164,6 @@ public class User extends View implements Constants {
                 isSpecial = false;
             }
         }
-//        if (me) {
-//            pApplet.fill(0, 0, 255);
-//            int index = Util.getIndexByPosForMiniMap();
-//            pApplet.ellipse(Util.getPosXByIndexForMiniMap(index), Util.getPosYByIndexForMiniMap(index), 5, 5);
-//        } else {
-//            pApplet.fill(0);
-//            int index = Util.getIndexByPosForMiniMap();
-//            pApplet.ellipse(Util.getPosXByIndexForMiniMap(index), Util.getPosYByIndexForMiniMap(index), 5, 5);
-//        }
-
-
-//            pApplet.image(SpriteManager.getImage(hammerImage, 0), hammerX, hammerY, 30, 30);
     }
 
     @Override
@@ -255,14 +242,6 @@ public class User extends View implements Constants {
 
     public boolean getMe() {
         return me;
-    }
-
-    public void setPosX(float x) {
-        posX = x;
-    }
-
-    public void setPosY(float y) {
-        posY = y;
     }
 
     public void setHit(boolean isHit) {

@@ -3,6 +3,7 @@ package Windows;
 import Models.Camera;
 import Models.UI;
 import Models.User;
+import Models.Vector2D;
 import Utils.Communicator;
 import Utils.CommunicatorListener;
 import Utils.Constants;
@@ -95,8 +96,7 @@ public class Window extends PApplet implements Constants {
                         user.setScore(u.getScore());
                         user.setState(u.getState());
                         user.setSpeed(u.getSpeed());
-                        user.setPosX((myMap.getLenX()));
-                        user.setPosY((myMap.getLenY()));
+                        user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
                 }
                 System.out.println("userLibrary: " + userLibrary.keySet());
@@ -285,9 +285,7 @@ public class Window extends PApplet implements Constants {
 
     public void keyPressed() {
         keyEventManager.setPress(keyCode);
-    }
 
-    public void keyReleased() {
         if (isJoin) {
             switch (keyCode) {
                 case '1':
@@ -325,9 +323,12 @@ public class Window extends PApplet implements Constants {
                     communicator.sendCharacterImageNum(new Image(70));
                     myMap.setLoad(true);
                     break;
-
             }
         }
+    }
+
+    public void keyReleased() {
+
         if (myMap.isLoad()) {
             keyEventManager.setRelease(keyCode);
         }
