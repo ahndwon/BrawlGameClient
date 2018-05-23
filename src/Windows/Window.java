@@ -134,7 +134,6 @@ public class Window extends PApplet implements Constants {
             }
         });
 
-
         loadImage();
 
         addPressListeners();
@@ -195,7 +194,7 @@ public class Window extends PApplet implements Constants {
         });
 
         keyEventManager.addPressListener(88, (isOnPress, duration) -> {
-            if (isOnPress) {
+            if (isOnPress && user.getStamina() > 30) {
                 user.setState(USER_SWIFT);
                 communicator.sendSwift();
             }
@@ -240,7 +239,7 @@ public class Window extends PApplet implements Constants {
         });
     }
 
-    public void showRejectMessage() {
+    private void showRejectMessage() {
         fill(0, 0, 255);
         textSize(30);
         text("your name is already used. \nplease change it to another name.", 100, 300);
@@ -347,43 +346,6 @@ public class Window extends PApplet implements Constants {
                     communicator.sendCharacterImageNum(new Image(70));
                     myMap.setLoad(true);
                     break;
-
-//                case LEFT:
-//                    communicator.sendMove(new Move("LEFT"));
-//                    user.setDirection(PLAYER_LEFT);
-//                    user.setState(USER_MOVE);
-//                    break;
-//                case RIGHT:
-//                    communicator.sendMove(new Move("RIGHT"));
-//                    user.setDirection(PLAYER_RIGHT);
-//                    user.setState(USER_MOVE);
-//                    break;
-//                case DOWN:
-//                    communicator.sendMove(new Move("DOWN"));
-//                    user.setDirection(PLAYER_DOWN);
-//                    user.setState(USER_MOVE);
-//                    break;
-//                case UP:
-//                    communicator.sendMove(new Move("UP"));
-//                    user.setDirection(PLAYER_UP);
-//                    user.setState(USER_MOVE);
-//                    break;
-//
-//                case 67:
-//                    if (!isOnPressC && user.getMana() >= 30) {
-//                        System.out.println("user mana: " + user.getMana());
-//                        user.setSpecial(true);
-//                        communicator.sendSpecial();
-//                        isOnPressC = true;
-//                    }
-//                    break;
-//
-//                case 32:
-//                    if (!isOnPressSPACE) {
-//                        user.setAttack(true);
-//                        communicator.sendAttack();
-//                        isOnPressSPACE = true;
-//                    }
             }
         }
     }
@@ -393,40 +355,6 @@ public class Window extends PApplet implements Constants {
         if (myMap.isLoad()) {
             keyEventManager.setRelease(keyCode);
         }
-
-//        switch (keyCode) {
-//            case LEFT:
-//                communicator.sendStop();
-//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
-//                user.setState("STOP");
-//                break;
-//            case RIGHT:
-//                communicator.sendStop();
-//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
-//                user.setState("STOP");
-//                break;
-//            case UP:
-//                communicator.sendStop();
-//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
-//                user.setState("STOP");
-//                break;
-//            case DOWN:
-//                communicator.sendStop();
-//                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
-//                user.setState("STOP");
-//                break;
-//
-//            case 67:
-//                communicator.sendStop();
-//                isOnPressC = false;
-//                break;
-//
-//            case 32:
-//                communicator.sendStop();
-//                isOnPressSPACE = false;
-//                break;
-//        }
-
     }
 
     public void loadImage() {
