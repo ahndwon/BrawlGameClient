@@ -2,22 +2,26 @@ package Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class KeyEventManager {
     private HashMap<Integer, KeyStruct> keys = new HashMap<>();
+    private List<Integer> preKeys = new ArrayList<>();
 
-    public class KeyStruct {
-        public ArrayList<PressListener> pressListeners;
-        public ArrayList<ReleaseListener> releaseListeners;
+    private class KeyStruct {
+        private ArrayList<PressListener> pressListeners;
+        private ArrayList<ReleaseListener> releaseListeners;
 
-        public KeyStruct() {
+        private KeyStruct() {
             pressListeners = new ArrayList<>();
             releaseListeners = new ArrayList<>();
         }
 
-        public boolean isPress;
-        public long pressedTime;
-        public boolean isOnPress;
+        private boolean isPress;
+        private long pressedTime;
+        private boolean isOnPress;
+
     }
 
     public interface PressListener {
@@ -38,7 +42,6 @@ public class KeyEventManager {
                 if (struct.isPress) {
                     pressListener.onPress(!struct.isOnPress, System.currentTimeMillis() - struct.pressedTime);
                     struct.isOnPress = true;
-                    break;
                 }
             }
 
@@ -46,6 +49,10 @@ public class KeyEventManager {
                 if (struct.isOnPress && !struct.isPress) {
                     releaseListener.onRelease(System.currentTimeMillis() - struct.pressedTime);
                     struct.isOnPress = false;
+//                    if (preKeys.size() > 0) {
+//                        keys.get(preKeys.get(0)).isPress = true;
+//                        keys.get(key).pressedTime = System.currentTimeMillis();
+//                    }
                 }
             }
 
@@ -66,14 +73,25 @@ public class KeyEventManager {
     public void setPress(int key) {
         if (!keys.containsKey(key)) return;
         if (keys.get(key).isPress) return;
-        keys.get(key).isPress = true;
-        keys.get(key).pressedTime = System.currentTimeMillis();
+//        for (Integer keyset : keys.keySet()) {
+//
+//            KeyStruct struct = keys.get(keyset);
+//            if (struct.isPress)
+//                preKeys.add(key);
+//        }
 
+//        if (preKeys.size() < 1) {
+            keys.get(key).isPress = true;
+            keys.get(key).pressedTime = System.currentTimeMillis();
+//        }
     }
+
 
     public void setRelease(int key) {
         if (!keys.containsKey(key)) return;
+        System.out.println(key);
         keys.get(key).isPress = false;
+
     }
 
     public void addPressListener(int key, PressListener listener) {

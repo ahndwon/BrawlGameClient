@@ -14,6 +14,8 @@ public class UI implements Utils.Constants {
     private ConcurrentHashMap<String, User> users;
     private List<String> userNames;
     private List<Integer> delete = new ArrayList<>();
+
+
     private List<String> victim = new ArrayList<>();
     private List<String> killer = new ArrayList<>();
     private int arrow;

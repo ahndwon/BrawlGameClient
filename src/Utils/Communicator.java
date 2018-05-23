@@ -63,7 +63,6 @@ public class Communicator {
 //                    jsonObject = (JsonObject) jsonParser.parse(str);
 
 
-                    System.out.println(jsonObject);
 
                     String type = jsonObject.get("type").getAsString();
 
