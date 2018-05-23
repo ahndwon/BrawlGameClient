@@ -175,27 +175,27 @@ public class User extends View implements Constants {
     public void onUpdate(Camera camera) {
         int imageNum = (characterImage / 10) * 10;
 
-        if (state.equals("MOVE")) {
+        if (state.equals("MOVE") || state.equals("STATE")) {
             switch (direction) {
                 case "UP": {
                     characterImage = imageNum;
-                    y -= speed / 3f;
+                    y -= (speed / 3f);
                     break;
                 }
                 case "DOWN": {
                     characterImage = imageNum + 1;
-                    y += speed / 3f;
+                    y += (speed / 3f);
                     break;
                 }
                 case "LEFT": {
                     characterImage = imageNum + 2;
-                    x -= speed / 3f;
+                    x -= (speed / 3f);
 
                     break;
                 }
                 case "RIGHT": {
                     characterImage = imageNum + 3;
-                    x += speed / 3f;
+                    x += (speed / 3f);
                     break;
                 }
             }

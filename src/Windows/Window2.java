@@ -31,8 +31,6 @@ public class Window2 extends PApplet implements Constants {
     private Camera camera;
     private int tick;
     private boolean isJoin = true;
-    private boolean isOnPressC = false;
-    private boolean isOnPressSPACE = false;
 
     @Override
     public void settings() {
