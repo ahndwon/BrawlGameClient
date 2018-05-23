@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Window extends PApplet implements Constants {
     private User user = new User(100, 100, "yunJe3", PLAYER_DOWN,
-            100, 100, 1000, 10, USER_STOP, true);
+            100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -84,6 +84,7 @@ public class Window extends PApplet implements Constants {
                         user.setY(u.getY());
                         user.setHp(u.getHp());
                         user.setMana(u.getMana());
+                        System.out.println("Mana :" + u.getMana());
                         user.setCharacterImage(u.getCharacterImage());
                         user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
@@ -175,7 +176,7 @@ public class Window extends PApplet implements Constants {
         });
 
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
-            if (isOnPress && user.getMana() >= 30) {
+            if (isOnPress && user.getMana() >= 40) {
                 user.setSpecial(true);
                 communicator.sendSpecial();
             }

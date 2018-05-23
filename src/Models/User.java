@@ -142,7 +142,8 @@ public class User extends View implements Constants {
     }
 
     private void renderSpecial(PApplet pApplet) {
-        if (isSpecial && mana >= 30) {
+        if (isSpecial) {
+            System.out.println("attack special");
             time++;
             System.out.println("isSpecial");
             attackTick++;
