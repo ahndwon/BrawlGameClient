@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Window extends PApplet implements Constants {
     private User user = new User(100, 100, "yunJe3", PLAYER_DOWN,
-            100, 100, 100, 10, USER_STOP, true);
+            100, 100, 1000, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -31,8 +31,6 @@ public class Window extends PApplet implements Constants {
     private Camera camera;
     private int tick;
     private boolean isJoin = true;
-    private boolean isOnPressC = false;
-    private boolean isOnPressSPACE = false;
 
     @Override
     public void settings() {
@@ -110,8 +108,6 @@ public class Window extends PApplet implements Constants {
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
                 }
-//                System.out.println("userLibrary: " + userLibrary.keySet());
-//                System.out.println("userNames: " + userNames.size());
             }
 
             @Override
@@ -129,8 +125,6 @@ public class Window extends PApplet implements Constants {
             @Override
             public void onRejectReceive(JsonObject jsonObject) {
                 isJoin = false;
-//                fill(255);
-//                rect(0, 0, 800, 600);
                 myMap.setLoad(false);
                 System.out.println(jsonObject);
             }
@@ -182,7 +176,6 @@ public class Window extends PApplet implements Constants {
 
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
             if (isOnPress && user.getMana() >= 30) {
-                System.out.println("user mana: " + user.getMana());
                 user.setSpecial(true);
                 communicator.sendSpecial();
             }
@@ -196,9 +189,11 @@ public class Window extends PApplet implements Constants {
         });
 
         keyEventManager.addPressListener(88, (isOnPress, duration) -> {
-            if (isOnPress && user.getStamina() > 30) {
+            if (isOnPress && user.getStamina() > 300) {
                 user.setState(USER_SWIFT);
                 communicator.sendSwift();
+            } else if (user.getStamina() < 300){
+                user.setTired(true);
             }
         });
     }

@@ -23,6 +23,7 @@ public class User extends View implements Constants {
     private int time;
     private boolean isTime = false;
     private boolean isHit;
+    private boolean isTired;
     private boolean me = false;
     private Vector2D pos;
     private int speed;
@@ -71,7 +72,11 @@ public class User extends View implements Constants {
         pApplet.fill(0, 0, 255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 15, mana / 2f, 5);
         pApplet.fill(0, 255, 0);
-        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 10, stamina / 2f, 5);
+        if (isTired) {
+            pApplet.fill(255, 0, 0);
+            isTired = false;
+        }
+        pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 10, (stamina / 10f) / 2f, 5);
 
 //        System.out.println("characterImage : " + characterImage);
         if (state.equals("STOP")) {
@@ -113,19 +118,19 @@ public class User extends View implements Constants {
             switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 
@@ -175,7 +180,7 @@ public class User extends View implements Constants {
     public void onUpdate(Camera camera) {
         int imageNum = (characterImage / 10) * 10;
 
-        if (state.equals("MOVE") || state.equals("STATE")) {
+        if (state.equals("MOVE") || state.equals("SWIFT")) {
             switch (direction) {
                 case "UP": {
                     characterImage = imageNum;
@@ -327,5 +332,13 @@ public class User extends View implements Constants {
 
     public void setStamina(int stamina) {
         this.stamina = stamina;
+    }
+
+    public boolean isTired() {
+        return isTired;
+    }
+
+    public void setTired(boolean tired) {
+        isTired = tired;
     }
 }

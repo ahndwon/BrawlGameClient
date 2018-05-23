@@ -55,17 +55,14 @@ public class Communicator {
 
                     len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
-//                    System.out.println("come on :" + str);
+                    System.out.println("come on :" + str);
 //                    JsonParser jsonParser = new JsonParser();
                     Gson gson2 = new Gson();
                     JsonObject jsonObject = gson2.fromJson(str, JsonObject.class);
 
 //                    jsonObject = (JsonObject) jsonParser.parse(str);
 
-
-
                     String type = jsonObject.get("type").getAsString();
-
                     Gson gson;
 
                     switch (type) {
@@ -176,7 +173,7 @@ public class Communicator {
 
     public void sendAttack() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("type", "USER");
+        jsonObject.addProperty("type", "Attack");
         send(jsonObject);
     }
 
