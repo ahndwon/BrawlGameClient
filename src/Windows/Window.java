@@ -4,22 +4,22 @@ import Models.Camera;
 import Models.UI;
 import Models.User;
 import Models.Vector2D;
-import Utils.Communicator;
-import Utils.CommunicatorListener;
-import Utils.Constants;
-import Utils.KeyEventManager;
+import Utils.*;
 import com.google.gson.JsonObject;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 import state.*;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yunJe", PLAYER_DOWN,
+    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -40,6 +40,18 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
+
+        SoundManager.loadSound(SOUND_THEME, "./sound/theme.wav");
+        try {
+            SoundManager.loop(SOUND_THEME, 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+
         communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
@@ -108,6 +120,7 @@ public class Window extends PApplet implements Constants {
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
                 }
+
             }
 
             @Override
