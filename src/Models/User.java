@@ -27,6 +27,7 @@ public class User extends View implements Constants {
     private boolean me = false;
     private Vector2D pos;
     private int speed;
+    private String attackDirection;
 
     public User(float x, float y, String name, String direction,
                 int hp, int mana, int stamina, int score, String state) {
@@ -110,12 +111,12 @@ public class User extends View implements Constants {
     }
 
     private void renderAttack(PApplet pApplet) {
-        if (isAttack) {
+        if (isAttack && !(state.equals("MOVE") || state.equals("SWIFT"))) {
             time++;
             System.out.println("isAttack");
             attackTick++;
 
-            switch (direction) {
+            switch (attackDirection) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
                             pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
@@ -142,13 +143,13 @@ public class User extends View implements Constants {
     }
 
     private void renderSpecial(PApplet pApplet) {
-        if (isSpecial) {
+        if (isSpecial && !state.equals("MOVE")) {
             System.out.println("attack special");
             time++;
             System.out.println("isSpecial");
             attackTick++;
 
-            switch (direction) {
+            switch (attackDirection) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
                             pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -341,5 +342,13 @@ public class User extends View implements Constants {
 
     public void setTired(boolean tired) {
         isTired = tired;
+    }
+
+    public String getAttackDirection() {
+        return attackDirection;
+    }
+
+    public void setAttackDirection(String attackDirection) {
+        this.attackDirection = attackDirection;
     }
 }

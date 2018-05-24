@@ -142,6 +142,8 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("LEFT"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_LEFT);
                 user.setState(USER_MOVE);
                 myMap.setLenX(myMap.getLenX() + PLAYER_SPEED * 2);
@@ -151,6 +153,8 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("RIGHT"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_RIGHT);
                 user.setState(USER_MOVE);
                 myMap.setLenX(myMap.getLenX() - PLAYER_SPEED * 2);
@@ -160,6 +164,8 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("UP"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_UP);
                 user.setState(USER_MOVE);
                 myMap.setLenY(myMap.getLenY() + PLAYER_SPEED * 2);
@@ -169,6 +175,8 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("DOWN"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_DOWN);
                 user.setState(USER_MOVE);
                 myMap.setLenY(myMap.getLenY() - PLAYER_SPEED * 2);
@@ -179,12 +187,14 @@ public class Window extends PApplet implements Constants {
             if (isOnPress && user.getMana() >= 40) {
                 user.setSpecial(true);
                 communicator.sendSpecial();
+                user.setAttackDirection(user.getDirection());
             }
         });
 
         keyEventManager.addPressListener(32, (isOnPress, duration) -> {
             if (isOnPress) {
                 user.setAttack(true);
+                user.setAttackDirection(user.getDirection());
                 communicator.sendAttack();
             }
         });
