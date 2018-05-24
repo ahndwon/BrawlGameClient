@@ -8,7 +8,9 @@ import typeAdapter.KillTypeAdapter;
 import typeAdapter.MapTypeAdapter;
 import typeAdapter.UpdateTypeAdapter;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -39,21 +41,31 @@ public class Communicator {
         }
 
         new Thread(() -> {
-            int len;
-            byte[] lengthBuf = new byte[2];
-            byte[] buf = new byte[3000];
+//            int len;
+//            byte[] lengthBuf = new byte[2];
+//            byte[] buf = new byte[3000];
             ByteBuffer byteBuffer = ByteBuffer.allocate(2);
 
-            try {
-                while ((len = socket.getInputStream().read(lengthBuf, 0, 2)) != -1) {
-                    byteBuffer.put(lengthBuf[0]);
-                    byteBuffer.put(lengthBuf[1]);
-                    byteBuffer.flip();
-                    Short length = byteBuffer.getShort();
-                    byteBuffer.clear();
+            try (
+                InputStream is = socket.getInputStream();
+                DataInputStream dis = new DataInputStream(is)) {
+                int readBytes;
+                while (true) {
+                     int len = dis.readUnsignedShort();
+
+                    byte[] buf = new byte[len];
+                    readBytes = dis.read(buf, 0, len);
+                    if (readBytes == -1)
+                        break;
+//                while ((len = socket.getInputStream().read(lengthBuf, 0, 2)) != -1) {
+//                    byteBuffer.put(lengthBuf[0]);
+//                    byteBuffer.put(lengthBuf[1]);
+//                    byteBuffer.flip();
+//                    Short length = byteBuffer.getShort();
+//                    byteBuffer.clear();
 //                    System.out.println("length :" +  length);
 
-                    len = socket.getInputStream().read(buf, 0, length);
+//                    len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
 //                    System.out.println("come on :" + str);
 //                    JsonParser jsonParser = new JsonParser();

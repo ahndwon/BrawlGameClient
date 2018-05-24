@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "yunJe3", PLAYER_DOWN,
+    private User user = new User(100, 100, "yunJe", PLAYER_DOWN,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -84,7 +84,6 @@ public class Window extends PApplet implements Constants {
                         user.setY(u.getY());
                         user.setHp(u.getHp());
                         user.setMana(u.getMana());
-                        System.out.println("Mana :" + u.getMana());
                         user.setCharacterImage(u.getCharacterImage());
                         user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
