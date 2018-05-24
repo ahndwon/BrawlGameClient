@@ -79,7 +79,7 @@ public class UI implements Utils.Constants {
                 200, 360);
 
         pApplet.fill(255, 0, 0);
-        pApplet.text("KILLLOG", 870, 30);
+        pApplet.text("KILL  LOG", 870, 30);
 
         if (killer.size() != 0) {
             for (int i = 0; i < killer.size(); i++) {

@@ -14,5 +14,6 @@
     <orderEntry type="library" name="gson-2.8.4" level="project" />
     <orderEntry type="library" name="Sprite_Manager" level="project" />
     <orderEntry type="library" name="Sprite_Manager" level="project" />
+    <orderEntry type="library" name="processing-sound" level="project" />
   </component>
 </module>

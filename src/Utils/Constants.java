@@ -82,7 +82,9 @@ public interface Constants {
     int CHARACTER_SEVEN_LEFT = 72;
     int CHARACTER_SEVEN_RIGHT = 73;
 
-
+    int SOUND_HIT = 1000;
+    int SOUND_BUBBLE = 1010;
+    int SOUND_THEME = 1020;
 
     int GRASS = 111;
     int SLOW_TILE = 222;

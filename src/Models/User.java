@@ -73,6 +73,7 @@ public class User extends View implements Constants {
         pApplet.fill(0, 0, 255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 15, mana / 2f, 5);
         pApplet.fill(0, 255, 0);
+
         if (isTired) {
             pApplet.fill(255, 0, 0);
             isTired = false;

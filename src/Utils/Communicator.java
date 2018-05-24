@@ -47,11 +47,11 @@ public class Communicator {
             ByteBuffer byteBuffer = ByteBuffer.allocate(2);
 
             try (
-                InputStream is = socket.getInputStream();
-                DataInputStream dis = new DataInputStream(is)) {
+                    InputStream is = socket.getInputStream();
+                    DataInputStream dis = new DataInputStream(is)) {
                 int readBytes;
                 while (true) {
-                     int len = dis.readUnsignedShort();
+                    int len = dis.readUnsignedShort();
 
                     byte[] buf = new byte[len];
                     readBytes = dis.read(buf, 0, len);
