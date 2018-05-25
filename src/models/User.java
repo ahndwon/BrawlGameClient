@@ -117,7 +117,7 @@ public class User extends View implements Constants {
         if (isAttack && !(state.equals("MOVE") || state.equals("SWIFT"))) {
             SoundManager.play(SOUND_HIT, attackTick / 5 % 3);
             time++;
-            System.out.println("isAttack");
+//            System.out.println("isAttack");
             attackTick++;
 
             switch (attackDirection) {
@@ -151,7 +151,7 @@ public class User extends View implements Constants {
             SoundManager.play(SOUND_FIRE, 0);
             System.out.println("attack special");
             time++;
-            System.out.println("isSpecial");
+//            System.out.println("isSpecial");
             attackTick++;
 
             switch (attackDirection) {

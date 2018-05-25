@@ -187,7 +187,7 @@ public class Window2 extends PApplet implements Constants {
             if (isOnPress && user.getMana() >= 40) {
                 user.setAttackDirection(user.getDirection());
                 user.setSpecial(true);
-                communicator.sendSpecial();
+//                communicator.sendSpecial();
             }
         });
 
