@@ -1,9 +1,8 @@
-package Utils;
+package utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class KeyEventManager {
     private HashMap<Integer, KeyStruct> keys = new HashMap<>();

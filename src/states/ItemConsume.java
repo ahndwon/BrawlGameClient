@@ -1,4 +1,4 @@
-package state;
+package states;
 
 public class ItemConsume {
     private String userName;

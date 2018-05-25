@@ -1,8 +1,8 @@
-package Utils;
+package utils;
 
-import Models.User;
+import models.User;
 import com.google.gson.*;
-import state.*;
+import states.*;
 import typeAdapter.HitTypeAdapter;
 import typeAdapter.KillTypeAdapter;
 import typeAdapter.MapTypeAdapter;
@@ -46,8 +46,7 @@ public class Communicator {
 //            byte[] buf = new byte[3000];
             ByteBuffer byteBuffer = ByteBuffer.allocate(2);
 
-            try (
-                    InputStream is = socket.getInputStream();
+            try (InputStream is = socket.getInputStream();
                     DataInputStream dis = new DataInputStream(is)) {
                 int readBytes;
                 while (true) {
@@ -67,7 +66,7 @@ public class Communicator {
 
 //                    len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
-//                    System.out.println("come on :" + str);
+                    System.out.println("come on :" + str);
 //                    JsonParser jsonParser = new JsonParser();
                     Gson gson2 = new Gson();
                     JsonObject jsonObject = gson2.fromJson(str, JsonObject.class);

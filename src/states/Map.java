@@ -1,11 +1,10 @@
-package state;
+package states;
 
-import Models.Camera;
-import Models.User;
-import Models.Vector2D;
-import Models.View;
-import Utils.Constants;
-import Utils.Util;
+import models.Camera;
+import models.Vector2D;
+import models.View;
+import utils.Constants;
+import utils.Util;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 

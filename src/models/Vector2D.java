@@ -1,4 +1,4 @@
-package Models;
+package models;
 
 public class Vector2D implements Cloneable {
 
@@ -415,12 +415,12 @@ public class Vector2D implements Cloneable {
 
 
     /**
-     * prints Vector 2D state
+     * prints Vector 2D states
      */
     public void print(){ System.out.print("X: " + x + "Y:" + y); }
 
     /**
-     * prints Vector 2D state
+     * prints Vector 2D states
      */
     public void println(){ System.out.println("X: " + x + "Y:" + y); }
 }

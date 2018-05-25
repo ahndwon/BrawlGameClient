@@ -3,7 +3,7 @@ package typeAdapter;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import state.ItemCreate;
+import states.ItemCreate;
 
 import java.io.IOException;
 

@@ -1,9 +1,9 @@
-package Models;
+package models;
 
-import Utils.Constants;
-import Utils.Util;
+import utils.Constants;
 import dwon.SpriteManager;
 import processing.core.PApplet;
+import utils.SoundManager;
 
 public class User extends View implements Constants {
     private float x;
@@ -16,7 +16,7 @@ public class User extends View implements Constants {
     private int score;
     private String state;
     private int tick;
-    private int attackTick;
+    private int attackTick = 0;
     private int characterImage;
     private boolean isAttack;
     private boolean isSpecial;
@@ -42,6 +42,7 @@ public class User extends View implements Constants {
         this.state = state;
         this.speed = Constants.PLAYER_SPEED;
         this.characterImage = 10;
+        this.attackDirection = PLAYER_DOWN;
     }
 
     public User(float x, float y, String name, String direction, int hp, int mana,
@@ -59,6 +60,7 @@ public class User extends View implements Constants {
         this.pos = new Vector2D(x, y);
         this.speed = Constants.PLAYER_SPEED;
         this.characterImage = 10;
+        this.attackDirection = PLAYER_DOWN;
     }
 
 
@@ -113,6 +115,7 @@ public class User extends View implements Constants {
 
     private void renderAttack(PApplet pApplet) {
         if (isAttack && !(state.equals("MOVE") || state.equals("SWIFT"))) {
+            SoundManager.play(SOUND_HIT, attackTick / 5 % 3);
             time++;
             System.out.println("isAttack");
             attackTick++;
@@ -145,6 +148,7 @@ public class User extends View implements Constants {
 
     private void renderSpecial(PApplet pApplet) {
         if (isSpecial && !state.equals("MOVE")) {
+            SoundManager.play(SOUND_FIRE, 0);
             System.out.println("attack special");
             time++;
             System.out.println("isSpecial");
@@ -211,7 +215,6 @@ public class User extends View implements Constants {
         pos = camera.getWorldToScreen(new Vector2D(this.x, this.y));
     }
 
-
     public void miniRender(PApplet pApplet) {
         float charX = x;
         float charY = y;
@@ -265,7 +268,6 @@ public class User extends View implements Constants {
     }
 
     public void setHp(int hp) {
-//        System.out.println("hp : " + hp);
         this.hp = hp;
     }
 

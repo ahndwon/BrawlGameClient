@@ -1,4 +1,4 @@
-package state;
+package states;
 
 public class Image {
     private int characterImage;

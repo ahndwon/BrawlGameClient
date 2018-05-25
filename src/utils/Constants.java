@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 public interface Constants {
     String PLAYER_UP = "UP";
@@ -85,6 +85,7 @@ public interface Constants {
     int SOUND_HIT = 1000;
     int SOUND_BUBBLE = 1010;
     int SOUND_THEME = 1020;
+    int SOUND_FIRE = 1030;
 
     int GRASS = 111;
     int SLOW_TILE = 222;

@@ -1,7 +1,6 @@
-package Models;
+package models;
 
-import Utils.Constants;
-import Utils.Util;
+import utils.Constants;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class UI implements Utils.Constants {
+public class UI implements utils.Constants {
     private ConcurrentHashMap<String, User> users;
     private List<String> userNames;
     private List<Integer> delete = new ArrayList<>();

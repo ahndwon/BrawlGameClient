@@ -1,6 +1,6 @@
-package state;
+package states;
 
-import Models.Vector2D;
+import models.Vector2D;
 
 public class Connect {
     private String name;

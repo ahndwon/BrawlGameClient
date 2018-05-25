@@ -1,6 +1,6 @@
-package Models;
+package models;
 
-import Utils.Constants;
+import utils.Constants;
 
 public class Camera {
     public Vector2D position;

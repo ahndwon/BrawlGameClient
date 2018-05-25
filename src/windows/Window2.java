@@ -1,25 +1,22 @@
-package Windows;
+package windows;
 
-import Models.Camera;
-import Models.UI;
-import Models.User;
-import Models.Vector2D;
-import Utils.*;
+import models.Camera;
+import models.UI;
+import models.User;
+import models.Vector2D;
+import utils.*;
 import com.google.gson.JsonObject;
 import dwon.SpriteManager;
 import processing.core.PApplet;
-import state.*;
+import states.*;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
+public class Window2 extends PApplet implements Constants {
+    private User user = new User(100, 100, "test", PLAYER_DOWN,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -40,17 +37,8 @@ public class Window extends PApplet implements Constants {
 
     @Override
     public void setup() {
-
-        SoundManager.loadSound(SOUND_THEME, "./sound/theme.wav");
-        try {
-            SoundManager.loop(SOUND_THEME, 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
+        loadSound();
+        SoundManager.loop(SOUND_THEME, 0);
 
         communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
@@ -197,16 +185,16 @@ public class Window extends PApplet implements Constants {
 
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
             if (isOnPress && user.getMana() >= 40) {
+                user.setAttackDirection(user.getDirection());
                 user.setSpecial(true);
                 communicator.sendSpecial();
-                user.setAttackDirection(user.getDirection());
             }
         });
 
         keyEventManager.addPressListener(32, (isOnPress, duration) -> {
             if (isOnPress) {
-                user.setAttack(true);
                 user.setAttackDirection(user.getDirection());
+                user.setAttack(true);
                 communicator.sendAttack();
             }
         });
@@ -437,5 +425,12 @@ public class Window extends PApplet implements Constants {
 
         SpriteManager.loadSprite(this, MANA_POTION, "./image/potions.png", 0, 2, 430, 500, 1);
 //        SpriteManager.loadSprite(this, MANA_POTION, "./image/mana_potion.png", 0, 0, 128, 128, 4);
+    }
+
+    public void loadSound() {
+        SoundManager.loadSound(SOUND_THEME, "./sound/theme.wav");
+        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit05.wav");
+        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit06.wav");
+        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit07.wav");
     }
 }

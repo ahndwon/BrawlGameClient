@@ -1,26 +1,23 @@
-package Windows;
+package windows;
 
-import Models.Camera;
-import Models.UI;
-import Models.User;
-import Models.Vector2D;
-import Utils.Communicator;
-import Utils.CommunicatorListener;
-import Utils.Constants;
-import Utils.KeyEventManager;
+import models.Camera;
+import models.UI;
+import models.User;
+import models.Vector2D;
+import utils.*;
 import com.google.gson.JsonObject;
 import dwon.SpriteManager;
 import processing.core.PApplet;
-import state.*;
+import states.*;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class Window2 extends PApplet implements Constants {
-    private User user = new User(100, 100, "test", PLAYER_DOWN,
-            100, 100, 1000, 10, USER_STOP, true);
+public class Window extends PApplet implements Constants {
+    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
+            100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -40,6 +37,9 @@ public class Window2 extends PApplet implements Constants {
 
     @Override
     public void setup() {
+        loadSound();
+        SoundManager.loop(SOUND_THEME, 0);
+
         communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
@@ -108,6 +108,7 @@ public class Window2 extends PApplet implements Constants {
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
                 }
+
             }
 
             @Override
@@ -141,6 +142,8 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("LEFT"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_LEFT);
                 user.setState(USER_MOVE);
                 myMap.setLenX(myMap.getLenX() + PLAYER_SPEED * 2);
@@ -150,6 +153,8 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("RIGHT"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_RIGHT);
                 user.setState(USER_MOVE);
                 myMap.setLenX(myMap.getLenX() - PLAYER_SPEED * 2);
@@ -159,6 +164,8 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("UP"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_UP);
                 user.setState(USER_MOVE);
                 myMap.setLenY(myMap.getLenY() + PLAYER_SPEED * 2);
@@ -168,6 +175,8 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("DOWN"));
+                user.setAttack(false);
+                user.setSpecial(false);
                 user.setDirection(PLAYER_DOWN);
                 user.setState(USER_MOVE);
                 myMap.setLenY(myMap.getLenY() - PLAYER_SPEED * 2);
@@ -175,7 +184,8 @@ public class Window2 extends PApplet implements Constants {
         });
 
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
-            if (isOnPress && user.getMana() >= 30) {
+            if (isOnPress && user.getMana() >= 40) {
+                user.setAttackDirection(user.getDirection());
                 user.setSpecial(true);
                 communicator.sendSpecial();
             }
@@ -183,6 +193,7 @@ public class Window2 extends PApplet implements Constants {
 
         keyEventManager.addPressListener(32, (isOnPress, duration) -> {
             if (isOnPress) {
+                user.setAttackDirection(user.getDirection());
                 user.setAttack(true);
                 communicator.sendAttack();
             }
@@ -414,5 +425,13 @@ public class Window2 extends PApplet implements Constants {
 
         SpriteManager.loadSprite(this, MANA_POTION, "./image/potions.png", 0, 2, 430, 500, 1);
 //        SpriteManager.loadSprite(this, MANA_POTION, "./image/mana_potion.png", 0, 0, 128, 128, 4);
+    }
+
+    public void loadSound() {
+        SoundManager.loadSound(SOUND_THEME, "./sound/theme.wav");
+        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit05.wav");
+        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit06.wav");
+        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit07.wav");
+        SoundManager.loadSound(SOUND_FIRE, "./sound/fire.wav");
     }
 }

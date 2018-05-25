@@ -1,6 +1,6 @@
-package state;
+package states;
 
-import Utils.Constants;
+import utils.Constants;
 
 public class Update {
     private String user;
