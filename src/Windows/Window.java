@@ -19,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
+    private User user = new User(100, 100, "ahnc", PLAYER_DOWN,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -52,7 +52,7 @@ public class Window extends PApplet implements Constants {
             e.printStackTrace();
         }
 
-        communicator = new Communicator("localhost", 5000);
+        communicator = new Communicator("192.168.11.76", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
 //        userLibrary.putIfAbsent(user.getName(), user);
@@ -154,9 +154,10 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("LEFT"));
+                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
                 user.setAttack(false);
                 user.setSpecial(false);
-                user.setDirection(PLAYER_LEFT);
+//                user.setDirection(PLAYER_LEFT);
                 user.setState(USER_MOVE);
                 myMap.setLenX(myMap.getLenX() + PLAYER_SPEED * 2);
             }
@@ -165,9 +166,10 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("RIGHT"));
+                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 3));
                 user.setAttack(false);
                 user.setSpecial(false);
-                user.setDirection(PLAYER_RIGHT);
+//                user.setDirection(PLAYER_RIGHT);
                 user.setState(USER_MOVE);
                 myMap.setLenX(myMap.getLenX() - PLAYER_SPEED * 2);
             }
@@ -176,9 +178,10 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("UP"));
+                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10));
                 user.setAttack(false);
                 user.setSpecial(false);
-                user.setDirection(PLAYER_UP);
+//                user.setDirection(PLAYER_UP);
                 user.setState(USER_MOVE);
                 myMap.setLenY(myMap.getLenY() + PLAYER_SPEED * 2);
             }
@@ -187,9 +190,10 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("DOWN"));
+                communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 1));
                 user.setAttack(false);
                 user.setSpecial(false);
-                user.setDirection(PLAYER_DOWN);
+//                user.setDirection(PLAYER_DOWN);
                 user.setState(USER_MOVE);
                 myMap.setLenY(myMap.getLenY() - PLAYER_SPEED * 2);
             }
@@ -198,8 +202,8 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
             if (isOnPress && user.getMana() >= 40) {
                 user.setSpecial(true);
-                communicator.sendSpecial();
                 user.setAttackDirection(user.getDirection());
+                communicator.sendSpecial();
             }
         });
 
@@ -224,38 +228,37 @@ public class Window extends PApplet implements Constants {
     private void addReleaseListeners() {
         keyEventManager.addReleaseListener(LEFT, duration -> {
             communicator.sendStop();
-            communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 2));
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(RIGHT, duration -> {
             communicator.sendStop();
-            communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 3));
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(UP, duration -> {
             communicator.sendStop();
-            communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10));
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(DOWN, duration -> {
             communicator.sendStop();
-            communicator.sendCharacterImageNum(new Image(user.getCharacterImage() / 10 * 10 + 1));
             user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(32, duration -> {
             communicator.sendStop();
+            user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(67, duration -> {
             communicator.sendStop();
+            user.setState("STOP");
         });
 
         keyEventManager.addReleaseListener(88, duration -> {
             communicator.sendStop();
+            user.setState("STOP");
         });
     }
 

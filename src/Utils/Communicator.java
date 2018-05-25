@@ -41,33 +41,37 @@ public class Communicator {
         }
 
         new Thread(() -> {
-//            int len;
-//            byte[] lengthBuf = new byte[2];
-//            byte[] buf = new byte[3000];
+            int len;
+            byte[] lengthBuf = new byte[2];
+            byte[] buf = new byte[3000];
             ByteBuffer byteBuffer = ByteBuffer.allocate(2);
 
-            try (
-                    InputStream is = socket.getInputStream();
-                    DataInputStream dis = new DataInputStream(is)) {
-                int readBytes;
-                while (true) {
-                    int len = dis.readUnsignedShort();
+            try {
+//                InputStream is = socket.getInputStream();
+//                DataInputStream dis = new DataInputStream(is);
+//                int readBytes;
+//
+//                while (true) {
+//                    int len = dis.readUnsignedShort();
+//
+//                    byte[] buf = new byte[30000];
+//
+//                    readBytes = dis.read(buf, 0, len);
+//                    if (readBytes == -1)
+//                        break;
 
-                    byte[] buf = new byte[len];
-                    readBytes = dis.read(buf, 0, len);
-                    if (readBytes == -1)
-                        break;
-//                while ((len = socket.getInputStream().read(lengthBuf, 0, 2)) != -1) {
-//                    byteBuffer.put(lengthBuf[0]);
-//                    byteBuffer.put(lengthBuf[1]);
-//                    byteBuffer.flip();
-//                    Short length = byteBuffer.getShort();
-//                    byteBuffer.clear();
-//                    System.out.println("length :" +  length);
+                while ((len = socket.getInputStream().read(lengthBuf, 0, 2)) != -1) {
+                    byteBuffer.put(lengthBuf[0]);
+                    byteBuffer.put(lengthBuf[1]);
+                    byteBuffer.flip();
+                    Short length = byteBuffer.getShort();
+                    byteBuffer.clear();
 
-//                    len = socket.getInputStream().read(buf, 0, length);
+                    len = socket.getInputStream().read(buf, 0, length);
                     String str = new String(buf, 0, len);
-//                    System.out.println("come on :" + str);
+//                    System.out.println("len + " + len);
+                    System.out.println(str);
+//                    System.out.println("readBytes :" + readBytes);
 //                    JsonParser jsonParser = new JsonParser();
                     Gson gson2 = new Gson();
                     JsonObject jsonObject = gson2.fromJson(str, JsonObject.class);

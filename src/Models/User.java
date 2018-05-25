@@ -114,7 +114,7 @@ public class User extends View implements Constants {
     private void renderAttack(PApplet pApplet) {
         if (isAttack && !(state.equals("MOVE") || state.equals("SWIFT"))) {
             time++;
-            System.out.println("isAttack");
+//            System.out.println("isAttack");
             attackTick++;
 
             switch (attackDirection) {
@@ -147,7 +147,7 @@ public class User extends View implements Constants {
         if (isSpecial && !state.equals("MOVE")) {
             System.out.println("attack special");
             time++;
-            System.out.println("isSpecial");
+//            System.out.println("isSpecial");
             attackTick++;
 
             switch (attackDirection) {

@@ -177,7 +177,7 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(67, (isOnPress, duration) -> {
             if (isOnPress && user.getMana() >= 30) {
                 user.setSpecial(true);
-                communicator.sendSpecial();
+//                communicator.sendSpecial();
             }
         });
 
