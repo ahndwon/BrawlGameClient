@@ -86,6 +86,9 @@ public interface Constants {
     int SOUND_BUBBLE = 1010;
     int SOUND_THEME = 1020;
     int SOUND_FIRE = 1030;
+    int SOUND_HP = 1040;
+    int SOUND_MANA = 1050;
+    int SOUND_PUNCH = 1060;
 
     int GRASS = 111;
     int SLOW_TILE = 222;
@@ -98,5 +101,14 @@ public interface Constants {
     int MAPSIZE = 1600;
 
     int CHARACTER = 5;
+
+    int PUNCH_UP = 2000;
+    int PUNCH_DOWN = 2001;
+    int PUNCH_LEFT = 2002;
+    int PUNCH_RIGHT = 2003;
+
+    int PUNCH_WIDTH = 160;
+    int PUNCH_HEIGHT = 100;
+
 
 }

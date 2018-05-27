@@ -80,14 +80,21 @@ public class Window extends PApplet implements Constants {
                         user.setMe(true);
                         user.setX(u.getX());
                         user.setY(u.getY());
+
+                        user.onHpChange(u.getHp());
                         user.setHp(u.getHp());
+
+                        user.onManaChange(u.getMana());
                         user.setMana(u.getMana());
+
                         user.setCharacterImage(u.getCharacterImage());
                         user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
                         user.setScore(u.getScore());
+
                         user.onStateChange(u.getState());
                         user.setState(u.getState());
+
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
@@ -96,8 +103,13 @@ public class Window extends PApplet implements Constants {
                         User user = userLibrary.get(u.getUser());
                         user.setX(u.getX());
                         user.setY(u.getY());
+
+                        user.onHpChange(u.getHp());
                         user.setHp(u.getHp());
+
+                        user.onManaChange(u.getMana());
                         user.setMana(u.getMana());
+
                         user.setCharacterImage(u.getCharacterImage());
                         user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
@@ -107,9 +119,7 @@ public class Window extends PApplet implements Constants {
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
-
                 }
-
             }
 
             @Override
@@ -145,6 +155,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("LEFT"));
+                user.setAttackDirection("LEFT");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_LEFT);
@@ -156,6 +167,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("RIGHT"));
+                user.setAttackDirection("RIGHT");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_RIGHT);
@@ -167,6 +179,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("UP"));
+                user.setAttackDirection("UP");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_UP);
@@ -178,6 +191,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("DOWN"));
+                user.setAttackDirection("DOWN");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_DOWN);
@@ -409,13 +423,13 @@ public class Window extends PApplet implements Constants {
 
         SpriteManager.loadSprite(this, FIST, "./image/super_dragon_fist_effect.png", 0, 0,
                 192, 192, 6);
-        SpriteManager.loadImage(this, UI, "./image/ui.png");
-        SpriteManager.loadImage(this, ARROWUP, "./image/arrowup.png");
-        SpriteManager.loadImage(this, ARROWDOWN, "./image/arrowdown.png");
+        SpriteManager.loadImage(this, UI, "./image/ui/ui.png");
+        SpriteManager.loadImage(this, ARROWUP, "./image/ui/arrowup.png");
+        SpriteManager.loadImage(this, ARROWDOWN, "./image/ui/arrowdown.png");
 
-        SpriteManager.loadImage(this, GRASS, "./image/grass.png");
-        SpriteManager.loadImage(this, SLOW_TILE, "./image/tiles.png", 1, 1, 32, 32);
-        SpriteManager.loadSprite(this, HEAL_POTION, "./image/potion.png", 0, 0, 50, 63, 7);
+        SpriteManager.loadImage(this, GRASS, "./image/tile/grass.png");
+        SpriteManager.loadImage(this, SLOW_TILE, "./image/tile/tiles.png", 1, 1, 32, 32);
+        SpriteManager.loadSprite(this, HEAL_POTION, "./image/tile/potion.png", 0, 0, 50, 63, 7);
 
         SpriteManager.loadImage(this, FIRE_ATTACK_UP_1, "./image/fireblast/up1.png");
         SpriteManager.loadImage(this, FIRE_ATTACK_UP_2, "./image/fireblast/up2.png");
@@ -426,8 +440,12 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadImage(this, FIRE_ATTACK_RIGHT_1, "./image/fireblast/right1.png");
         SpriteManager.loadImage(this, FIRE_ATTACK_RIGHT_2, "./image/fireblast/right2.png");
 
-        SpriteManager.loadSprite(this, MANA_POTION, "./image/potions.png", 0, 2, 430, 500, 1);
-//        SpriteManager.loadSprite(this, MANA_POTION, "./image/mana_potion.png", 0, 0, 128, 128, 4);
+        SpriteManager.loadSprite(this, MANA_POTION, "./image/tile/potions.png", 0, 2, 430, 500, 1);
+
+        SpriteManager.loadSprite(this, PUNCH_UP, "./image/punch/punch_up.png", 0, 0, 50, 80, 4);
+        SpriteManager.loadSprite(this, PUNCH_DOWN, "./image/punch/punch_down.png", 0, 0, 50, 80, 4);
+        SpriteManager.loadSprite(this, PUNCH_LEFT, "./image/punch/punch_left.png", 0, 0, 80, 50, 4);
+        SpriteManager.loadSprite(this, PUNCH_RIGHT, "./image/punch/punch_right.png", 0, 0, 80, 50, 4);
     }
 
     public void loadSound() {
@@ -436,5 +454,9 @@ public class Window extends PApplet implements Constants {
         SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit06.wav");
         SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit07.wav");
         SoundManager.loadSound(SOUND_FIRE, "./sound/fire.wav");
+        SoundManager.loadSound(SOUND_HP, "./sound/hp.wav");
+        SoundManager.loadSound(SOUND_MANA, "./sound/mana.wav");
+        SoundManager.loadSound(SOUND_PUNCH, "./sound/punch.wav");
+
     }
 }

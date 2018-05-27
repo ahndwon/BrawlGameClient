@@ -1,6 +1,6 @@
 package models;
 
-import states.Update;
+import processing.core.PConstants;
 import utils.Constants;
 import dwon.SpriteManager;
 import processing.core.PApplet;
@@ -68,7 +68,7 @@ public class User extends View implements Constants {
     @Override
     public void render(PApplet pApplet) {
         tick++;
-
+        pApplet.imageMode(PConstants.CORNER);
         pApplet.fill(255);
         pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - 20, 50, 15);
         pApplet.fill(255, 0, 0);
@@ -95,7 +95,7 @@ public class User extends View implements Constants {
         pApplet.text(name, pos.x - 20, pos.y + 40);
 
         if (isHit) {
-            pApplet.fill(255, 0, 0);
+            pApplet.fill(255, 0, 0, 200);
             pApplet.rect(pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
             isHit = false;
         }
@@ -118,22 +118,24 @@ public class User extends View implements Constants {
             time++;
             attackTick++;
 
+            pApplet.imageMode(PConstants.CENTER);
             switch (attackDirection) {
                 case PLAYER_DOWN:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(PUNCH_DOWN, attackTick / 2 % 4),
+                            pos.x, pos.y + BLOCK_SIZE / 2, PUNCH_HEIGHT, PUNCH_WIDTH);
                     break;
                 case PLAYER_UP:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(PUNCH_UP, attackTick / 2 % 4),
+                            pos.x, pos.y - BLOCK_SIZE / 2, PUNCH_HEIGHT, PUNCH_WIDTH);
+
                     break;
                 case PLAYER_LEFT:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(PUNCH_LEFT, attackTick / 2 % 4),
+                            pos.x - BLOCK_SIZE / 2, pos.y, PUNCH_WIDTH, PUNCH_HEIGHT);
                     break;
                 case PLAYER_RIGHT:
-                    pApplet.image(SpriteManager.getImage(FIST, attackTick / 5 % 6),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                    pApplet.image(SpriteManager.getImage(PUNCH_RIGHT, attackTick / 2 % 4),
+                            pos.x + BLOCK_SIZE / 2, pos.y, PUNCH_WIDTH, PUNCH_HEIGHT);
                     break;
             }
 
@@ -149,75 +151,76 @@ public class User extends View implements Constants {
             System.out.println("attack special");
             time++;
             attackTick++;
-
+            int shakeX = (int) (Math.random() * 10 - 5);
+            int shakeY = (int) (Math.random() * 10 - 5);
             switch (attackDirection) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE * 1.5f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE * 1.5f, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE * 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE * 2, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE * 2.5f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE * 2.5f, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE * 3, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE * 3, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE * 3.5f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE * 3.5f, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 + BLOCK_SIZE * 4f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE * 4f, BLOCK_SIZE, BLOCK_SIZE);
                     break;
 
                 case PLAYER_UP:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE * 1.5f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE * 1.5f, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE * 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE * 2, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE * 2.5f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE * 2.5f, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE * 3, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE * 3, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE * 3.5f, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE * 3.5f, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_UP + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2, pos.y - BLOCK_SIZE / 2 - BLOCK_SIZE * 4, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY - BLOCK_SIZE * 4, BLOCK_SIZE, BLOCK_SIZE);
                     break;
 
                 case PLAYER_LEFT:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE * 1.5f, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE * 1.5f, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE * 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE * 2, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE * 2.5f, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE * 2.5f, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE * 3, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE * 3, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE * 3.5f, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE * 3.5f, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_LEFT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 - BLOCK_SIZE * 4, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX - BLOCK_SIZE * 4, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
 
                     break;
 
                 case PLAYER_RIGHT:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE * 1.5f, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE * 1.5f, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE * 2, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE * 2, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE * 2.5f, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE * 2.5f, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE * 3, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE * 3, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE * 3.5f, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE * 3.5f, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_RIGHT + attackTick / 5 % 2),
-                            pos.x - BLOCK_SIZE / 2 + BLOCK_SIZE * 4, pos.y - BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
+                            pos.x - BLOCK_SIZE / 2 + shakeX + BLOCK_SIZE * 4, pos.y - BLOCK_SIZE / 2 + shakeY, BLOCK_SIZE, BLOCK_SIZE);
                     break;
             }
 
@@ -247,7 +250,6 @@ public class User extends View implements Constants {
                 case "LEFT": {
                     characterImage = imageNum + 2;
                     x -= (speed / 3f);
-
                     break;
                 }
                 case "RIGHT": {
@@ -285,24 +287,44 @@ public class User extends View implements Constants {
     }
 
     public void playAttackSound() {
-        SoundManager.play(SOUND_HIT, 0);
+        SoundManager.play(SOUND_PUNCH, 0);
     }
 
     public void playFireAttackSound() {
         SoundManager.play(SOUND_FIRE, 0);
     }
 
+    private void playHitSound() {
+        int tick = (int) (Math.random() * 3);
+        SoundManager.play(SOUND_HIT, tick);
+    }
+
     public void onStateChange(String updateState) {
-            if (!state.equals(updateState)) {
-                switch (updateState) {
-                    case "ATTACK":
-                        playAttackSound();
-                        break;
-                    case "SPECIAL":
-                        playFireAttackSound();
-                        break;
-                }
+        if (!state.equals(updateState)) {
+            switch (updateState) {
+                case "ATTACK":
+                    playAttackSound();
+                    break;
+                case "SPECIAL":
+                    playFireAttackSound();
+                    break;
             }
+        }
+    }
+
+    public void onHpChange(int updateHp) {
+        if (hp > updateHp) {
+            playHitSound();
+        }
+        if (hp < updateHp) {
+            SoundManager.play(SOUND_HP, 0);
+        }
+    }
+
+    public void onManaChange(int updateMana) {
+        if (mana < updateMana) {
+            SoundManager.play(SOUND_MANA, 0);
+        }
     }
 
     public int getCharacterImage() {
