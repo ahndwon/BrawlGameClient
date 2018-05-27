@@ -43,7 +43,6 @@ public class Window extends PApplet implements Constants {
         communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
-//        userLibrary.putIfAbsent(user.getName(), user);
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
         ui = new UI(userLibrary, userNames);
 
@@ -77,7 +76,6 @@ public class Window extends PApplet implements Constants {
 
                     if (u.getUser().equals(user.getName())) {
                         String userName = user.getName();
-                        user = null;
                         user = userLibrary.get(userName);
                         user.setMe(true);
                         user.setX(u.getX());
@@ -88,6 +86,7 @@ public class Window extends PApplet implements Constants {
                         user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
                         user.setScore(u.getScore());
+                        user.onStateChange(u.getState());
                         user.setState(u.getState());
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
@@ -103,10 +102,12 @@ public class Window extends PApplet implements Constants {
                         user.setStamina(u.getStamina());
                         user.setDirection(u.getDirection());
                         user.setScore(u.getScore());
+                        user.onStateChange(u.getState());
                         user.setState(u.getState());
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
+
                 }
 
             }
@@ -137,6 +138,8 @@ public class Window extends PApplet implements Constants {
 
         addReleaseListeners();
     }
+
+
 
     private void addPressListeners() {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {

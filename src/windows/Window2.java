@@ -23,6 +23,7 @@ public class Window2 extends PApplet implements Constants {
     private Map myMap;
     private List<String> userNames;
     private ConcurrentHashMap<String, User> userLibrary;
+    private ConcurrentHashMap<String, String> userStateLibrary;
     private UI ui;
     private int i = 0;
     private Camera camera;
@@ -43,6 +44,7 @@ public class Window2 extends PApplet implements Constants {
         communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
+        userStateLibrary = new ConcurrentHashMap<>();
 //        userLibrary.putIfAbsent(user.getName(), user);
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
         ui = new UI(userLibrary, userNames);
@@ -107,6 +109,23 @@ public class Window2 extends PApplet implements Constants {
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
                     }
+
+                    if (userStateLibrary.containsKey(u.getUser())) {
+                        if (!userStateLibrary.get(u.getUser()).equals(u.getState())) {
+                            User user = userLibrary.get(u.getUser());
+                            switch (u.getState()) {
+                                case "ATTACK":
+                                    user.playAttackSound();
+                                    break;
+                                case "SPECIAL":
+                                    user.playFireAttackSound();
+                                    break;
+                            }
+                            userStateLibrary.replace(u.getUser(), u.getState());
+
+                        }
+                    } else
+                        userStateLibrary.putIfAbsent(u.getUser(), u.getState());
                 }
 
             }
@@ -187,7 +206,7 @@ public class Window2 extends PApplet implements Constants {
             if (isOnPress && user.getMana() >= 40) {
                 user.setAttackDirection(user.getDirection());
                 user.setSpecial(true);
-//                communicator.sendSpecial();
+                communicator.sendSpecial();
             }
         });
 
@@ -432,5 +451,6 @@ public class Window2 extends PApplet implements Constants {
         SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit05.wav");
         SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit06.wav");
         SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit07.wav");
+        SoundManager.loadSound(SOUND_FIRE, "./sound/fire.wav");
     }
 }
