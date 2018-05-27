@@ -148,7 +148,7 @@ public class User extends View implements Constants {
 
     private void renderSpecial(PApplet pApplet) {
         if (isSpecial && !state.equals("MOVE")) {
-            System.out.println("attack special");
+//            System.out.println("attack special");
             time++;
             attackTick++;
             int shakeX = (int) (Math.random() * 10 - 5);

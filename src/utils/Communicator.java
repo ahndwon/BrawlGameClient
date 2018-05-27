@@ -41,40 +41,25 @@ public class Communicator {
         }
 
         new Thread(() -> {
-//            int len;
-//            byte[] lengthBuf = new byte[2];
-//            byte[] buf = new byte[3000];
-            ByteBuffer byteBuffer = ByteBuffer.allocate(2);
-
             try (InputStream is = socket.getInputStream();
-                    DataInputStream dis = new DataInputStream(is)) {
-                int readBytes;
+                 DataInputStream dis = new DataInputStream(is)) {
                 while (true) {
-                    int len = dis.readUnsignedShort();
+                    int len = 0;
+                    int left = dis.readUnsignedShort();
+                    byte[] buf = new byte[8192];
+                    StringBuilder result = new StringBuilder();
 
-                    byte[] buf = new byte[len];
-                    readBytes = dis.read(buf, 0, len);
-                    if (readBytes == -1)
+                    while (left > 0 && (len = dis.read(buf, 0, Math.min(left, buf.length))) > 0){
+                        result.append(new String(buf, 0, len));
+                        left -= len;
+                    }
+                    if (len == -1) {
                         break;
-//                while ((len = socket.getInputStream().read(lengthBuf, 0, 2)) != -1) {
-//                    byteBuffer.put(lengthBuf[0]);
-//                    byteBuffer.put(lengthBuf[1]);
-//                    byteBuffer.flip();
-//                    Short length = byteBuffer.getShort();
-//                    byteBuffer.clear();
-//                    System.out.println("length :" +  length);
-
-//                    len = socket.getInputStream().read(buf, 0, length);
-                    String str = new String(buf, 0, len);
-//                    System.out.println("come on :" + str);
-//                    JsonParser jsonParser = new JsonParser();
-                    Gson gson2 = new Gson();
-                    JsonObject jsonObject = gson2.fromJson(str, JsonObject.class);
-
-//                    jsonObject = (JsonObject) jsonParser.parse(str);
-
+                    }
+                    String str = result.toString();
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(str, JsonObject.class);
                     String type = jsonObject.get("type").getAsString();
-                    Gson gson;
 
                     switch (type) {
                         case "Map":

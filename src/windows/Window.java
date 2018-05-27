@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
+    private User user = new User(100, 100, "asdf", PLAYER_DOWN,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -40,7 +40,7 @@ public class Window extends PApplet implements Constants {
         loadSound();
         SoundManager.loop(SOUND_THEME, 0);
 
-        communicator = new Communicator("localhost", 5000);
+        communicator = new Communicator("192.168.10.10", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
@@ -457,6 +457,5 @@ public class Window extends PApplet implements Constants {
         SoundManager.loadSound(SOUND_HP, "./sound/hp.wav");
         SoundManager.loadSound(SOUND_MANA, "./sound/mana.wav");
         SoundManager.loadSound(SOUND_PUNCH, "./sound/punch.wav");
-
     }
 }
