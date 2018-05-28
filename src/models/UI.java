@@ -14,15 +14,19 @@ public class UI implements utils.Constants {
     private List<String> userNames;
     private List<Integer> delete = new ArrayList<>();
 
-
     private List<String> victim = new ArrayList<>();
     private List<String> killer = new ArrayList<>();
     private int arrow;
 
+    private Button muteButton;
 
     public UI(ConcurrentHashMap<String, User> userLibrary, List<String> userNames) {
         users = userLibrary;
         this.userNames = userNames;
+        muteButton = new Button(0, WINDOW_SIZE_Y - BLOCK_SIZE,
+                BLOCK_SIZE, BLOCK_SIZE);
+        muteButton.setImage(SpriteManager.getImage(BUTTON_UNMUTE));
+        muteButton.setClickedImage(SpriteManager.getImage(BUTTON_MUTE));
     }
 
     public void checkUserName(float mx, float my) {
@@ -84,8 +88,14 @@ public class UI implements utils.Constants {
             for (int i = 0; i < killer.size(); i++) {
                 if (i < 10) {
                     pApplet.fill(0);
-                    pApplet.text(killer.get(i) + "  kill   " + victim.get(i),
+                    pApplet.text(killer.get(i),
                             WINDOW_SIZE_X - 170, (i * 30 + 55));
+                    pApplet.fill(255, 0, 0);
+                    pApplet.text(" killed  ",
+                            WINDOW_SIZE_X - 120, (i * 30 + 55));
+                    pApplet.fill(0);
+                    pApplet.text(victim.get(i),
+                            WINDOW_SIZE_X - 70, (i * 30 + 55));
                 }
             }
         }
@@ -96,7 +106,10 @@ public class UI implements utils.Constants {
                 delete.remove(0);
             }
         }
+        muteButton.render(pApplet);
+
     }
+
 
     public void addKiller(String from, String to, int time) {
 //        killers.put(from, to);
@@ -105,5 +118,7 @@ public class UI implements utils.Constants {
         delete.add(time);
     }
 
-
+    public Button getMuteButton() {
+        return muteButton;
+    }
 }

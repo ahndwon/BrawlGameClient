@@ -110,5 +110,6 @@ public interface Constants {
     int PUNCH_WIDTH = 160;
     int PUNCH_HEIGHT = 100;
 
-
+    int BUTTON_MUTE = 888;
+    int BUTTON_UNMUTE = 889;
 }

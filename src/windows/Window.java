@@ -9,13 +9,14 @@ import com.google.gson.JsonObject;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 import states.*;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "asdfd", PLAYER_UP,
+    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -39,12 +40,10 @@ public class Window extends PApplet implements Constants {
         loadSound();
         SoundManager.loop(SOUND_THEME, 0);
 
-
         communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
-        ui = new UI(userLibrary, userNames);
 
         user.setMe(true);
         camera = new Camera();
@@ -146,6 +145,7 @@ public class Window extends PApplet implements Constants {
         });
 
         loadImage();
+        ui = new UI(userLibrary, userNames);
 
         addPressListeners();
 
@@ -255,15 +255,15 @@ public class Window extends PApplet implements Constants {
         });
 
         keyEventManager.addReleaseListener(32, duration -> {
-//            communicator.sendStop();
+            communicator.sendStop();
         });
 
         keyEventManager.addReleaseListener(67, duration -> {
-//            communicator.sendStop();
+            communicator.sendStop();
         });
 
         keyEventManager.addReleaseListener(88, duration -> {
-//            communicator.sendStop();
+            communicator.sendStop();
         });
     }
 
@@ -335,6 +335,22 @@ public class Window extends PApplet implements Constants {
 
         if (!isJoin) {
             showRejectMessage();
+        }
+    }
+
+    @Override
+    public void mousePressed() {
+        if (mouseX > ui.getMuteButton().getPos().x &&
+                mouseX < ui.getMuteButton().getPos().x + BLOCK_SIZE &&
+                mouseY > ui.getMuteButton().getPos().y &&
+                mouseY < ui.getMuteButton().getPos().y + BLOCK_SIZE) {
+            if (ui.getMuteButton().isClicked()) {
+                SoundManager.stop(SOUND_THEME, 0);
+                ui.getMuteButton().setClicked(false);
+            } else {
+                SoundManager.stop(SOUND_THEME, 0);
+                ui.getMuteButton().setClicked(true);
+            }
         }
     }
 
@@ -453,16 +469,20 @@ public class Window extends PApplet implements Constants {
         SpriteManager.loadSprite(this, PUNCH_DOWN, "./image/punch/punch_down.png", 0, 0, 50, 80, 4);
         SpriteManager.loadSprite(this, PUNCH_LEFT, "./image/punch/punch_left.png", 0, 0, 80, 50, 4);
         SpriteManager.loadSprite(this, PUNCH_RIGHT, "./image/punch/punch_right.png", 0, 0, 80, 50, 4);
+
+        SpriteManager.loadImage(this, BUTTON_MUTE, "./image/ui/mute.png");
+        SpriteManager.loadImage(this, BUTTON_UNMUTE, "./image/ui/unmute.png");
     }
 
     public void loadSound() {
-        SoundManager.loadSound(SOUND_THEME, "./sound/theme.wav");
-        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit05.wav");
-        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit06.wav");
-        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit07.wav");
-        SoundManager.loadSound(SOUND_FIRE, "./sound/fire.wav");
-        SoundManager.loadSound(SOUND_HP, "./sound/hp.wav");
-        SoundManager.loadSound(SOUND_MANA, "./sound/mana.wav");
-        SoundManager.loadSound(SOUND_PUNCH, "./sound/punch.wav");
+        SoundManager.loadSound(SOUND_THEME, 0,"./sound/theme.wav");
+        SoundManager.loadSound(SOUND_HIT,0,"./sound/hit/hit05.wav");
+        SoundManager.loadSound(SOUND_HIT,1,"./sound/hit/hit06.wav");
+        SoundManager.loadSound(SOUND_HIT,2,"./sound/hit/hit07.wav");
+        SoundManager.loadSound(SOUND_FIRE, 0,"./sound/fire.wav");
+        SoundManager.loadSound(SOUND_HP,0, "./sound/hp.wav");
+        SoundManager.loadSound(SOUND_MANA, 0,"./sound/mana.wav");
+        SoundManager.loadSound(SOUND_PUNCH, 0,"./sound/punch.wav");
+
     }
 }

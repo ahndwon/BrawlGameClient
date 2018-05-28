@@ -44,7 +44,6 @@ public class Window2 extends PApplet implements Constants {
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
-        ui = new UI(userLibrary, userNames);
 
         user.setMe(true);
         camera = new Camera();
@@ -94,6 +93,9 @@ public class Window2 extends PApplet implements Constants {
 
                         user.onStateChange(u.getState());
                         user.setState(u.getState());
+                        if (u.getState().equals("ATTACK") || u.getState().equals("SPECIAL")) {
+                            user.setAttackDirection(u.getDirection());
+                        }
 
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
@@ -143,6 +145,7 @@ public class Window2 extends PApplet implements Constants {
         });
 
         loadImage();
+        ui = new UI(userLibrary, userNames);
 
         addPressListeners();
 
@@ -155,7 +158,7 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("LEFT"));
-                user.setAttackDirection("LEFT");
+//                user.setAttackDirection("LEFT");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_LEFT);
@@ -167,7 +170,7 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("RIGHT"));
-                user.setAttackDirection("RIGHT");
+//                user.setAttackDirection("RIGHT");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_RIGHT);
@@ -179,7 +182,7 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("UP"));
-                user.setAttackDirection("UP");
+//                user.setAttackDirection("UP");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_UP);
@@ -191,7 +194,7 @@ public class Window2 extends PApplet implements Constants {
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("DOWN"));
-                user.setAttackDirection("DOWN");
+//                user.setAttackDirection("DOWN");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_DOWN);
@@ -287,6 +290,10 @@ public class Window2 extends PApplet implements Constants {
             for (String user : userNames) {
                 userLibrary.get(user).onUpdate(camera);
                 userLibrary.get(user).render(this);
+                if (userLibrary.get(user).getIsTime()) {
+                    communicator.sendStop();
+                    userLibrary.get(user).setIsTime(false);
+                }
             }
 
             ui.render(this, tick);
@@ -328,6 +335,22 @@ public class Window2 extends PApplet implements Constants {
 
         if (!isJoin) {
             showRejectMessage();
+        }
+    }
+
+    @Override
+    public void mousePressed() {
+        if (mouseX > ui.getMuteButton().getPos().x &&
+                mouseX < ui.getMuteButton().getPos().x + BLOCK_SIZE &&
+                mouseY > ui.getMuteButton().getPos().y &&
+                mouseY < ui.getMuteButton().getPos().y + BLOCK_SIZE) {
+            if (ui.getMuteButton().isClicked()) {
+                SoundManager.stop(SOUND_THEME, 0);
+                ui.getMuteButton().setClicked(false);
+            } else {
+                SoundManager.stop(SOUND_THEME, 0);
+                ui.getMuteButton().setClicked(true);
+            }
         }
     }
 
@@ -446,17 +469,20 @@ public class Window2 extends PApplet implements Constants {
         SpriteManager.loadSprite(this, PUNCH_DOWN, "./image/punch/punch_down.png", 0, 0, 50, 80, 4);
         SpriteManager.loadSprite(this, PUNCH_LEFT, "./image/punch/punch_left.png", 0, 0, 80, 50, 4);
         SpriteManager.loadSprite(this, PUNCH_RIGHT, "./image/punch/punch_right.png", 0, 0, 80, 50, 4);
+
+        SpriteManager.loadImage(this, BUTTON_MUTE, "./image/ui/mute.png");
+        SpriteManager.loadImage(this, BUTTON_UNMUTE, "./image/ui/unmute.png");
     }
 
     public void loadSound() {
-        SoundManager.loadSound(SOUND_THEME, "./sound/theme.wav");
-        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit05.wav");
-        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit06.wav");
-        SoundManager.loadSound(SOUND_HIT,"./sound/hit/hit07.wav");
-        SoundManager.loadSound(SOUND_FIRE, "./sound/fire.wav");
-        SoundManager.loadSound(SOUND_HP, "./sound/hp.wav");
-        SoundManager.loadSound(SOUND_MANA, "./sound/mana.wav");
-        SoundManager.loadSound(SOUND_PUNCH, "./sound/punch.wav");
+        SoundManager.loadSound(SOUND_THEME, 0,"./sound/theme.wav");
+        SoundManager.loadSound(SOUND_HIT,0,"./sound/hit/hit05.wav");
+        SoundManager.loadSound(SOUND_HIT,1,"./sound/hit/hit06.wav");
+        SoundManager.loadSound(SOUND_HIT,2,"./sound/hit/hit07.wav");
+        SoundManager.loadSound(SOUND_FIRE, 0,"./sound/fire.wav");
+        SoundManager.loadSound(SOUND_HP,0, "./sound/hp.wav");
+        SoundManager.loadSound(SOUND_MANA, 0,"./sound/mana.wav");
+        SoundManager.loadSound(SOUND_PUNCH, 0,"./sound/punch.wav");
 
     }
 }
