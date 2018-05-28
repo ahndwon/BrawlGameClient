@@ -91,7 +91,7 @@ public class UI implements utils.Constants {
                     pApplet.text(killer.get(i),
                             WINDOW_SIZE_X - 170, (i * 30 + 55));
                     pApplet.fill(255, 0, 0);
-                    pApplet.text(" killed  ",
+                    pApplet.text(" killed ",
                             WINDOW_SIZE_X - 120, (i * 30 + 55));
                     pApplet.fill(0);
                     pApplet.text(victim.get(i),
@@ -100,7 +100,7 @@ public class UI implements utils.Constants {
             }
         }
         if (delete.size() > 0) {
-            if (tick - delete.get(0) == 100) {
+            if (tick - delete.get(0) > 100) {
                 killer.remove(0);
                 victim.remove(0);
                 delete.remove(0);

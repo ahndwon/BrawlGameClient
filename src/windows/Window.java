@@ -10,14 +10,16 @@ import dwon.SpriteManager;
 import processing.core.PApplet;
 import states.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "ahn", PLAYER_DOWN,
-            100, 100, 100, 10, USER_STOP, true);
+    private User user;
+    private StringBuilder checkWord;
+    private List<Character> characters;
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
     private Map myMap;
@@ -27,7 +29,10 @@ public class Window extends PApplet implements Constants {
     private int i = 0;
     private Camera camera;
     private int tick;
-    private boolean isJoin = true;
+    private boolean isJoin;
+    private String userName;
+    private boolean isReject;
+    private boolean isMap;
 
     @Override
     public void settings() {
@@ -40,18 +45,20 @@ public class Window extends PApplet implements Constants {
         loadSound();
         SoundManager.loop(SOUND_THEME, 0);
 
+        checkWord = new StringBuilder();
+        characters = new ArrayList<>();
         communicator = new Communicator("localhost", 5000);
-        communicator.connect(user);
+
         userLibrary = new ConcurrentHashMap<>();
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
 
-        user.setMe(true);
         camera = new Camera();
 
         communicator.setOnCommunicatorListener(new CommunicatorListener() {
             @Override
             public void onMapReceive(Map map) {
                 myMap = map;
+
 //                myMap.setUser(user);
             }
 
@@ -138,7 +145,7 @@ public class Window extends PApplet implements Constants {
 
             @Override
             public void onRejectReceive(JsonObject jsonObject) {
-                isJoin = false;
+                isReject = true;
                 myMap.setLoad(false);
                 System.out.println(jsonObject);
             }
@@ -151,7 +158,6 @@ public class Window extends PApplet implements Constants {
 
         addReleaseListeners();
     }
-
 
 
     private void addPressListeners() {
@@ -223,7 +229,7 @@ public class Window extends PApplet implements Constants {
             if (isOnPress && user.getStamina() > 300) {
                 user.setState(USER_SWIFT);
                 communicator.sendSwift();
-            } else if (user.getStamina() < 300){
+            } else if (user.getStamina() < 300) {
                 user.setTired(true);
             }
         });
@@ -277,10 +283,47 @@ public class Window extends PApplet implements Constants {
     @Override
     public void draw() {
         tick++;
-        background(255);
 
-        if (myMap.isLoad()) {
-
+        if (!isJoin) {
+            background(255);
+            StringBuilder inputWords = new StringBuilder();
+            for (Character character : characters) {
+                inputWords.append(character);
+            }
+            fill(153,0,153);
+            textSize(40);
+            text("please input your game ID >>", 200, 200);
+            fill(255);
+            rect(220, 250, 500, 50);
+            textSize(30);
+            fill(102, 51, 153);
+            text(inputWords.toString(), 350, 285);
+            userName = inputWords.toString();
+        } else if (!isMap) {
+            background(255);
+            fill(255);
+            fill(0, 255, 0);
+            textSize(40);
+            text("please choose your character >> ", 150, 100);
+            textSize(20);
+            fill(0);
+            image(SpriteManager.getImage(CHARACTER_ONE_DOWN, 0), 200, 150, 100, 100);
+            text("NUM 1", 220, 280);
+            image(SpriteManager.getImage(CHARACTER_TWO_DOWN, 0), 400, 150, 100, 100);
+            text("NUM 2", 420, 280);
+            image(SpriteManager.getImage(CHARACTER_THREE_DOWN, 0), 600, 150, 100, 100);
+            text("NUM 3", 620, 280);
+            image(SpriteManager.getImage(CHARACTER_FOUR_DOWN, 0), 200, 300, 100, 100);
+            text("NUM 4", 220, 430);
+            image(SpriteManager.getImage(CHARACTER_FIVE_DOWN, 0), 400, 300, 100, 100);
+            text("NUM 5", 420, 430);
+            image(SpriteManager.getImage(CHARACTER_SIX_DOWN, 0), 600, 300, 100, 100);
+            text("NUM 6", 620, 430);
+            image(SpriteManager.getImage(CHARACTER_SEVEN_DOWN, 0), 200, 450, 100, 100);
+            text("NUM 7", 220, 580);
+        }
+         else if (isMap) {
+            background(255);
             camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
             camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
 
@@ -310,30 +353,7 @@ public class Window extends PApplet implements Constants {
             }
         }
 
-        if (isJoin && !myMap.isLoad()) {
-            fill(255);
-            fill(0, 255, 0);
-            textSize(40);
-            text("please choose your character >> ", 150, 100);
-            textSize(20);
-            fill(0);
-            image(SpriteManager.getImage(CHARACTER_ONE_DOWN, 0), 200, 150, 100, 100);
-            text("NUM 1", 220, 280);
-            image(SpriteManager.getImage(CHARACTER_TWO_DOWN, 0), 400, 150, 100, 100);
-            text("NUM 2", 420, 280);
-            image(SpriteManager.getImage(CHARACTER_THREE_DOWN, 0), 600, 150, 100, 100);
-            text("NUM 3", 620, 280);
-            image(SpriteManager.getImage(CHARACTER_FOUR_DOWN, 0), 200, 300, 100, 100);
-            text("NUM 4", 220, 430);
-            image(SpriteManager.getImage(CHARACTER_FIVE_DOWN, 0), 400, 300, 100, 100);
-            text("NUM 5", 420, 430);
-            image(SpriteManager.getImage(CHARACTER_SIX_DOWN, 0), 600, 300, 100, 100);
-            text("NUM 6", 620, 430);
-            image(SpriteManager.getImage(CHARACTER_SEVEN_DOWN, 0), 200, 450, 100, 100);
-            text("NUM 7", 220, 580);
-        }
-
-        if (!isJoin) {
+        else if (isReject) {
             showRejectMessage();
         }
     }
@@ -354,34 +374,56 @@ public class Window extends PApplet implements Constants {
         }
     }
 
-    public void keyPressed() {
+    private void setUserName() {
+        user = new User(100, 100, userName, PLAYER_DOWN,
+                100, 100, 100, 10, USER_STOP, true);
+        communicator.connect(user);
+        user.setMe(true);
+        isJoin = true;
+    }
 
-        if (isJoin && !myMap.isLoad()) {
+    public void keyPressed() {
+        if (!isJoin) {
+            if (keyCode == ENTER) {
+                checkWord.setLength(0);
+                for (Character character : characters) {
+                    checkWord.append(character);
+                }
+                characters.clear();
+                setUserName();
+            } else if (keyCode == BACKSPACE) {
+                if (characters.size() > 0)
+                    characters.remove(characters.size() - 1);
+            } else {
+                characters.add(key);
+            }
+        }
+        if (isJoin && !isMap) {
             switch (keyCode) {
                 case '1':
                     user.setCharacterImage(Constants.CHARACTER_ONE_UP);
                     communicator.sendCharacterImageNum(new Image(10));
-                    myMap.setLoad(true);
+                    isMap = true;
                     break;
                 case '2':
                     user.setCharacterImage(Constants.CHARACTER_TWO_UP);
                     communicator.sendCharacterImageNum(new Image(20));
-                    myMap.setLoad(true);
+                    isMap = true;
                     break;
                 case '3':
                     user.setCharacterImage(Constants.CHARACTER_THREE_UP);
                     communicator.sendCharacterImageNum(new Image(30));
-                    myMap.setLoad(true);
+                    isMap = true;
                     break;
                 case '4':
                     user.setCharacterImage(Constants.CHARACTER_FOUR_UP);
                     communicator.sendCharacterImageNum(new Image(40));
-                    myMap.setLoad(true);
+                    isMap = true;
                     break;
                 case '5':
                     user.setCharacterImage(Constants.CHARACTER_FIVE_UP);
                     communicator.sendCharacterImageNum(new Image(50));
-                    myMap.setLoad(true);
+                    isMap = true;
                     break;
                 case '6':
                     user.setCharacterImage(Constants.CHARACTER_SIX_UP);
@@ -391,18 +433,18 @@ public class Window extends PApplet implements Constants {
                 case '7':
                     user.setCharacterImage(Constants.CHARACTER_SEVEN_UP);
                     communicator.sendCharacterImageNum(new Image(70));
-                    myMap.setLoad(true);
+                    isMap = true;
                     break;
             }
         }
-        if (isJoin && myMap.isLoad()) {
+        if (isJoin && isMap) {
             keyEventManager.setPress(keyCode);
         }
     }
 
     public void keyReleased() {
 
-        if (myMap.isLoad()) {
+        if (isJoin) {
             keyEventManager.setRelease(keyCode);
         }
     }
@@ -475,14 +517,14 @@ public class Window extends PApplet implements Constants {
     }
 
     public void loadSound() {
-        SoundManager.loadSound(SOUND_THEME, 0,"./sound/theme.wav");
-        SoundManager.loadSound(SOUND_HIT,0,"./sound/hit/hit05.wav");
-        SoundManager.loadSound(SOUND_HIT,1,"./sound/hit/hit06.wav");
-        SoundManager.loadSound(SOUND_HIT,2,"./sound/hit/hit07.wav");
-        SoundManager.loadSound(SOUND_FIRE, 0,"./sound/fire.wav");
-        SoundManager.loadSound(SOUND_HP,0, "./sound/hp.wav");
-        SoundManager.loadSound(SOUND_MANA, 0,"./sound/mana.wav");
-        SoundManager.loadSound(SOUND_PUNCH, 0,"./sound/punch.wav");
+        SoundManager.loadSound(SOUND_THEME, 0, "./sound/theme.wav");
+        SoundManager.loadSound(SOUND_HIT, 0, "./sound/hit/hit05.wav");
+        SoundManager.loadSound(SOUND_HIT, 1, "./sound/hit/hit06.wav");
+        SoundManager.loadSound(SOUND_HIT, 2, "./sound/hit/hit07.wav");
+        SoundManager.loadSound(SOUND_FIRE, 0, "./sound/fire.wav");
+        SoundManager.loadSound(SOUND_HP, 0, "./sound/hp.wav");
+        SoundManager.loadSound(SOUND_MANA, 0, "./sound/mana.wav");
+        SoundManager.loadSound(SOUND_PUNCH, 0, "./sound/punch.wav");
 
     }
 }
