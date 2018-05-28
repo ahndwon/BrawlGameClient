@@ -43,7 +43,7 @@ public class User extends View implements Constants {
         this.state = state;
         this.speed = Constants.PLAYER_SPEED;
         this.characterImage = 10;
-        this.attackDirection = PLAYER_DOWN;
+        this.attackDirection = PLAYER_UP;
     }
 
     public User(float x, float y, String name, String direction, int hp, int mana,
@@ -114,12 +114,12 @@ public class User extends View implements Constants {
     }
 
     private void renderAttack(PApplet pApplet) {
-        if (isAttack && !(state.equals("MOVE") || state.equals("SWIFT"))) {
+        if (state.equals("ATTACK")) {
             time++;
             attackTick++;
 
             pApplet.imageMode(PConstants.CENTER);
-            switch (attackDirection) {
+            switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(PUNCH_DOWN, attackTick / 2 % 4),
                             pos.x, pos.y + BLOCK_SIZE / 2, PUNCH_HEIGHT, PUNCH_WIDTH);
@@ -141,19 +141,19 @@ public class User extends View implements Constants {
 
             if (attackTick > 15) {
                 attackTick = 0;
-                isAttack = false;
+                isTime = true;
             }
         }
     }
 
     private void renderSpecial(PApplet pApplet) {
-        if (isSpecial && !state.equals("MOVE")) {
+        if (state.equals("SPECIAL")) {
 //            System.out.println("attack special");
             time++;
             attackTick++;
             int shakeX = (int) (Math.random() * 10 - 5);
             int shakeY = (int) (Math.random() * 10 - 5);
-            switch (attackDirection) {
+            switch (direction) {
                 case PLAYER_DOWN:
                     pApplet.image(SpriteManager.getImage(FIRE_ATTACK_DOWN + attackTick / 5 % 2),
                             pos.x - BLOCK_SIZE / 2 + shakeX, pos.y - BLOCK_SIZE / 2 + shakeY + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -226,7 +226,7 @@ public class User extends View implements Constants {
 
             if (attackTick > 15) {
                 attackTick = 0;
-                isSpecial = false;
+                isTime = true;
             }
         }
     }
@@ -433,5 +433,13 @@ public class User extends View implements Constants {
 
     public void setAttackDirection(String attackDirection) {
         this.attackDirection = attackDirection;
+    }
+
+    public boolean getIsTime() {
+        return isTime;
+    }
+
+    public void setIsTime(boolean isTime) {
+        this.isTime = isTime;
     }
 }

@@ -9,14 +9,13 @@ import com.google.gson.JsonObject;
 import dwon.SpriteManager;
 import processing.core.PApplet;
 import states.*;
-
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Window extends PApplet implements Constants {
-    private User user = new User(100, 100, "asdf", PLAYER_DOWN,
+    private User user = new User(100, 100, "asdfd", PLAYER_UP,
             100, 100, 100, 10, USER_STOP, true);
     private KeyEventManager keyEventManager = new KeyEventManager();
     private Communicator communicator;
@@ -40,7 +39,8 @@ public class Window extends PApplet implements Constants {
         loadSound();
         SoundManager.loop(SOUND_THEME, 0);
 
-        communicator = new Communicator("192.168.10.10", 5000);
+
+        communicator = new Communicator("localhost", 5000);
         communicator.connect(user);
         userLibrary = new ConcurrentHashMap<>();
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
@@ -94,6 +94,9 @@ public class Window extends PApplet implements Constants {
 
                         user.onStateChange(u.getState());
                         user.setState(u.getState());
+                        if (u.getState().equals("ATTACK") || u.getState().equals("SPECIAL")) {
+                            user.setAttackDirection(u.getDirection());
+                        }
 
                         user.setSpeed(u.getSpeed());
                         user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
@@ -155,7 +158,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(LEFT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("LEFT"));
-                user.setAttackDirection("LEFT");
+//                user.setAttackDirection("LEFT");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_LEFT);
@@ -167,7 +170,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(RIGHT, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("RIGHT"));
-                user.setAttackDirection("RIGHT");
+//                user.setAttackDirection("RIGHT");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_RIGHT);
@@ -179,7 +182,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(UP, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("UP"));
-                user.setAttackDirection("UP");
+//                user.setAttackDirection("UP");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_UP);
@@ -191,7 +194,7 @@ public class Window extends PApplet implements Constants {
         keyEventManager.addPressListener(DOWN, (isOnPress, duration) -> {
             if (isOnPress) {
                 communicator.sendMove(new Move("DOWN"));
-                user.setAttackDirection("DOWN");
+//                user.setAttackDirection("DOWN");
                 user.setAttack(false);
                 user.setSpecial(false);
                 user.setDirection(PLAYER_DOWN);
@@ -252,15 +255,15 @@ public class Window extends PApplet implements Constants {
         });
 
         keyEventManager.addReleaseListener(32, duration -> {
-            communicator.sendStop();
+//            communicator.sendStop();
         });
 
         keyEventManager.addReleaseListener(67, duration -> {
-            communicator.sendStop();
+//            communicator.sendStop();
         });
 
         keyEventManager.addReleaseListener(88, duration -> {
-            communicator.sendStop();
+//            communicator.sendStop();
         });
     }
 
@@ -287,6 +290,10 @@ public class Window extends PApplet implements Constants {
             for (String user : userNames) {
                 userLibrary.get(user).onUpdate(camera);
                 userLibrary.get(user).render(this);
+                if (userLibrary.get(user).getIsTime()) {
+                    communicator.sendStop();
+                    userLibrary.get(user).setIsTime(false);
+                }
             }
 
             ui.render(this, tick);
