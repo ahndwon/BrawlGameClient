@@ -62,106 +62,6 @@ public class Window extends PApplet implements Constants {
 
         camera = new Camera();
 
-//        if (isCommunicator) {
-//            communicator.setOnCommunicatorListener(new CommunicatorListener() {
-//                @Override
-//                public void onMapReceive(Map map) {
-//                    myMap = map;
-//                    System.out.println("sdfsdfsdf");
-//
-////                myMap.setUser(user);
-//                }
-//
-//                @Override
-//                public void onHitReceive(Hit hit) {
-//                    if (userLibrary.containsKey(hit.getTo())) {
-//                        userLibrary.get(hit.getTo()).setHit(true);
-//                    }
-//                }
-//
-//                @Override
-//                public void onUpdate(List<Update> updates) {
-//                    for (Update u :
-//                            updates) {
-//                        if (!userLibrary.containsKey(u.getUser()))
-//                            userNames.add(u.getUser());
-//
-//                        userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
-//                                u.getUser(), u.getDirection(), u.getHp(), u.getMana(),
-//                                u.getStamina(), u.getScore(), u.getState()));
-//
-//                        if (u.getUser().equals(user.getName())) {
-//                            String userName = user.getName();
-//                            user = userLibrary.get(userName);
-//                            user.setMe(true);
-//                            user.setX(u.getX());
-//                            user.setY(u.getY());
-//
-//                            user.onHpChange(u.getHp());
-//                            user.setHp(u.getHp());
-//
-//                            user.onManaChange(u.getMana());
-//                            user.setMana(u.getMana());
-//
-//                            user.setCharacterImage(u.getCharacterImage());
-//                            user.setStamina(u.getStamina());
-//                            user.setDirection(u.getDirection());
-//                            user.setScore(u.getScore());
-//
-//                            user.onStateChange(u.getState());
-//                            user.setState(u.getState());
-//                            if (u.getState().equals("ATTACK") || u.getState().equals("SPECIAL")) {
-//                                user.setAttackDirection(u.getDirection());
-//                            }
-//
-//                            user.setSpeed(u.getSpeed());
-//                            user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
-//                        }
-//
-//                        if (userLibrary.containsKey(u.getUser())) {
-//                            User user = userLibrary.get(u.getUser());
-//                            user.setX(u.getX());
-//                            user.setY(u.getY());
-//
-//                            user.onHpChange(u.getHp());
-//                            user.setHp(u.getHp());
-//
-//                            user.onManaChange(u.getMana());
-//                            user.setMana(u.getMana());
-//
-//                            user.setCharacterImage(u.getCharacterImage());
-//                            user.setStamina(u.getStamina());
-//                            user.setDirection(u.getDirection());
-//                            user.setScore(u.getScore());
-//                            user.onStateChange(u.getState());
-//                            user.setState(u.getState());
-//                            user.setSpeed(u.getSpeed());
-//                            user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onKillReceive(Kill kill) {
-//                    if (userLibrary.containsKey(kill.getTo())) {
-//                        ui.addKiller(kill.getFrom(), kill.getTo(), tick);
-//                    }
-//                }
-//
-//                @Override
-//                public void onMapCorrectReceive(int index, int message) {
-//                    myMap.replaceIndex(index, message);
-//                }
-//
-//                @Override
-//                public void onRejectReceive(JsonObject jsonObject) {
-//                    isReject = true;
-//                    myMap.setLoad(false);
-//                    System.out.println(jsonObject);
-//                }
-//            });
-//        }
-
         loadImage();
         ui = new UI(userLibrary, userNames);
 
@@ -312,7 +212,7 @@ public class Window extends PApplet implements Constants {
             fill(153, 0, 153);
             textSize(40);
             text("please input game IP>>", 200, 100);
-            text("please input port number>>", 200, 300);
+            text("please input port number>>", 200, 400);
             fill(255);
             rect(200, 150, 500, 50);
             rect(200, 450, 500, 50);
