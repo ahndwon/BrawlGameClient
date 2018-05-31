@@ -33,6 +33,14 @@ public class Window extends PApplet implements Constants {
     private String userName;
     private boolean isReject;
     private boolean isMap;
+    private boolean isIP;
+    //    private int[] portNum = new int[4];
+    private List<Character> stringIp = new ArrayList<>();
+    private List<Character> stringPort = new ArrayList<>();
+    private String ip;
+    private int port;
+    private boolean isport;
+    private boolean isCommunicator;
 
     @Override
     public void settings() {
@@ -47,109 +55,112 @@ public class Window extends PApplet implements Constants {
 
         checkWord = new StringBuilder();
         characters = new ArrayList<>();
-        communicator = new Communicator("localhost", 5000);
+//        communicator = new Communicator("localhost", 5000);
 
         userLibrary = new ConcurrentHashMap<>();
         userNames = new CopyOnWriteArrayList<>(userLibrary.keySet());
 
         camera = new Camera();
 
-        communicator.setOnCommunicatorListener(new CommunicatorListener() {
-            @Override
-            public void onMapReceive(Map map) {
-                myMap = map;
-
-//                myMap.setUser(user);
-            }
-
-            @Override
-            public void onHitReceive(Hit hit) {
-                if (userLibrary.containsKey(hit.getTo())) {
-                    userLibrary.get(hit.getTo()).setHit(true);
-                }
-            }
-
-            @Override
-            public void onUpdate(List<Update> updates) {
-                for (Update u :
-                        updates) {
-                    if (!userLibrary.containsKey(u.getUser()))
-                        userNames.add(u.getUser());
-
-                    userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
-                            u.getUser(), u.getDirection(), u.getHp(), u.getMana(),
-                            u.getStamina(), u.getScore(), u.getState()));
-
-                    if (u.getUser().equals(user.getName())) {
-                        String userName = user.getName();
-                        user = userLibrary.get(userName);
-                        user.setMe(true);
-                        user.setX(u.getX());
-                        user.setY(u.getY());
-
-                        user.onHpChange(u.getHp());
-                        user.setHp(u.getHp());
-
-                        user.onManaChange(u.getMana());
-                        user.setMana(u.getMana());
-
-                        user.setCharacterImage(u.getCharacterImage());
-                        user.setStamina(u.getStamina());
-                        user.setDirection(u.getDirection());
-                        user.setScore(u.getScore());
-
-                        user.onStateChange(u.getState());
-                        user.setState(u.getState());
-                        if (u.getState().equals("ATTACK") || u.getState().equals("SPECIAL")) {
-                            user.setAttackDirection(u.getDirection());
-                        }
-
-                        user.setSpeed(u.getSpeed());
-                        user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
-                    }
-
-                    if (userLibrary.containsKey(u.getUser())) {
-                        User user = userLibrary.get(u.getUser());
-                        user.setX(u.getX());
-                        user.setY(u.getY());
-
-                        user.onHpChange(u.getHp());
-                        user.setHp(u.getHp());
-
-                        user.onManaChange(u.getMana());
-                        user.setMana(u.getMana());
-
-                        user.setCharacterImage(u.getCharacterImage());
-                        user.setStamina(u.getStamina());
-                        user.setDirection(u.getDirection());
-                        user.setScore(u.getScore());
-                        user.onStateChange(u.getState());
-                        user.setState(u.getState());
-                        user.setSpeed(u.getSpeed());
-                        user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
-                    }
-                }
-            }
-
-            @Override
-            public void onKillReceive(Kill kill) {
-                if (userLibrary.containsKey(kill.getTo())) {
-                    ui.addKiller(kill.getFrom(), kill.getTo(), tick);
-                }
-            }
-
-            @Override
-            public void onMapCorrectReceive(int index, int message) {
-                myMap.replaceIndex(index, message);
-            }
-
-            @Override
-            public void onRejectReceive(JsonObject jsonObject) {
-                isReject = true;
-                myMap.setLoad(false);
-                System.out.println(jsonObject);
-            }
-        });
+//        if (isCommunicator) {
+//            communicator.setOnCommunicatorListener(new CommunicatorListener() {
+//                @Override
+//                public void onMapReceive(Map map) {
+//                    myMap = map;
+//                    System.out.println("sdfsdfsdf");
+//
+////                myMap.setUser(user);
+//                }
+//
+//                @Override
+//                public void onHitReceive(Hit hit) {
+//                    if (userLibrary.containsKey(hit.getTo())) {
+//                        userLibrary.get(hit.getTo()).setHit(true);
+//                    }
+//                }
+//
+//                @Override
+//                public void onUpdate(List<Update> updates) {
+//                    for (Update u :
+//                            updates) {
+//                        if (!userLibrary.containsKey(u.getUser()))
+//                            userNames.add(u.getUser());
+//
+//                        userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
+//                                u.getUser(), u.getDirection(), u.getHp(), u.getMana(),
+//                                u.getStamina(), u.getScore(), u.getState()));
+//
+//                        if (u.getUser().equals(user.getName())) {
+//                            String userName = user.getName();
+//                            user = userLibrary.get(userName);
+//                            user.setMe(true);
+//                            user.setX(u.getX());
+//                            user.setY(u.getY());
+//
+//                            user.onHpChange(u.getHp());
+//                            user.setHp(u.getHp());
+//
+//                            user.onManaChange(u.getMana());
+//                            user.setMana(u.getMana());
+//
+//                            user.setCharacterImage(u.getCharacterImage());
+//                            user.setStamina(u.getStamina());
+//                            user.setDirection(u.getDirection());
+//                            user.setScore(u.getScore());
+//
+//                            user.onStateChange(u.getState());
+//                            user.setState(u.getState());
+//                            if (u.getState().equals("ATTACK") || u.getState().equals("SPECIAL")) {
+//                                user.setAttackDirection(u.getDirection());
+//                            }
+//
+//                            user.setSpeed(u.getSpeed());
+//                            user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
+//                        }
+//
+//                        if (userLibrary.containsKey(u.getUser())) {
+//                            User user = userLibrary.get(u.getUser());
+//                            user.setX(u.getX());
+//                            user.setY(u.getY());
+//
+//                            user.onHpChange(u.getHp());
+//                            user.setHp(u.getHp());
+//
+//                            user.onManaChange(u.getMana());
+//                            user.setMana(u.getMana());
+//
+//                            user.setCharacterImage(u.getCharacterImage());
+//                            user.setStamina(u.getStamina());
+//                            user.setDirection(u.getDirection());
+//                            user.setScore(u.getScore());
+//                            user.onStateChange(u.getState());
+//                            user.setState(u.getState());
+//                            user.setSpeed(u.getSpeed());
+//                            user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onKillReceive(Kill kill) {
+//                    if (userLibrary.containsKey(kill.getTo())) {
+//                        ui.addKiller(kill.getFrom(), kill.getTo(), tick);
+//                    }
+//                }
+//
+//                @Override
+//                public void onMapCorrectReceive(int index, int message) {
+//                    myMap.replaceIndex(index, message);
+//                }
+//
+//                @Override
+//                public void onRejectReceive(JsonObject jsonObject) {
+//                    isReject = true;
+//                    myMap.setLoad(false);
+//                    System.out.println(jsonObject);
+//                }
+//            });
+//        }
 
         loadImage();
         ui = new UI(userLibrary, userNames);
@@ -157,6 +168,7 @@ public class Window extends PApplet implements Constants {
         addPressListeners();
 
         addReleaseListeners();
+
     }
 
 
@@ -284,13 +296,38 @@ public class Window extends PApplet implements Constants {
     public void draw() {
         tick++;
 
-        if (!isJoin) {
+        if (!isIP) {
+            background(255);
+            StringBuilder inputIP = new StringBuilder();
+            StringBuilder inputPort = new StringBuilder();
+
+            for (Character character : stringIp) {
+                inputIP.append(character);
+            }
+
+            for (Character character : stringPort) {
+                inputPort.append(character);
+            }
+
+            fill(153, 0, 153);
+            textSize(40);
+            text("please input game IP>>", 200, 100);
+            text("please input port number>>", 200, 300);
+            fill(255);
+            rect(200, 150, 500, 50);
+            rect(200, 450, 500, 50);
+            textSize(30);
+            fill(102, 51, 153);
+            text(inputIP.toString(), 350, 185);
+            text(inputPort.toString(), 350, 485);
+
+        } else if (!isJoin) {
             background(255);
             StringBuilder inputWords = new StringBuilder();
             for (Character character : characters) {
                 inputWords.append(character);
             }
-            fill(153,0,153);
+            fill(153, 0, 153);
             textSize(40);
             text("please input your game ID >>", 200, 200);
             fill(255);
@@ -321,8 +358,7 @@ public class Window extends PApplet implements Constants {
             text("NUM 6", 620, 430);
             image(SpriteManager.getImage(CHARACTER_SEVEN_DOWN, 0), 200, 450, 100, 100);
             text("NUM 7", 220, 580);
-        }
-         else if (isMap) {
+        } else if (isMap) {
             background(255);
             camera.position.x = user.getX() - (WINDOW_SIZE_X - 200) / 2;
             camera.position.y = user.getY() - WINDOW_SIZE_Y / 2;
@@ -351,9 +387,7 @@ public class Window extends PApplet implements Constants {
             if (mousePressed) {
                 ui.checkUserName(mouseX, mouseY);
             }
-        }
-
-        else if (isReject) {
+        } else if (isReject) {
             showRejectMessage();
         }
     }
@@ -382,8 +416,48 @@ public class Window extends PApplet implements Constants {
         isJoin = true;
     }
 
+    private void setIP() {
+        communicator = new Communicator(ip, port);
+        isCommunicator = true;
+        setCommunicatorListener();
+
+    }
+
     public void keyPressed() {
-        if (!isJoin) {
+        if (!isIP) {
+            if (!isport) {
+                if (keyCode == ENTER) {
+                    checkWord.setLength(0);
+                    for (Character character : stringIp) {
+                        checkWord.append(character);
+                    }
+                    ip = checkWord.toString();
+                    checkWord.delete(0, checkWord.length() - 1);
+                    isport = true;
+                } else if (keyCode == BACKSPACE) {
+                    if (stringIp.size() > 0)
+                        stringIp.remove(stringIp.size() - 1);
+                } else {
+                    stringIp.add(key);
+                }
+            } else {
+                if (keyCode == ENTER) {
+                    checkWord.setLength(0);
+                    for (Character character : stringPort) {
+                        checkWord.append(character);
+                    }
+                    port = parseInt(checkWord.toString());
+                    checkWord.delete(0, checkWord.length() - 1);
+                    isIP = true;
+                    setIP();
+                } else if (keyCode == BACKSPACE) {
+                    if (stringPort.size() > 0)
+                        stringPort.remove(stringPort.size() - 1);
+                } else {
+                    stringPort.add(key);
+                }
+            }
+        } else if (!isJoin && isIP) {
             if (keyCode == ENTER) {
                 checkWord.setLength(0);
                 for (Character character : characters) {
@@ -526,5 +600,107 @@ public class Window extends PApplet implements Constants {
         SoundManager.loadSound(SOUND_MANA, 0, "./sound/mana.wav");
         SoundManager.loadSound(SOUND_PUNCH, 0, "./sound/punch.wav");
 
+    }
+
+    private void setCommunicatorListener(){
+        if (isCommunicator) {
+            communicator.setOnCommunicatorListener(new CommunicatorListener() {
+                @Override
+                public void onMapReceive(Map map) {
+                    myMap = map;
+                    System.out.println("sdfsdfsdf");
+
+//                myMap.setUser(user);
+                }
+
+                @Override
+                public void onHitReceive(Hit hit) {
+                    if (userLibrary.containsKey(hit.getTo())) {
+                        userLibrary.get(hit.getTo()).setHit(true);
+                    }
+                }
+
+                @Override
+                public void onUpdate(List<Update> updates) {
+                    for (Update u :
+                            updates) {
+                        if (!userLibrary.containsKey(u.getUser()))
+                            userNames.add(u.getUser());
+
+                        userLibrary.putIfAbsent(u.getUser(), new User(u.getX(), u.getY(),
+                                u.getUser(), u.getDirection(), u.getHp(), u.getMana(),
+                                u.getStamina(), u.getScore(), u.getState()));
+
+                        if (u.getUser().equals(user.getName())) {
+                            String userName = user.getName();
+                            user = userLibrary.get(userName);
+                            user.setMe(true);
+                            user.setX(u.getX());
+                            user.setY(u.getY());
+
+                            user.onHpChange(u.getHp());
+                            user.setHp(u.getHp());
+
+                            user.onManaChange(u.getMana());
+                            user.setMana(u.getMana());
+
+                            user.setCharacterImage(u.getCharacterImage());
+                            user.setStamina(u.getStamina());
+                            user.setDirection(u.getDirection());
+                            user.setScore(u.getScore());
+
+                            user.onStateChange(u.getState());
+                            user.setState(u.getState());
+                            if (u.getState().equals("ATTACK") || u.getState().equals("SPECIAL")) {
+                                user.setAttackDirection(u.getDirection());
+                            }
+
+                            user.setSpeed(u.getSpeed());
+                            user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
+                        }
+
+                        if (userLibrary.containsKey(u.getUser())) {
+                            User user = userLibrary.get(u.getUser());
+                            user.setX(u.getX());
+                            user.setY(u.getY());
+
+                            user.onHpChange(u.getHp());
+                            user.setHp(u.getHp());
+
+                            user.onManaChange(u.getMana());
+                            user.setMana(u.getMana());
+
+                            user.setCharacterImage(u.getCharacterImage());
+                            user.setStamina(u.getStamina());
+                            user.setDirection(u.getDirection());
+                            user.setScore(u.getScore());
+                            user.onStateChange(u.getState());
+                            user.setState(u.getState());
+                            user.setSpeed(u.getSpeed());
+                            user.setPos(new Vector2D(myMap.getLenX(), myMap.getLenY()));
+                        }
+                    }
+                }
+
+                @Override
+                public void onKillReceive(Kill kill) {
+                    if (userLibrary.containsKey(kill.getTo())) {
+                        ui.addKiller(kill.getFrom(), kill.getTo(), tick);
+                    }
+                }
+
+                @Override
+                public void onMapCorrectReceive(int index, int message) {
+                    myMap.replaceIndex(index, message);
+                }
+
+                @Override
+                public void onRejectReceive(JsonObject jsonObject) {
+                    isReject = true;
+                    myMap.setLoad(false);
+                    System.out.println(jsonObject);
+                }
+            });
+        }
     }
 }
